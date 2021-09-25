@@ -5,6 +5,6 @@ set(CMAKE_C_STANDARD 11)
 
 include_directories(TP_1)
 
-add_executable(Y2_Num_Algo
+add_executable(TP_1
         TP_1/main.c
         TP_1/matrices.h)
