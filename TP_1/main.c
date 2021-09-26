@@ -2,21 +2,25 @@
 #include <time.h>
 #include <stdlib.h>
 #include <math.h>
-#include "matrices.h"
-#define N 5
 
+#define N 5
+#define DEBUG printf("file %s; line %d", __FILE__, __LINE__);
+#define MALLOC_FAIL printf("!_malloc failed_!\n"); DEBUG; exit(EXIT_FAILURE);
+
+#include "matrices.h"
+#include "toolbox.h"
 
 int main() {
 
     srand(time(NULL));
 
-    int * matB = (int *)malloc(N * sizeof(int));
+    int *matB = (int *) malloc(N * sizeof(int));
     fillMatB(matB, N);
 
     printf("\nMatrix B:\n");
     printMatB(matB, N);
 
-    int * bord = (int *)malloc(N * N * sizeof(int));
+    int **bord = mkIntSquareMAt(N);
 
     fillBord(bord, N);
 
@@ -24,7 +28,7 @@ int main() {
     printIntMatrix(bord, N);
 //    free(bord);
 
-    double * dingDong = (double *)malloc(N * N * sizeof(double));
+    double **dingDong = mkDoubleSquareMat(N);
 
     fillDingDong(dingDong, N);
 
