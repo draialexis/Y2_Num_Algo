@@ -12,6 +12,8 @@
 
 int main() {
 
+    // TODO check out https://ent.uca.fr/moodle/mod/forum/discuss.php?d=148630
+
     srand(time(NULL));
 
     int *matB = (int *) malloc(N * sizeof(int));
