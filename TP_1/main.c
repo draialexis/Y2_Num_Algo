@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define N 5
+#define N 15
 #define DEBUG printf("file %s; line %d", __FILE__, __LINE__);
 #define MALLOC_FAIL printf("!_malloc failed_!\n"); DEBUG; exit(EXIT_FAILURE);
 

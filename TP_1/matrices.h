@@ -4,22 +4,22 @@ void fillMatB(int *matB, int n) {
     }
 }
 
-void printMatB(const int *matB, int n) {
+void printMatB(int *matB, int n) {
     for (int i = 0; i < n; i++) {
         printf("%+04d\n", *(matB + i));
     }
 }
 
-void printIntMatrix(const int **matrix, int n) {
+void printIntMatrix(int **matrix, int n) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
-            printf("%+04d ", *(*(matrix + i) + j));
+            printf("%+06d ", *(*(matrix + i) + j));
         }
         printf("\n");
     }
 }
 
-void printDoubleMatrix(const double **matrix, int n) {
+void printDoubleMatrix(double **matrix, int n) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             printf("%+.2f ", *(*(matrix + i) + j));
