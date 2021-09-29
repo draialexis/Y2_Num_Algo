@@ -3,12 +3,15 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define N 15
+#define ROWS 3
+#define COLS 4
 #define DEBUG printf("file %s; line %d", __FILE__, __LINE__);
 #define MALLOC_FAIL printf("!_malloc failed_!\n"); DEBUG; exit(EXIT_FAILURE);
+#define EMPTY_OR_NULL printf("this data structure doesn't have a positive integer value as its size, or the pointer to it isn't valid\n"); DEBUG;
 
 #include "matrices.h"
 #include "toolbox.h"
+#include "lin_alg.h"
 
 int main() {
 
@@ -16,27 +19,41 @@ int main() {
 
     srand(time(NULL));
 
-    int *matB = (int *) malloc(N * sizeof(int));
-    fillMatB(matB, N);
+    int *matB = (int *) malloc(ROWS * sizeof(int));
+    fillMatB(matB, ROWS);
 
     printf("\nMatrix B:\n");
-    printMatB(matB, N);
+    showColVect(matB, ROWS);
 
-    int **bord = mkIntSquareMAt(N);
+    int **bord = mkIntMat(ROWS, ROWS);//square
 
-    fillBord(bord, N);
+    fillBord(bord, ROWS);
 
     printf("\nBord:\n");
-    printIntMatrix(bord, N);
-//    free(bord);
+    showMat_i(bord, ROWS, ROWS);//square
 
-    double **dingDong = mkDoubleSquareMat(N);
+    double **dingDong = mkDoubleMat(ROWS, ROWS);//square
 
-    fillDingDong(dingDong, N);
+    fillDingDong(dingDong, ROWS);
 
     printf("\nDing Dong:\n");
-    printDoubleMatrix(dingDong, N);
-//    free(dingDong);
+    showMat_d(dingDong, ROWS, ROWS);//square
 
+    int matA_EZ[ROWS][ROWS] = {
+            {1, -2, -1},
+            {2, -5, -4},
+            {-3, 1, -5}
+    };
+
+    int matB_EZ[ROWS] = {2, 6, 1};
+
+    int * matX_EZ = malloc(sizeof(int) * ROWS);
+
+//code gauss
+
+
+
+    free(bord);
+    free(dingDong);
     return 0;
 }

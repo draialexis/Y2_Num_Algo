@@ -4,30 +4,6 @@ void fillMatB(int *matB, int n) {
     }
 }
 
-void printMatB(int *matB, int n) {
-    for (int i = 0; i < n; i++) {
-        printf("%+04d\n", *(matB + i));
-    }
-}
-
-void printIntMatrix(int **matrix, int n) {
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            printf("%+06d ", *(*(matrix + i) + j));
-        }
-        printf("\n");
-    }
-}
-
-void printDoubleMatrix(double **matrix, int n) {
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            printf("%+.2f ", *(*(matrix + i) + j));
-        }
-        printf("\n");
-    }
-}
-
 void fillBord(int **bord, int n) {
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {

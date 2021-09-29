@@ -7,4 +7,6 @@ include_directories(TP_1)
 
 add_executable(TP_1
         TP_1/main.c
-        TP_1/matrices.h TP_1/toolbox.h)
+        TP_1/matrices.h
+        TP_1/toolbox.h
+        TP_1/lin_alg.h)
