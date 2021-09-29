@@ -67,7 +67,7 @@ int **mkIntMat(int rows, int cols) {
     return mat;
 }
 
-void freeMat(float **mat, int rows, int cols) {
+void freeMat_i(int **mat, int rows, int cols) {
     if (rows > 0 && cols > 0 && mat != NULL) {
         for (int i = 0; i < rows; i++) {
             if (mat[i] != NULL) {
@@ -78,7 +78,19 @@ void freeMat(float **mat, int rows, int cols) {
     } else {
         EMPTY_OR_NULL
     }
+}
 
+void freeMat_d(double **mat, int rows, int cols) {
+    if (rows > 0 && cols > 0 && mat != NULL) {
+        for (int i = 0; i < rows; i++) {
+            if (mat[i] != NULL) {
+                free(mat[i]);
+            }
+        }
+        free(mat);
+    } else {
+        EMPTY_OR_NULL
+    }
 }
 
 void showMat_d(double **mat, int rows, int cols) {
