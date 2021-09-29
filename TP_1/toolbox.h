@@ -5,20 +5,33 @@
 #ifndef Y2_NUM_ALGO_TOOLBOX_H
 #define Y2_NUM_ALGO_TOOLBOX_H
 
-double **mkDoubleSquareMat(int n) {
+double **mkDoubleSquareMAt(int n) {
 
     double **mat = malloc(sizeof(double *) * n);
 
     if (mat == NULL) {
         MALLOC_FAIL
     }
+
+    int hasFailed = 0;
+
     for (int i = 0; i < n; ++i) {
 
         mat[i] = malloc(n * sizeof(double));
 
         if (mat[i] == NULL) {
-            MALLOC_FAIL
+            hasFailed = 1;
         }
+    }
+
+    if (hasFailed) {
+        for (int i = 0; i < n; ++i) {
+            if(mat[i] != NULL) {
+                free(mat[i]);
+            }
+        }
+        free(mat);
+        MALLOC_FAIL
     }
     return mat;
 }
@@ -30,13 +43,26 @@ int **mkIntSquareMAt(int n) {
     if (mat == NULL) {
         MALLOC_FAIL
     }
+
+    int hasFailed = 0;
+
     for (int i = 0; i < n; ++i) {
 
         mat[i] = malloc(n * sizeof(int));
 
         if (mat[i] == NULL) {
-            MALLOC_FAIL
+            hasFailed = 1;
         }
+    }
+
+    if (hasFailed) {
+        for (int i = 0; i < n; ++i) {
+            if(mat[i] != NULL) {
+                free(mat[i]);
+            }
+        }
+        free(mat);
+        MALLOC_FAIL
     }
     return mat;
 }
