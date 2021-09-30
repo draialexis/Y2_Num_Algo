@@ -35,11 +35,15 @@ void fillDingDong(double **dingDong, int n) {
 }
 
 void fillMat_EZ(int **mat, int n) {
-    for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < n; ++j) {
-            *(*(mat + i) + j) = i + j + 1;
-        }
-    }
+    mat[0][0] = 1;
+    mat[0][1] = -2;
+    mat[0][2] = -1;
+    mat[1][0] = 2;
+    mat[1][1] = -5;
+    mat[1][2] = -4;
+    mat[2][0] = -3;
+    mat[2][1] = 1;
+    mat[2][2] = -5;
 }
 
 #endif //Y2_NUM_ALGO_MATRICES_H

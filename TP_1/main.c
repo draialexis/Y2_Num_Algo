@@ -51,8 +51,8 @@ int main() {
 //    };
 
     showMat_i(matA_EZ, ROWS, ROWS);
-    printf("+\n");
-    int matX_EZ[ROWS] = {0, 0, 0}; //to be replaced. temporary
+    printf("*\n");
+    int matX_EZ[ROWS]; //to be filled. temporary
     showColVect(matX_EZ, ROWS);
     printf("=\n");
     int matB_EZ[ROWS] = {2, 6, 1};
