@@ -35,7 +35,7 @@ void fillDingDong(double **dingDong, int n) {
 }
 
 void fillMat_EZ(int **mat, int n) {
-    mat[0][0] = 1;
+    mat[0][0] = 0;//change back to 1...
     mat[0][1] = -2;
     mat[0][2] = -1;
     mat[1][0] = 2;

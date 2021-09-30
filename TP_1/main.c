@@ -41,8 +41,8 @@ int main() {
 
     printf("\n");
 
-    int ** matA_EZ = mkIntMat(ROWS, ROWS);
-    fillMat_EZ(matA_EZ, ROWS);
+    int ** matA_EZ = mkIntMat(3, 3);
+    fillMat_EZ(matA_EZ, 3);
 
 //    {
 //            {1,  -2, -1},
@@ -50,15 +50,20 @@ int main() {
 //            {-3, 1,  -5}
 //    };
 
-    showMat_i(matA_EZ, ROWS, ROWS);
+    showMat_i(matA_EZ, 3, 3);
     printf("*\n");
-    int matX_EZ[ROWS]; //to be filled. temporary
-    showColVect(matX_EZ, ROWS);
+    int matX_EZ[3]; //to be filled. temporary
+    showColVect(matX_EZ, 3);
     printf("=\n");
-    int matB_EZ[ROWS] = {2, 6, 1};
-    showColVect(matB_EZ, ROWS);
+    int matB_EZ[3] = {2, 6, 1};
+    showColVect(matB_EZ, 3);
 
-//code gauss
+    printf("Gauss\n");
+    printf("before\n");
+    showMat_i(matA_EZ, 3, 3);
+    gaussElim_i(matA_EZ, 3, 3, matB_EZ);
+    printf("after\n");
+    showMat_i(matA_EZ, 3, 3);
 
     freeMat_i(bord, ROWS, ROWS);
     freeMat_d(dingDong, ROWS, ROWS);
