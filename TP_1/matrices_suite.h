@@ -3,9 +3,37 @@
 
 #include <math.h>
 
-void fillMatB_rdm(double *matB, int n) {
+void fillMatB_rdm(double *mat, int n) {
     for (int i = 0; i < n; ++i) {
-        *(matB + i) = rand() % 20;
+        mat[i] = rand() % 3;
+    }
+}
+
+void fillMatA_rdm(double **mat, int rows, int cols) {
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            mat[i][j] = rand() % 3;
+        }
+    }
+}
+
+void fillMatA_userInput(double **mat, int rows, int cols) {
+    double input = 0;
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            printf("A[%d][%d] <- ", i + 1, j + 1);
+            scanf("%lf", &input);
+            mat[i][j] = input;
+        }
+    }
+}
+
+void fillMatB_userInput(double *mat, int rows) {
+    double input = 0;
+    for (int i = 0; i < rows; ++i) {
+        printf("B[%d] <- ", i + 1);
+        scanf("%lf", &input);
+        mat[i] = input;
     }
 }
 
@@ -34,16 +62,22 @@ void fillDingDong(double **dingDong, int n) {
     }
 }
 
-void fillMat_EZ(double **mat, int n) {
+void fillMat_EZ(double **mat) {
     mat[0][0] = 1;//1
     mat[0][1] = -2;//-2
     mat[0][2] = -1;//-1
     mat[1][0] = 2;//2
     mat[1][1] = -5;//-5
     mat[1][2] = -4;//-4
-    mat[2][0] = -3;//-2
+    mat[2][0] = -3;//-3
     mat[2][1] = 1;//1
     mat[2][2] = -5;//-5
+    /*
+     * Solution:
+     * [+2.5
+     *  +1
+     *  -1.5]
+     */
 }
 
 #endif //Y2_NUM_ALGO_MATRICES_SUITE_H

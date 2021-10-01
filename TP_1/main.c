@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define ROWS 3
+#define ROWS 5
 #define COLS 4
 #define DEBUG printf("file %s; line %d\n", __FILE__, __LINE__);
 #define MALLOC_FAIL printf("!_malloc failed_!\n"); DEBUG; exit(EXIT_FAILURE);
@@ -18,58 +18,27 @@ int main() {
     // TODO check out https://ent.uca.fr/moodle/mod/forum/discuss.php?d=148630
 
     srand(time(NULL));
-
-    double *matB = (double *) malloc(ROWS * sizeof(double));
-    fillMatB_rdm(matB, ROWS);
-
-    printf("Matrix B:\n");
-    showCol(matB, ROWS, 0);
-
-    double **bord = mkMat(ROWS, ROWS);//square
-
-    fillBord(bord, ROWS);
-
-    printf("Bord:\n");
-    showMat(bord, ROWS, ROWS);//square
-
-    double **dingDong = mkMat(ROWS, ROWS);//square
-    fillDingDong(dingDong, ROWS);
-
-    printf("Ding Dong:\n");
-
-    showMat(dingDong, ROWS, ROWS);//square
-
-    printf("=======================\n");
-
+    double **matA = mkMat(ROWS, COLS);
+    fillMatA_rdm(matA, ROWS, COLS);
     double **matA_EZ = mkMat(3, 3);
-    fillMat_EZ(matA_EZ, 3);
+    fillMat_EZ(matA_EZ);
 
-//    {
-//            {1,  -2, -1},
-//            {2,  -5, -4},
-//            {-3, 1,  -5}
-//    };
+    double *matX = mkColVec(COLS);// A(m,n) * X(_n_, p) = B(m, p) // p = 1
+    double *matX_EZ = mkColVec(3);
+    //X will be freed and a message will appear in the console, if the system is unsolvable)
 
-    showMat(matA_EZ, 3, 3);
-    printf("*\n");
-    double matX_EZ[3]; //to be filled. temporary
-    showCol(matX_EZ, 3, 1);
-    printf("=\n");
+
+    double *matB = mkColVec(ROWS);
+    fillMatB_rdm(matB, ROWS);
     double matB_EZ[3] = {2, 6, 1};
-    showCol(matB_EZ, 3, 0);
 
     printf("=======================\nGauss\n=======================\n");
-    printf("initial:\n");
-    showEqSys(matA_EZ, 3, 3, matB_EZ);
-    gaussElim(matA_EZ, 3, 3, matB_EZ);
-    printf("final:\n");
-    showEqSys(matA_EZ, 3, 3, matB_EZ);
+    gaussElim(matA_EZ, 3, 3, matB_EZ, matX_EZ);
+    freeMat(matA_EZ, 3, 3);
+    printf("=======================\nGauss\n=======================\n");
+    gaussElim(matA, ROWS, COLS, matB, matX);
+    freeMat(matA, ROWS, COLS);
 
 
-    freeMat(bord, ROWS, ROWS);
-    freeMat(dingDong, ROWS, ROWS);
-    freeMat(matA_EZ, ROWS, ROWS);
-//    free(matB_EZ);
-//    free(matX_EZ);
     return 0;
 }

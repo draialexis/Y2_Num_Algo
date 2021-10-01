@@ -5,7 +5,7 @@
 #ifndef Y2_NUM_ALGO_TOOLBOX_H
 #define Y2_NUM_ALGO_TOOLBOX_H
 
-double **mkMat(int cols, int rows) {
+double **mkMat(int rows, int cols) {
 
     double **mat = malloc(sizeof(double *) * rows);
 
@@ -63,25 +63,20 @@ void showMat(double **mat, int rows, int cols) {
         for (int i = 0; i < rows; i++) {
             if (i != 0) printf("|");
             for (int j = 0; j < cols; j++) {
-                printf("%+06.3f ", *(*(mat + i) + j));
+                printf("%+06.1f ", *(*(mat + i) + j));
             }
             i == rows - 1 ? printf("]\n") : printf("|\n");
         }
+        printf("\n");
     } else {
         EMPTY_OR_NULL
     }
 }
 
 
-void showCol(const double *mat, int n, int isX) {
-    if(isX){
-        for (int i = 0; i < n; ++i) {
-            printf("|?|\n");
-        }
-    } else {
-        for (int i = 0; i < n; i++) {
-            printf("|%+06.3f|\n", *(mat + i));
-        }
+void showCol(const double *mat, int n) {
+    for (int i = 0; i < n; i++) {
+        printf("|%+06.1f|\n", *(mat + i));
     }
     printf("\n");
 }
@@ -89,9 +84,9 @@ void showCol(const double *mat, int n, int isX) {
 void showRow(const double *mat, int n) {
     printf("[");
     for (int i = 0; i < n; i++) {
-        printf("%+06.3f ", *(mat + i));
+        printf("%+06.1f ", *(mat + i));
     }
-    printf("]\n");
+    printf("]\n\n");
 }
 
 void showEqSys(double **A, int rows, int cols, double *B) {
@@ -100,9 +95,9 @@ void showEqSys(double **A, int rows, int cols, double *B) {
         for (int i = 0; i < rows; i++) {
             if (i != 0) printf("|");
             for (int j = 0; j < cols; j++) {
-                printf("%+06.3f ", A[i][j]);
+                printf("%+06.1f ", A[i][j]);
             }
-            printf("| %+06.3f", B[i]);
+            printf("| %+06.1f", B[i]);
             i == rows - 1 ? printf("]\n") : printf("|\n");
 
         }
