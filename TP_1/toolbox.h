@@ -5,7 +5,7 @@
 #ifndef Y2_NUM_ALGO_TOOLBOX_H
 #define Y2_NUM_ALGO_TOOLBOX_H
 
-double **mkDoubleMat(int cols, int rows) {
+double **mkMat(int cols, int rows) {
 
     double **mat = malloc(sizeof(double *) * rows);
 
@@ -36,38 +36,15 @@ double **mkDoubleMat(int cols, int rows) {
     return mat;
 }
 
-int **mkIntMat(int rows, int cols) {
-
-    int **mat = malloc(sizeof(int *) * rows);
-
+double *mkColVec(int rows) {
+    double *mat = malloc(sizeof(double) * rows);
     if (mat == NULL) {
-        MALLOC_FAIL
-    }
-
-    int hasFailed = 0;
-
-    for (int i = 0; i < rows; ++i) {
-
-        mat[i] = malloc(sizeof(int) * cols);
-
-        if (mat[i] == NULL) {
-            hasFailed = 1;
-        }
-    }
-
-    if (hasFailed) {
-        for (int i = 0; i < rows; ++i) {
-            if (mat[i] != NULL) {
-                free(mat[i]);
-            }
-        }
-        free(mat);
         MALLOC_FAIL
     }
     return mat;
 }
 
-void freeMat_i(int **mat, int rows, int cols) {
+void freeMat(double **mat, int rows, int cols) {
     if (rows > 0 && cols > 0 && mat != NULL) {
         for (int i = 0; i < rows; i++) {
             if (mat[i] != NULL) {
@@ -80,49 +57,84 @@ void freeMat_i(int **mat, int rows, int cols) {
     }
 }
 
-void freeMat_d(double **mat, int rows, int cols) {
+void showMat(double **mat, int rows, int cols) {
     if (rows > 0 && cols > 0 && mat != NULL) {
+        printf("[");
         for (int i = 0; i < rows; i++) {
-            if (mat[i] != NULL) {
-                free(mat[i]);
-            }
-        }
-        free(mat);
-    } else {
-        EMPTY_OR_NULL
-    }
-}
-
-void showMat_d(double **mat, int rows, int cols) {
-    if (rows > 0 && cols > 0 && mat != NULL) {
-        for (int i = 0; i < rows; i++) {
+            if (i != 0) printf("|");
             for (int j = 0; j < cols; j++) {
-                printf("%+.3f ", *(*(mat + i) + j));
+                printf("%+06.3f ", *(*(mat + i) + j));
             }
-            printf("\n");
+            i == rows - 1 ? printf("]\n") : printf("|\n");
         }
     } else {
         EMPTY_OR_NULL
     }
 }
 
-void showMat_i(int **mat, int rows, int cols) {
-    if (rows > 0 && cols > 0 && mat != NULL) {
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                printf("%+06d ", *(*(mat + i) + j));
-            }
-            printf("\n");
+
+void showCol(const double *mat, int n, int isX) {
+    if(isX){
+        for (int i = 0; i < n; ++i) {
+            printf("|?|\n");
         }
     } else {
-        EMPTY_OR_NULL
+        for (int i = 0; i < n; i++) {
+            printf("|%+06.3f|\n", *(mat + i));
+        }
     }
+    printf("\n");
 }
 
-void showColVect(const int *matB, int n) {
+void showRow(const double *mat, int n) {
+    printf("[");
     for (int i = 0; i < n; i++) {
-        printf("%+06d\n", *(matB + i));
+        printf("%+06.3f ", *(mat + i));
+    }
+    printf("]\n");
+}
+
+void showEqSys(double **A, int rows, int cols, double *B) {
+    if (rows > 0 && cols > 0 && A != NULL && B != NULL) {
+        printf("[");
+        for (int i = 0; i < rows; i++) {
+            if (i != 0) printf("|");
+            for (int j = 0; j < cols; j++) {
+                printf("%+06.3f ", A[i][j]);
+            }
+            printf("| %+06.3f", B[i]);
+            i == rows - 1 ? printf("]\n") : printf("|\n");
+
+        }
+        printf("\n");
+    } else {
+        EMPTY_OR_NULL
     }
 }
+
+void rowMult(double *arr, int size, double factor) {
+    for (int k = 0; k < size; ++k) {
+        arr[k] *= factor;
+    }
+}
+
+void rowSub(double *arr, int size, const double *sub, const double factor) {
+    for (int k = 0; k < size; ++k) {
+        arr[k] = arr[k] - (factor * sub[k]);
+    }
+}
+
+void rowSwap(double **matA, double *matB, int i, int k, int cols) {
+    double *tmpArrA = mkColVec(cols);
+    double tmp;
+    tmpArrA = matA[i];
+    matA[i] = matA[k];
+    matA[k] = tmpArrA;
+    free(tmpArrA);
+    tmp = matB[i];
+    matB[i] = matB[k];
+    matB[k] = tmp;
+}
+
 
 #endif //Y2_NUM_ALGO_TOOLBOX_H

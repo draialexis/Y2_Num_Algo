@@ -5,21 +5,11 @@
 #ifndef Y2_NUM_ALGO_LIN_ALG_H
 #define Y2_NUM_ALGO_LIN_ALG_H
 
-void rowDiv_i(int *arr, int size, int div) {
-    for (int k = 0; k < size; ++k) {
-        arr[k] = arr[k] / div;
-    }
-}
-
-void rowSub_i(int *arr, int size, const int *sub) {
-    for (int k = 0; k < size; ++k) {
-        arr[k] = arr[k] - sub[k];
-    }
-}
 
 // this destructive function changes the matrices as a side-effect
-void gaussElim_i(int **A, int rows, int cols, int *B) {
+void gaussElim(double **A, int rows, int cols, double *B) {
 
+    double factor;
     //TODO remember I'm treating mats B and X as 1d-arrays
 
     if (cols < 2) {
@@ -28,30 +18,44 @@ void gaussElim_i(int **A, int rows, int cols, int *B) {
         exit(0);
     }
 
-    //TODO remember perform the same operations on the "rows" of matB
     //TODO make sure proportional rows disappear naturally
     for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j <= cols; ++j) {
+        printf("__i = %d\n", i);
+        for (int j = 0; j <= i; ++j) {
+            printf("__j = %d\n", j);
             if (A[i][j] != 0) {
+                if (A[i][j] != 1) {
+                    factor = 1 / A[i][j];
+                    printf("L%d <- L%d * %+06.3f\n", i + 1, i + 1, factor);
+                    rowMult(A[j], cols, factor);
+                    B[i] *= factor;
+                    showEqSys(A, rows, cols, B);////
+                }
                 for (int k = i + 1; k < rows; ++k) {
-                    if (A[k][j] != 0) {
-                        rowDiv_i(A[k], cols, A[i][j]);
-                        rowSub_i(A[k], cols, A[i]);
+                    printf("__k = %d\n", k);
+                    factor = (A[k][j]);
+                    if (factor != 0) {
+                        if (k != j) {
+                            printf("L%d <- L%d - (%+06.3f * L%d)\n", k + 1, k + 1, factor, i + 1);
+                            rowSub(A[k], cols, A[i], factor);
+                            B[k] -= factor * B[i];
+                            showEqSys(A, rows, cols, B);////
+                        }
                     }
                 }
             } else {
                 for (int k = i + 1; k < rows; ++k) {
                     if (A[k][j] != 0) {
-                        A[i] = A[k];
+                        printf("L%d <-> L%d\n", i + 1, k + 1);
+                        rowSwap(A, B, i, k, cols);
+                        showEqSys(A, rows, cols, B);////
+                        i--; // we want to make sure to come back to where we found the A(i, j) == 0 && i == j, now that it's fixed
+                        break;
                     }
                 }
             }
         }
     }
 }
-
-//void order_gauss_d() {
-//
-//}
 
 #endif //Y2_NUM_ALGO_LIN_ALG_H

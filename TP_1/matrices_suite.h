@@ -1,18 +1,18 @@
-#ifndef Y2_NUM_ALGO_MATRICES_H
-#define Y2_NUM_ALGO_MATRICES_H
+#ifndef Y2_NUM_ALGO_MATRICES_SUITE_H
+#define Y2_NUM_ALGO_MATRICES_SUITE_H
 
 #include <math.h>
 
-void fillMatB_rdm(int *matB, int n) {
+void fillMatB_rdm(double *matB, int n) {
     for (int i = 0; i < n; ++i) {
         *(matB + i) = rand() % 20;
     }
 }
 
-void fillBord(int **bord, int n) {
+void fillBord(double **bord, int n) {
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
-            int *crnt = *(bord + i) + j;
+            double *crnt = *(bord + i) + j;
             if (i == j) {
                 *crnt = 1;
             } else if (i + 1 == n) {
@@ -34,16 +34,16 @@ void fillDingDong(double **dingDong, int n) {
     }
 }
 
-void fillMat_EZ(int **mat, int n) {
-    mat[0][0] = 0;//change back to 1...
-    mat[0][1] = -2;
-    mat[0][2] = -1;
-    mat[1][0] = 2;
-    mat[1][1] = -5;
-    mat[1][2] = -4;
-    mat[2][0] = -3;
-    mat[2][1] = 1;
-    mat[2][2] = -5;
+void fillMat_EZ(double **mat, int n) {
+    mat[0][0] = 1;//1
+    mat[0][1] = -2;//-2
+    mat[0][2] = -1;//-1
+    mat[1][0] = 2;//2
+    mat[1][1] = -5;//-5
+    mat[1][2] = -4;//-4
+    mat[2][0] = -3;//-2
+    mat[2][1] = 1;//1
+    mat[2][2] = -5;//-5
 }
 
-#endif //Y2_NUM_ALGO_MATRICES_H
+#endif //Y2_NUM_ALGO_MATRICES_SUITE_H
