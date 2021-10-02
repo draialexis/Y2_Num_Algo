@@ -7,6 +7,8 @@
 
 #define SHOWME showEqSys(A, rows, cols, B);
 
+#define EPSILON 0.000000000000000222044604925031
+
 void solveForX(double **A, int rows, int cols, double *B, double *X) {
     int isCoef1Triangle = 1;
     int isNilRow;
@@ -27,7 +29,7 @@ void solveForX(double **A, int rows, int cols, double *B, double *X) {
             }
         }
         if (isNilRow) {
-            if (B[i] != 0) {
+            if (B[i] < EPSILON) {
                 printf("A * X = B cannot be solved with Gauss (0 =/= 0)\n");
                 free(X);
                 return;
@@ -49,6 +51,7 @@ void solveForX(double **A, int rows, int cols, double *B, double *X) {
     }
     printf("X = \n");
     showCol(X, cols);
+    free(X);
 }
 
 // this destructive function changes the matrices as a side-effect
@@ -58,16 +61,18 @@ void gaussElim(double **A, int rows, int cols, double *B, double *X) {
         exit(0);
     }
     SHOWME
-    double factor, inverse;
+    double factor;
 
     //TODO make sure proportional rows disappear naturally
     for (int i = 0; i < rows; ++i) {
         printf("__i = %d\n", i);
         for (int j = 0; j <= i && j < cols; ++j) {
             printf("__j = %d\n", j);
-            if (A[i][j] == 0 && i == j) {
+            if ((fabs(A[i][j]) < EPSILON || A[i][j] == 0.0) && i == j) {
                 for (int k = i + 1; k < rows; ++k) {
-                    if (A[k][j] != 0.0f) {
+                    printf("1_k = %d\n", k);
+                    printf("%+.30f < %+.30f?\n", fabs(A[k][j]), EPSILON);
+                    if (fabs(A[k][j]) > EPSILON || A[k][j] != 0.0) {
                         printf("L%d <-> L%d\n", i + 1, k + 1);
                         rowSwap(A, B, i, k, cols);
                         i--; // we want to make sure to come back to where we found the A(i, j) == 0 && i == j, now that it's fixed
@@ -77,14 +82,11 @@ void gaussElim(double **A, int rows, int cols, double *B, double *X) {
                 }
             } else {
                 for (int k = i + 1; k < rows; ++k) {
-                    if (A[k][j] < 0) {
-                        printf("L%d <- L%d * %+06.1f\n", i + 1, i + 1, -1.0);
-                        rowMult(A[i], cols, -1);
-                        SHOWME
-                    }
+                    printf("2_k = %d\n", k);
                     factor = (A[k][j] / A[i][j]);
-                    printf("__k = %d\n", k);
-                    if (A[k][j] != 0) {
+                    if (fabs(A[k][j]) < EPSILON) {
+                        continue;
+                    } else {
                         if (k != j) {
                             printf("L%d <- L%d - (%+06.1f * L%d)\n", k + 1, k + 1, factor, i + 1);
                             rowSub(A[k], cols, A[i], factor);
@@ -97,6 +99,8 @@ void gaussElim(double **A, int rows, int cols, double *B, double *X) {
         }
     }
 //    solveForX(A, rows, cols, B, X);
+//TODO factorization
 }
+
 
 #endif //Y2_NUM_ALGO_LIN_ALG_H

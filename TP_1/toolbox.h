@@ -44,19 +44,6 @@ double *mkColVec(int rows) {
     return mat;
 }
 
-void freeMat(double **mat, int rows, int cols) {
-    if (rows > 0 && cols > 0 && mat != NULL) {
-        for (int i = 0; i < rows; i++) {
-            if (mat[i] != NULL) {
-                free(mat[i]);
-            }
-        }
-        free(mat);
-    } else {
-        EMPTY_OR_NULL
-    }
-}
-
 void showMat(double **mat, int rows, int cols) {
     if (rows > 0 && cols > 0 && mat != NULL) {
         printf("[");
@@ -73,13 +60,13 @@ void showMat(double **mat, int rows, int cols) {
     }
 }
 
-
 void showCol(const double *mat, int n) {
     for (int i = 0; i < n; i++) {
         printf("|%+06.1f|\n", *(mat + i));
     }
     printf("\n");
 }
+
 
 void showRow(const double *mat, int n) {
     printf("[");
@@ -107,6 +94,19 @@ void showEqSys(double **A, int rows, int cols, double *B) {
     }
 }
 
+void freeMat(double **mat, int rows, int cols) {
+    if (rows > 0 && cols > 0 && mat != NULL) {
+        for (int i = 0; i < rows; i++) {
+            if (mat[i] != NULL) {
+                free(mat[i]);
+            }
+        }
+        free(mat);
+    } else {
+        EMPTY_OR_NULL
+    }
+}
+
 void rowMult(double *arr, int size, double factor) {
     for (int k = 0; k < size; ++k) {
         arr[k] *= factor;
@@ -114,8 +114,8 @@ void rowMult(double *arr, int size, double factor) {
 }
 
 void rowSub(double *arr, int size, const double *sub, const double factor) {
-    for (int k = 0; k < size; ++k) {
-        arr[k] = arr[k] - (factor * sub[k]);
+    for (int j = 0; j < size; ++j) {
+        arr[j] = arr[j] - (factor * sub[j]);
     }
 }
 
@@ -125,7 +125,7 @@ void rowSwap(double **matA, double *matB, int i, int k, int cols) {
     tmpArrA = matA[i];
     matA[i] = matA[k];
     matA[k] = tmpArrA;
-    free(tmpArrA);
+//    free(tmpArrA);
     tmp = matB[i];
     matB[i] = matB[k];
     matB[k] = tmp;
