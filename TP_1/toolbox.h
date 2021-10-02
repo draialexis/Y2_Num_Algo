@@ -121,11 +121,12 @@ void rowSub(double *arr, int size, const double *sub, const double factor) {
 
 void rowSwap(double **matA, double *matB, int i, int k, int cols) {
     double *tmpArrA = mkColVec(cols);
-    double tmp;
+    fillMatB_rdm(tmpArrA, cols);
     tmpArrA = matA[i];
     matA[i] = matA[k];
     matA[k] = tmpArrA;
-//    free(tmpArrA);
+//    free(tmpArrA); // already being freed at end of function because it's on the heap???
+    double tmp;
     tmp = matB[i];
     matB[i] = matB[k];
     matB[k] = tmp;

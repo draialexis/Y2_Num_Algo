@@ -19,7 +19,7 @@ void solveForX(double **A, int rows, int cols, double *B, double *X) {
             if (isNilRow && A[i][j] != 0) {
                 isNilRow = 0;
             }
-            if (i == j && A[i][j] != 1) {
+            if (i == j && A[i][j] != 1) { //TODO change, we don't want coeff 1 anymore
                 isCoef1Triangle = 0;
                 SHOWME
             }
@@ -38,15 +38,15 @@ void solveForX(double **A, int rows, int cols, double *B, double *X) {
         }
     }
     if (isCoef1Triangle) {
-        X[cols - 1] = B[cols - 1];
-        for (int i = cols - 1; i >= 0; --i) {
-            X[i] = B[i];
-//        printf("X(%d) = B(%d)(%+06.1f)", i + 1, i + 1, X[i], B[i]);
+        X[cols - 1] = B[cols - 1] / A[rows - 1][cols - 1];
+        printf("yo\n");
+        for (int i = cols - 2; i >= 0; --i) {
+            double sum = 0;
             for (int j = i + 1; j < cols; ++j) {
-//            printf(" - A(%d %d) * X(%d)(%+06.1f * %+06.1f)", i + 1, j + 1, i + 2, A[i][j], X[i + 1]);
-                X[i] -= A[i][j] * X[j];
+                sum += A[i][j] * X[j];
             }
-//        printf("\n");
+            X[i] = (B[i] - sum) / A[i][i];
+            printf("yo\n");
         }
     }
     printf("X = \n");
@@ -98,7 +98,7 @@ void gaussElim(double **A, int rows, int cols, double *B, double *X) {
             }
         }
     }
-//    solveForX(A, rows, cols, B, X);
+    solveForX(A, rows, cols, B, X);
 //TODO factorization
 }
 
