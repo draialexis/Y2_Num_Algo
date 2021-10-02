@@ -35,9 +35,9 @@ int main() {
     printf("=======================\nGauss\n=======================\n");
     gaussElim(matA_EZ, 3, 3, matB_EZ, matX_EZ);
     freeMat(matA_EZ, 3, 3);
-    printf("=======================\nGauss\n=======================\n");
-    gaussElim(matA, ROWS, COLS, matB, matX);
-    freeMat(matA, ROWS, COLS);
+//    printf("=======================\nGauss\n=======================\n");
+//    gaussElim(matA, ROWS, COLS, matB, matX);
+//    freeMat(matA, ROWS, COLS);
 
 
     return 0;

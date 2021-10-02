@@ -58,8 +58,7 @@ void gaussElim(double **A, int rows, int cols, double *B, double *X) {
         exit(0);
     }
     SHOWME
-    double factor = 0;
-    double inverse = 0;
+    double factor, inverse;
 
     //TODO make sure proportional rows disappear naturally
     for (int i = 0; i < rows; ++i) {
@@ -68,7 +67,7 @@ void gaussElim(double **A, int rows, int cols, double *B, double *X) {
             printf("__j = %d\n", j);
             if (A[i][j] == 0 && i == j) {
                 for (int k = i + 1; k < rows; ++k) {
-                    if (A[k][j] != 0) {
+                    if (A[k][j] != 0.0f) {
                         printf("L%d <-> L%d\n", i + 1, k + 1);
                         rowSwap(A, B, i, k, cols);
                         i--; // we want to make sure to come back to where we found the A(i, j) == 0 && i == j, now that it's fixed
@@ -77,18 +76,15 @@ void gaussElim(double **A, int rows, int cols, double *B, double *X) {
                     }
                 }
             } else {
-                if (A[i][j] != 1 && i == j) {
-                    inverse = 1 / A[i][j];
-                    printf("L%d <- L%d * %+06.1f\n", i + 1, i + 1, inverse);
-                    rowMult(A[j], cols, inverse);
-                    B[i] *= inverse;
-                    SHOWME
-                }
                 for (int k = i + 1; k < rows; ++k) {
+                    if (A[k][j] < 0) {
+                        printf("L%d <- L%d * %+06.1f\n", i + 1, i + 1, -1.0);
+                        rowMult(A[i], cols, -1);
+                        SHOWME
+                    }
+                    factor = (A[k][j] / A[i][j]);
                     printf("__k = %d\n", k);
-                    factor = (A[k][j]);
-                    if (factor != 0) {
-                        printf("factor = %+020.20f\n", factor);
+                    if (A[k][j] != 0) {
                         if (k != j) {
                             printf("L%d <- L%d - (%+06.1f * L%d)\n", k + 1, k + 1, factor, i + 1);
                             rowSub(A[k], cols, A[i], factor);
@@ -100,7 +96,7 @@ void gaussElim(double **A, int rows, int cols, double *B, double *X) {
             }
         }
     }
-    solveForX(A, rows, cols, B, X);
+//    solveForX(A, rows, cols, B, X);
 }
 
 #endif //Y2_NUM_ALGO_LIN_ALG_H
