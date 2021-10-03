@@ -17,7 +17,8 @@
 
 int main() {
 
-    // TODO https://ent.uca.fr/moodle/mod/forum/discuss.php?d=148630
+    // TODO "Pour tester la sensibilite des algorithmes, resoudre les systemes Ax=b et A'x=b (A' est la matrice A dont
+    //  les coefficients ont ete legerement perturbes) puis comparer les solutions x et x' obtenues est suffisant."
 /*
     printf("size of doubles: %llu bits\n", sizeof(double) * 8);
 
@@ -50,12 +51,12 @@ int main() {
     srand(time(NULL));
     double **matA = mkMat(ROWS, COLS);
     fillMatA_rdm(matA, ROWS, COLS);
-    double **matA_EZ = mkMat(3, 4);
+    double **matA_EZ = mkMat(3, 5);
     fillMat_EZ(matA_EZ);
 
 
     double *matX = mkColVec(COLS);// A(m,n) * X(_n_, p) = B(m, p) // p = 1
-    double *matX_EZ = mkColVec(4);
+    double *matX_EZ = mkColVec(5);
 
 
     double *matB = mkColVec(ROWS);
@@ -65,8 +66,8 @@ int main() {
 
 
     printf("=======================\nGauss\n=======================\n");
-    gaussElim(matA_EZ, 3, 4, matB_EZ, matX_EZ);
-    freeMat(matA_EZ, 3, 4);
+    gaussElim(matA_EZ, 3, 5, matB_EZ, matX_EZ, 1);
+    freeMat(matA_EZ, 3, 5);
 //    printf("=======================\nGauss\n=======================\n");
 //    gaussElim(matA, ROWS, COLS, matB, matX);
 //    freeMat(matA, ROWS, COLS);

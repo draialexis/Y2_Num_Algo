@@ -32,7 +32,7 @@ void rowTransform(double *arr, int size, double *sub, double factor);
 
 void rowSwap(double **matA, double *matB, int i, int k, int cols);
 
-double **invertMat(double **mat, int mrows, int mcols);
+double **transverseMat(double **mat, int rowsM, int colsM);
 
 struct MaxValMaxPos maxInCol(double *col, int n);
 
@@ -188,10 +188,10 @@ void rowSwap(double **matA, double *matB, int i, int k, int cols) {
     }
 }
 
-double **invertMat(double **mat, int mrows, int mcols) {
-    if (mat != NULL && mrows > 0 && mcols > 0) {
-        int rows = mcols;
-        int cols = mrows;
+double **transverseMat(double **mat, int rowsM, int colsM) {
+    if (mat != NULL && rowsM > 0 && colsM > 0) {
+        int rows = colsM;
+        int cols = rowsM;
         double **res = mkMat(rows, cols);
         for (int i = 0; i < rows; ++i) {
             for (int j = 0; j < cols; ++j) {
