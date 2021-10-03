@@ -5,43 +5,77 @@
 #ifndef Y2_NUM_ALGO_TOOLBOX_H
 #define Y2_NUM_ALGO_TOOLBOX_H
 
+/*
+struct MaxValMaxPos {
+    double val;
+    int pos;
+} maxValMaxPos;
+*/
+
+double **mkMat(int rows, int cols);
+
+double *mkColVec(int rows);
+
+void showMat(double **mat, int rows, int cols);
+
+void showCol(double *mat, int size);
+
+void showRow(double *mat, int size);
+
+void showEqSys(double **A, int rows, int cols, double *B);
+
+void freeMat(double **mat, int rows, int cols);
+
+void rowMult(double *arr, int size, double factor);
+
+void rowTransform(double *arr, int size, double *sub, double factor);
+
+void rowSwap(double **matA, double *matB, int i, int k, int cols);
+
+double **invertMat(double **mat, int mrows, int mcols);
+
+struct MaxValMaxPos maxInCol(double *col, int n);
+
 double **mkMat(int rows, int cols) {
-
-    double **mat = malloc(sizeof(double *) * rows);
-
-    if (mat == NULL) {
-        MALLOC_FAIL
-    }
-
-    int hasFailed = 0;
-
-    for (int i = 0; i < rows; ++i) {
-
-        mat[i] = malloc(sizeof(double) * cols);
-
-        if (mat[i] == NULL) {
-            hasFailed = 1;
+    if (rows > 0 && cols > 0) {
+        double **mat = (double **) malloc(sizeof(double *) * rows);
+        if (mat == NULL) {
+            MALLOC_FAIL
         }
-    }
-
-    if (hasFailed) {
+        int hasFailed = 0;
         for (int i = 0; i < rows; ++i) {
-            if (mat[i] != NULL) {
-                free(mat[i]);
+            mat[i] = (double *) malloc(sizeof(double) * cols);
+            if (mat[i] == NULL) {
+                hasFailed = 1;
             }
         }
-        free(mat);
-        MALLOC_FAIL
+        if (hasFailed) {
+            for (int i = 0; i < rows; ++i) {
+                if (mat[i] != NULL) {
+                    free(mat[i]);
+                }
+            }
+            free(mat);
+            MALLOC_FAIL
+        }
+        return mat;
+    } else {
+        EMPTY_OR_NULL
+        FAIL_OUT
     }
-    return mat;
 }
 
 double *mkColVec(int rows) {
-    double *mat = malloc(sizeof(double) * rows);
-    if (mat == NULL) {
-        MALLOC_FAIL
+    if (rows > 0) {
+        double *mat = malloc(sizeof(double) * rows);
+        if (mat == NULL) {
+            MALLOC_FAIL
+        }
+        return mat;
+    } else {
+        EMPTY_OR_NULL
+        FAIL_OUT
     }
-    return mat;
 }
 
 void showMat(double **mat, int rows, int cols) {
@@ -60,20 +94,28 @@ void showMat(double **mat, int rows, int cols) {
     }
 }
 
-void showCol(const double *mat, int n) {
-    for (int i = 0; i < n; i++) {
-        printf("|%+06.1f|\n", *(mat + i));
+void showCol(double *mat, int size) {
+    if (size > 0 && mat != NULL) {
+        for (int i = 0; i < size; i++) {
+            printf("|%+06.1f|\n", mat[i]);
+        }
+        printf("\n");
+    } else {
+        EMPTY_OR_NULL
     }
-    printf("\n");
 }
 
 
-void showRow(const double *mat, int n) {
-    printf("[");
-    for (int i = 0; i < n; i++) {
-        printf("%+06.1f ", *(mat + i));
+void showRow(double *mat, int size) {
+    if (size > 0 && mat != NULL) {
+        printf("[");
+        for (int i = 0; i < size; i++) {
+            printf("%+06.1f ", mat[i]);
+        }
+        printf("]\n\n");
+    } else {
+        EMPTY_OR_NULL
     }
-    printf("]\n\n");
 }
 
 void showEqSys(double **A, int rows, int cols, double *B) {
@@ -104,33 +146,76 @@ void freeMat(double **mat, int rows, int cols) {
         free(mat);
     } else {
         EMPTY_OR_NULL
+        FAIL_OUT
     }
 }
 
-void rowMult(double *arr, int size, double factor) {
-    for (int k = 0; k < size; ++k) {
-        arr[k] *= factor;
-    }
-}
-
-void rowSub(double *arr, int size, const double *sub, const double factor) {
-    for (int j = 0; j < size; ++j) {
-        arr[j] = arr[j] - (factor * sub[j]);
+void rowTransform(double *arr, int size, double *sub, double factor) {
+    if (arr != NULL && size > 0 && sub != NULL && fabs(factor) > EPSILON) {
+        for (int j = 0; j < size; ++j) {
+            arr[j] = arr[j] - (factor * sub[j]);
+        }
+    } else {
+        EMPTY_OR_NULL
+        FAIL_OUT
     }
 }
 
 void rowSwap(double **matA, double *matB, int i, int k, int cols) {
-    double *tmpArrA = mkColVec(cols);
-    fillMatB_rdm(tmpArrA, cols);
-    tmpArrA = matA[i];
-    matA[i] = matA[k];
-    matA[k] = tmpArrA;
-//    free(tmpArrA); // already being freed at end of function because it's on the heap???
-    double tmp;
-    tmp = matB[i];
-    matB[i] = matB[k];
-    matB[k] = tmp;
+    if (matA != NULL && matB != NULL && cols > 0) {
+        // not checking for non-nullity of arrays inside A... *
+        // presumably the error would have been caught at malloc or in another function
+        // no need to multiply complexity of rowSwap by 'rows'
+        if (i == k) {
+            printf("swapper and swapped appear to be the same\n");
+            DEBUG
+            FAIL_OUT
+        }
+        double *tmpArrA = mkColVec(cols);
+        fillMatB_rdm(tmpArrA, cols);
+        tmpArrA = matA[i];
+        matA[i] = matA[k];
+        matA[k] = tmpArrA;
+//    free(tmpArrA);
+// that line caused a nasty bug... it's already being freed at end of the function because it's on the heap???
+        double tmp;
+        tmp = matB[i];
+        matB[i] = matB[k];
+        matB[k] = tmp;
+    } else {
+        EMPTY_OR_NULL
+        FAIL_OUT
+    }
 }
 
+double **invertMat(double **mat, int mrows, int mcols) {
+    if (mat != NULL && mrows > 0 && mcols > 0) {
+        int rows = mcols;
+        int cols = mrows;
+        double **res = mkMat(rows, cols);
+        for (int i = 0; i < rows; ++i) {
+            for (int j = 0; j < cols; ++j) {
+                res[i][j] = mat[j][i];
+            }
+        }
+        return res;
+    } else {
+        EMPTY_OR_NULL
+        FAIL_OUT
+    }
+}
+/*
+struct MaxValMaxPos maxInCol(double *arr, int size) {
+    maxValMaxPos.val = arr[0];
+    maxValMaxPos.pos = 0;
+    for (int i = 1; i < size; ++i) { //start at position 0 + 1 because we've already used position 0
+        if (maxValMaxPos.val < fabs(arr[i])) {
+            maxValMaxPos.val = fabs(arr[i]);
+            maxValMaxPos.pos = i;
+        }
+    }
+    return maxValMaxPos;
+}
+*/
 
 #endif //Y2_NUM_ALGO_TOOLBOX_H
