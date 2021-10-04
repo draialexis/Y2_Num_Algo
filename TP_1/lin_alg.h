@@ -20,12 +20,12 @@ void solveForX(double **A, int rowsA, int colsA, double *B, double *X, int homSy
     int isTriangular = 1; // we suppose from the start that it is triangular, and we will test that claim
     int isNilRow;
     int nilRows = 0;
-    // in case we can ignore the bottom rowsA (000|0) and focus on the non-empty square subset of the matrix, thanks to Gauss
-    // so we would deal with A(p,p), B(p) and X(p). Remember that X has as many rowsA as A has colsA; we can count on that
+    // in case we can ignore the bottom rows (000|0) and focus on the non-empty square subset of the matrix, thanks to Gauss
+    // so we would deal with A(p,p), B(p) and X(p). Remember that X has as many rows as A has cols; we can count on that
     for (int i = 0; i < rowsA; ++i) {
         isNilRow = 1;
         for (int j = 0; j <= i && j < colsA; ++j) {
-            // watching out for out-of-bounds cases where we have more rowsA than colsA
+            // watching out for out-of-bounds cases where we have more rows than cols
             if (isNilRow && A[i][j] != 0) {
                 isNilRow = 0;
             }
@@ -47,8 +47,8 @@ void solveForX(double **A, int rowsA, int colsA, double *B, double *X, int homSy
                 free(X);
                 return;
             } else if ((rowsA - nilRows < colsA) && isTriangular) {
-                // if an empty rowsA turns a rectangular matrix into a square matrix, that's great (colsA == rowsA - nilrows)
-                // but if it makes it so there are less non-empty rowsA than there are unknowns, our solution needs to be adapted
+                // if an empty row turns a rectangular matrix into a square matrix, that's great (colsA == rowsA - nilrows)
+                // but if it makes it so there are less non-empty rows than there are unknowns, our solution needs to be adapted
                 // (infinity of solutions)
                 isTriangular = 0;
             }
@@ -99,8 +99,8 @@ void gaussElim(double **A, int rowsA, int colsA, double *B, double *X) {
         EMPTY_OR_NULL
         FAIL_OUT
     }
-// dealing with homogeneous systems
-    int homSys = 1;
+
+    int homSys = 1;// dealing with homogeneous systems
     for (int i = 0; i < rowsA; ++i) {
         if (B[i] > EPSILON) {
             homSys = 0;
@@ -116,7 +116,6 @@ void gaussElim(double **A, int rowsA, int colsA, double *B, double *X) {
             if (fabs(A[i][j]) < EPSILON && i == j) {
                 for (int k = i + 1; k < rowsA; ++k) {
                     printf("1_k = %d\n", k);
-//                    printf("%+.1000f < %+.1000f?\n", fabs(A[k][j]), EPSILON);
                     if (fabs(A[k][j]) > EPSILON && i != k) {
                         printf("R%d <-> R%d\n", i + 1, k + 1);
                         rowSwap(A, B, i, k, colsA);
