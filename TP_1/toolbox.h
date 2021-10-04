@@ -5,13 +5,6 @@
 #ifndef Y2_NUM_ALGO_TOOLBOX_H
 #define Y2_NUM_ALGO_TOOLBOX_H
 
-/*
-struct MaxValMaxPos {
-    double val;
-    int pos;
-} maxValMaxPos;
-*/
-
 double **mkMat(int rows, int cols);
 
 double *mkColVec(int rows);
@@ -97,7 +90,7 @@ void showMat(double **mat, int rows, int cols) {
 void showCol(double *mat, int size) {
     if (size > 0 && mat != NULL) {
         for (int i = 0; i < size; i++) {
-            printf("|%+06.1f|\n", mat[i]);
+            printf("|%+6.2f|\n", mat[i]);
         }
         printf("\n");
     } else {
@@ -164,7 +157,7 @@ void rowTransform(double *arr, int size, double *sub, double factor) {
 void rowSwap(double **matA, double *matB, int i, int k, int cols) {
     if (matA != NULL && matB != NULL && cols > 0) {
         // not checking for non-nullity of arrays inside A... *
-        // presumably the error would have been caught at malloc or in another function
+        // presumably, the error would have been caught at malloc or in another function
         // no need to multiply complexity of rowSwap by 'rows'
         if (i == k) {
             printf("swapper and swapped appear to be the same\n");
@@ -177,7 +170,7 @@ void rowSwap(double **matA, double *matB, int i, int k, int cols) {
         matA[i] = matA[k];
         matA[k] = tmpArrA;
 //    free(tmpArrA);
-// that line caused a nasty bug... it's already being freed at end of the function because it's on the heap???
+// that line caused a nasty bug... so, it's already being freed at end of the function because it's on the heap???
         double tmp;
         tmp = matB[i];
         matB[i] = matB[k];
@@ -204,18 +197,5 @@ double **transverseMat(double **mat, int rowsM, int colsM) {
         FAIL_OUT
     }
 }
-/*
-struct MaxValMaxPos maxInCol(double *arr, int size) {
-    maxValMaxPos.val = arr[0];
-    maxValMaxPos.pos = 0;
-    for (int i = 1; i < size; ++i) { //start at position 0 + 1 because we've already used position 0
-        if (maxValMaxPos.val < fabs(arr[i])) {
-            maxValMaxPos.val = fabs(arr[i]);
-            maxValMaxPos.pos = i;
-        }
-    }
-    return maxValMaxPos;
-}
-*/
 
 #endif //Y2_NUM_ALGO_TOOLBOX_H

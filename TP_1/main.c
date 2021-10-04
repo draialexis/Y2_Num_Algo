@@ -4,7 +4,7 @@
 #include <math.h>
 
 #define ROWS 5
-#define COLS 4
+#define COLS 5
 #define EPSILON 0.000000000000000222044604925031
 #define DEBUG printf("file %s; line %d\n", __FILE__, __LINE__);
 #define FAIL_OUT exit(EXIT_FAILURE);
@@ -51,25 +51,25 @@ int main() {
     srand(time(NULL));
     double **matA = mkMat(ROWS, COLS);
     fillMatA_rdm(matA, ROWS, COLS);
-    double **matA_EZ = mkMat(3, 5);
+    double **matA_EZ = mkMat(4, 3);
     fillMat_EZ(matA_EZ);
 
 
     double *matX = mkColVec(COLS);// A(m,n) * X(_n_, p) = B(m, p) // p = 1
-    double *matX_EZ = mkColVec(5);
+    double *matX_EZ = mkColVec(4);
 
 
     double *matB = mkColVec(ROWS);
     fillMatB_rdm(matB, ROWS);
-    double *matB_EZ = mkColVec(3);
+    double *matB_EZ = mkColVec(4);
     fillMatB_EZ(matB_EZ);
 
 
     printf("=======================\nGauss\n=======================\n");
-    gaussElim(matA_EZ, 3, 5, matB_EZ, matX_EZ, 1);
-    freeMat(matA_EZ, 3, 5);
-//    printf("=======================\nGauss\n=======================\n");
-//    gaussElim(matA, ROWS, COLS, matB, matX);
-//    freeMat(matA, ROWS, COLS);
+    gaussElim(matA_EZ, 4, 3, matB_EZ, matX_EZ);
+    freeMat(matA_EZ, 4, 3);
+    printf("=======================\nGauss\n=======================\n");
+    gaussElim(matA, ROWS, COLS, matB, matX);
+    freeMat(matA, ROWS, COLS);
     return 0;
 }

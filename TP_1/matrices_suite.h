@@ -22,7 +22,7 @@ void fillMatB_EZ(double *mat);
 void fillMatB_rdm(double *mat, int size) {
     if (size > 0) {
         for (int i = 0; i < size; ++i) {
-            mat[i] = rand() % 3;
+            mat[i] = rand() % 21;
         }
     } else {
         EMPTY_OR_NULL
@@ -34,7 +34,7 @@ void fillMatA_rdm(double **mat, int rows, int cols) {
     if (mat != NULL && rows > 0 && cols > 0) {
         for (int i = 0; i < rows; ++i) {
             for (int j = 0; j < cols; ++j) {
-                mat[i][j] = rand() % 3;
+                mat[i][j] = rand() % 21;
             }
         }
     } else {
@@ -113,21 +113,21 @@ void fillMat_EZ(double **mat) {
         mat[0][0] = 1.0;//1
         mat[0][1] = -2.0;//-2
         mat[0][2] = -1.0;//-1
-        mat[0][3] = -1.0;
-        mat[0][4] = 2.0;
+//        mat[0][3] = -1.0;
+//        mat[0][4] = 2.0;
         mat[1][0] = 2.0;//2
         mat[1][1] = -5.0;//-5
         mat[1][2] = -4.0;//-4
-        mat[1][3] = -1.0;
-        mat[1][4] = 5.0;
+//        mat[1][3] = -1.0;
+//        mat[1][4] = 5.0;
         mat[2][0] = -3.0;//-3
         mat[2][1] = 1.0;//1
         mat[2][2] = -5.0;//-5
-        mat[2][3] = -7.0;
-        mat[2][4] = -4.0;
-//    mat[3][0] = 3.0;
-//    mat[3][1] = -6.0;// 3 * L1
-//    mat[3][2] = -3.0;
+//        mat[2][3] = -7.0;
+//        mat[2][4] = -4.0;
+        mat[3][0] = 3.0;
+        mat[3][1] = -6.0;// 3 * L1
+        mat[3][2] = -3.0;
     } else {
         EMPTY_OR_NULL
         FAIL_OUT
@@ -139,7 +139,7 @@ void fillMatB_EZ(double *mat) {
         mat[0] = 2.0;//2
         mat[1] = 6.0;//6
         mat[2] = 1.0;//1
-//    mat[3] = 6.0;// 3 * L1
+        mat[3] = 6.0;// 3 * L1
     } else {
         EMPTY_OR_NULL
         FAIL_OUT
