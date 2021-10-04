@@ -111,31 +111,44 @@ void gaussElim(double **A, int rowsA, int colsA, double *B, double *X) {
     double factor;
     for (int i = 0; i < rowsA; ++i) {
         printf("__i = %d\n", i);
-        for (int j = 0; j <= i && j < colsA; ++j) {
-            printf("__j = %d\n", j);
-            if (fabs(A[i][j]) < EPSILON && i == j) {
-                for (int k = i + 1; k < rowsA; ++k) {
-                    printf("1_k = %d\n", k);
-                    if (fabs(A[k][j]) > EPSILON && i != k) {
-                        printf("R%d <-> R%d\n", i + 1, k + 1);
-                        rowSwap(A, B, i, k, colsA);
-                        i--; // we want to make sure to come back to where we found the A(i, j) == 0 && i == j, now that it's fixed
-                        SHOWME
-                        break;
-                    }
+        /* int maxPos = i;
+         double maxVal = fabs(A[maxPos][i]);
+
+         for (int k = i + 1; k < rowsA; ++k) {
+             printf("1_k = %d\n", k);
+             if (fabs(A[k][i]) - maxVal > EPSILON) {
+                 maxVal = fabs(A[k][i]);
+                 maxPos = k;
+             }
+         }
+
+         if (maxPos != i) {
+             printf("R%d <-> R%d\n", i + 1, maxPos + 1);
+             rowSwap(A, B, i, maxPos, colsA);
+             SHOWME
+         }*/
+        if (fabs(A[i][i]) < EPSILON) {
+            for (int k = i + 1; k < rowsA; ++k) {
+//                printf("1_k = %d\n", k);
+                if (fabs(A[k][i]) > EPSILON && i != k) {
+                    printf("R%d <-> R%d\n", i + 1, k + 1);
+                    rowSwap(A, B, i, k, colsA);
+                    i--; // we want to make sure to come back to where we found the A(i, j) == 0 && i == j, now that it's fixed
+                    SHOWME
+                    break;
                 }
-            } else {
-                for (int k = i + 1; k < rowsA; ++k) {
-                    printf("2_k = %d\n", k);
-                    factor = (A[k][j] / A[i][j]);
-                    if (fabs(A[k][j]) < EPSILON) {
-                        continue;
-                    } else {
-                        printf("R%d <- R%d - (%+06.1f * R%d)\n", k + 1, k + 1, factor, i + 1);
-                        rowTransform(A[k], colsA, A[i], factor);
-                        B[k] -= factor * B[i];
-                        SHOWME
-                    }
+            }
+        } else {
+            for (int k = i + 1; k < rowsA; ++k) {
+//                printf("2_k = %d\n", k);
+                if (fabs(A[k][i]) < EPSILON || fabs(A[i][i]) < EPSILON) {
+                    continue;
+                } else {
+                    factor = (A[k][i] / A[i][i]);
+                    printf("R%d <- R%d - (%+06.1f * R%d)\n", k + 1, k + 1, factor, i + 1);
+                    rowTransform(A[k], colsA, A[i], factor);
+                    B[k] -= factor * B[i];
+                    SHOWME
                 }
             }
         }

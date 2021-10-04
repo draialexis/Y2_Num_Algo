@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define ROWS 5
-#define COLS 5
+#define ROWS 15
+#define COLS 15
 #define EPSILON 0.000000000000000222044604925031
 #define DEBUG printf("file %s; line %d\n", __FILE__, __LINE__);
 #define FAIL_OUT exit(EXIT_FAILURE);

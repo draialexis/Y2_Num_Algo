@@ -22,7 +22,7 @@ void fillMatB_EZ(double *mat);
 void fillMatB_rdm(double *mat, int size) {
     if (size > 0) {
         for (int i = 0; i < size; ++i) {
-            mat[i] = rand() % 21;
+            mat[i] = (rand() % 101) + 50;
         }
     } else {
         EMPTY_OR_NULL
@@ -34,7 +34,7 @@ void fillMatA_rdm(double **mat, int rows, int cols) {
     if (mat != NULL && rows > 0 && cols > 0) {
         for (int i = 0; i < rows; ++i) {
             for (int j = 0; j < cols; ++j) {
-                mat[i][j] = rand() % 21;
+                mat[i][j] = (rand() % 101) + 50;
             }
         }
     } else {
