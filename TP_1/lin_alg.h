@@ -17,12 +17,13 @@ void solveForX(double **A, int rowsA, int colsA, double *B, double *X, int homSy
         EMPTY_OR_NULL
         FAIL_OUT
     }
-    int isNilRow;
+    int isNilRow = 1;
     int nilRows = 0;
     // in case we can ignore the bottom rows (000|0) and focus on the non-empty square subset of the matrix, thanks to Gauss
     // so we would deal with A(p,p), B(p) and X(p). Remember that X has as many rows as A has cols; we can count on that
-    for (int i = 0; i < rowsA; ++i) {
-        isNilRow = 1;
+    for (int i = rowsA -1 ; i >= 0; --i) {
+        // we want to check for nil rows starting from the bottom: the forward elimination from the gauss function
+        // will have placed those at the very bottom
         for (int j = 0; j < colsA; ++j) {
             if (isNilRow && fabs(A[i][j]) > EPSILON) { //any non-0s in the rows?
                 isNilRow = 0;
@@ -67,7 +68,6 @@ void solveForX(double **A, int rowsA, int colsA, double *B, double *X, int homSy
         if (homSys) {
             printf("...including the 0(%d)-vector\n", colsA);
         }
-        SHOWME
     } else {
         printf("we shouldn't be here... no solutions, right?\n");
         SHOWME
