@@ -36,14 +36,14 @@ double **mkMat(int rows, int cols) {
             MALLOC_FAIL
         }
         int hasFailed = 0;
-        for (int i = 0; i < rows; ++i) {
+        for (int i = 0; i < rows; i++) {
             mat[i] = (double *) malloc(sizeof(double) * cols);
             if (mat[i] == NULL) {
                 hasFailed = 1;
             }
         }
         if (hasFailed) {
-            for (int i = 0; i < rows; ++i) {
+            for (int i = 0; i < rows; i++) {
                 if (mat[i] != NULL) {
                     free(mat[i]);
                 }
@@ -145,7 +145,7 @@ void freeMat(double **mat, int rows, int cols) {
 
 void rowTransform(double *arr, int size, double *sub, double factor) {
     if (arr != NULL && size > 0 && sub != NULL && fabs(factor) > EPSILON) {
-        for (int j = 0; j < size; ++j) {
+        for (int j = 0; j < size; j++) {
             arr[j] = arr[j] - (factor * sub[j]);
         }
     } else {
@@ -186,8 +186,8 @@ double **transverseMat(double **mat, int rowsM, int colsM) {
         int rows = colsM;
         int cols = rowsM;
         double **res = mkMat(rows, cols);
-        for (int i = 0; i < rows; ++i) {
-            for (int j = 0; j < cols; ++j) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
                 res[i][j] = mat[j][i];
             }
         }

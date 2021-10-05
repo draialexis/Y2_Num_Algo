@@ -21,7 +21,7 @@ void fillMatB_EZ(double *mat);
 
 void fillMatB_rdm(double *mat, int size) {
     if (size > 0) {
-        for (int i = 0; i < size; ++i) {
+        for (int i = 0; i < size; i++) {
             mat[i] = (rand() % 101) + 50;
         }
     } else {
@@ -32,8 +32,8 @@ void fillMatB_rdm(double *mat, int size) {
 
 void fillMatA_rdm(double **mat, int rows, int cols) {
     if (mat != NULL && rows > 0 && cols > 0) {
-        for (int i = 0; i < rows; ++i) {
-            for (int j = 0; j < cols; ++j) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
                 mat[i][j] = (rand() % 101) + 50;
             }
         }
@@ -46,8 +46,8 @@ void fillMatA_rdm(double **mat, int rows, int cols) {
 void fillMatA_userInput(double **mat, int rows, int cols) {
     if (mat != NULL && rows > 0 && cols > 0) {
         double input = 0;
-        for (int i = 0; i < rows; ++i) {
-            for (int j = 0; j < cols; ++j) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
                 printf("A[%d][%d] <- ", i + 1, j + 1);
                 scanf("%lf", &input);
                 mat[i][j] = input;
@@ -62,7 +62,7 @@ void fillMatA_userInput(double **mat, int rows, int cols) {
 void fillMatB_userInput(double *mat, int rows) {
     if (mat != NULL && rows > 0) {
         double input = 0;
-        for (int i = 0; i < rows; ++i) {
+        for (int i = 0; i < rows; i++) {
             printf("B[%d] <- ", i + 1);
             scanf("%lf", &input);
             mat[i] = input;
@@ -75,8 +75,8 @@ void fillMatB_userInput(double *mat, int rows) {
 
 void fillBord(double **bord, int size) {
     if (bord != NULL && size > 0) {
-        for (int i = 0; i < size; ++i) {
-            for (int j = 0; j < size; ++j) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 double *crnt = *(bord + i) + j;
                 if (i == j) {
                     *crnt = 1;
@@ -97,8 +97,8 @@ void fillBord(double **bord, int size) {
 
 void fillDingDong(double **dingDong, int size) {
     if (dingDong != NULL && size > 0) {
-        for (int i = 0; i < size; ++i) {
-            for (int j = 0; j < size; ++j) {
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
                 *(*(dingDong + i) + j) = (double) 1 / (2 * (size - (i + 1) - (j + 1) + 1.5));
             }
         }

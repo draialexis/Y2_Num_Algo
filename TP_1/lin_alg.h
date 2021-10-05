@@ -21,10 +21,10 @@ void solveForX(double **A, int rowsA, int colsA, double *B, double *X, int homSy
     int nilRows = 0;
     // in case we can ignore the bottom rows (000|0) and focus on the non-empty square subset of the matrix, thanks to Gauss
     // so we would deal with A(p,p), B(p) and X(p). Remember that X has as many rows as A has cols; we can count on that
-    for (int i = rowsA -1 ; i >= 0; --i) {
+    for (int i = rowsA - 1; i >= 0; i--) {
         // we want to check for nil rows starting from the bottom: the forward elimination from the gauss function
         // will have placed those at the very bottom
-        for (int j = 0; j < colsA; ++j) {
+        for (int j = 0; j < colsA; j++) {
             if (isNilRow && fabs(A[i][j]) > EPSILON) { //any non-0s in the rows?
                 isNilRow = 0;
             }
@@ -51,9 +51,9 @@ void solveForX(double **A, int rowsA, int colsA, double *B, double *X, int homSy
             printf("...the 0(%d)-vector\n", colsA);
         } else {
             X[colsA - 1] = B[colsA - 1] / A[colsA - 1][colsA - 1];
-            for (int i = colsA - 2; i >= 0; --i) { //we've already dealt with i = colsA - 1
+            for (int i = colsA - 2; i >= 0; i--) { //we've already dealt with i = colsA - 1
                 double sum = 0;
-                for (int j = i + 1; j < colsA; ++j) {
+                for (int j = i + 1; j < colsA; j++) {
                     sum += A[i][j] * X[j];
                 }
                 X[i] = (B[i] - sum) / A[i][i];
@@ -86,7 +86,7 @@ void gaussElim(double **A, int rowsA, int colsA, double *B, double *X) {
     }
 
     int homSys = 1;// dealing with homogeneous systems
-    for (int i = 0; i < rowsA; ++i) {
+    for (int i = 0; i < rowsA; i++) {
         if (homSys && B[i] > EPSILON) {
             homSys = 0;
         }
@@ -94,7 +94,7 @@ void gaussElim(double **A, int rowsA, int colsA, double *B, double *X) {
 
     SHOWME
     double factor;
-    for (int i = 0; i < rowsA; ++i) {
+    for (int i = 0; i < rowsA; i++) {
         int maxPos = i;
         double maxVal = fabs(A[maxPos][i]);
 
@@ -113,6 +113,7 @@ void gaussElim(double **A, int rowsA, int colsA, double *B, double *X) {
 
         for (int k = i + 1; k < rowsA; ++k) {
             if (fabs(A[k][i]) < EPSILON || fabs(A[i][i]) < EPSILON) {
+                //to make sure we don't handle numbers too small, for stability
                 continue;
             } else {
                 factor = (A[k][i] / A[i][i]);
