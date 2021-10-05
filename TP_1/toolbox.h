@@ -9,6 +9,12 @@ double **mkMat(int rows, int cols);
 
 double *mkColVec(int rows);
 
+double **copyMat(double **mat, int rows, int cols);
+
+double *copyColVec(double *mat, int rows);
+
+void degradeMat(double **mat, int rows, int cols);
+
 void showMat(double **mat, int rows, int cols);
 
 void showCol(double *mat, int size);
@@ -65,6 +71,46 @@ double *mkColVec(int rows) {
             MALLOC_FAIL
         }
         return mat;
+    } else {
+        EMPTY_OR_NULL
+        FAIL_OUT
+    }
+}
+
+double **copyMat(double **mat, int rows, int cols) {
+    double **res = mkMat(rows, cols);
+    if (mat != NULL && res != NULL && rows > 0 && cols > 0) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                res[i][j] = mat[i][j];
+            }
+        }
+        return res;
+    } else {
+        EMPTY_OR_NULL
+        FAIL_OUT
+    }
+}
+
+double *copyColVec(double *mat, int rows) {
+    double *res = mkColVec(rows);
+    if (mat != NULL && res != NULL && rows > 0) {
+        for (int i = 0; i < rows; i++) {
+            res[i] = mat[i];
+        }
+        return res;
+    } else {
+        EMPTY_OR_NULL
+        FAIL_OUT
+    }
+}
+
+void degradeMat(double **mat, int rows, int cols) {
+    if (mat != NULL && rows > 0 && cols > 0) {
+        int i = rand() % rows;
+        int j = rand() % cols;
+        printf("it's happening!\nmat[%d][%d]\n", i, j);
+        mat[i][j] = mat[i][j] + 0.1;
     } else {
         EMPTY_OR_NULL
         FAIL_OUT

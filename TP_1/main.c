@@ -40,7 +40,6 @@ int main() {
     printf("sqrt(3.0 * sqrt(2 * epsilon * epsilon) * sqrt(2 * epsilon * epsilon) = %.32f\n",
            sqrt(3.0 * epsilon_equation * epsilon_equation)); // so.. epsilon * sqrt(6) ?? why?
     // are we checking that those successive operations don't deviate from the expected result?
-    //printf("%.32f\n", epsilon * sqrt(6));
     printf("epsilon is valid: ");
     // ternary conditionals are cool
     (fabs(1.0 + 2.0 - 3.0) < sqrt(3.0 * epsilon_equation * epsilon_equation)) ? printf("true\n") : printf("false\n");
@@ -49,41 +48,54 @@ int main() {
 
     printf("EPSILON = %.32f\n", pow(2, -42));
 */
-
     srand(time(NULL));
-//    double **matA = mkMat(ROWS, COLS);
-//    fillMatA_rdm(matA, ROWS, COLS);
-//    double *matB = mkColVec(ROWS);
-//    fillMatB_rdm(matB, ROWS);
-//    double *matX = mkColVec(COLS);// "COLS" because: A(m,n) * X(_n_, p) = B(m, p) // p = 1
 
-    double **matA_EZ = mkMat(3, 2);
+    double **matA = mkMat(ROWS, COLS);
+    fillMatA_rdm(matA, ROWS, COLS);
+    double *matB = mkColVec(ROWS);
+    fillMatB_rdm(matB, ROWS);
+    double *matX = mkColVec(COLS);// "COLS" because: A(m,n) * X(_n_, p) = B(m, p) // p = 1
+
+    double **matA_prime = copyMat(matA, ROWS, COLS);
+    degradeMat(matA_prime, ROWS, COLS);
+    double *matB_prime = copyColVec(matB, ROWS);
+    double *matX_prime = mkColVec(COLS);
+
+    printf("=======================\nGauss\n=======================\n");
+    gaussElim(matA, ROWS, COLS, matB, matX, 0);
+    freeMat(matA, ROWS, COLS);
+    free(matB);
+    free(matX);
+
+    printf("=======================\nGauss\n=======================\n");
+    gaussElim(matA_prime, ROWS, COLS, matB_prime, matX_prime, 0);
+    freeMat(matA_prime, ROWS, COLS);
+    free(matB_prime);
+    free(matX_prime);
+
+    /*double **matA_EZ = mkMat(3, 2);
     fillMat_EZ(matA_EZ);
     double *matB_EZ = mkColVec(3);
     fillMatB_EZ(matB_EZ);
     double *matX_EZ = mkColVec(3);
 
+    printf("=======================\nGauss\n=======================\n");
+    gaussElim(matA_EZ, 3, 2, matB_EZ, matX_EZ, 0);
+    freeMat(matA_EZ, 3, 2);
+    free(matB_EZ);
+    free(matX_EZ);*/
 
-    double **matASparse = mkMat(ROWS, COLS);
+    /*double **matASparse = mkMat(ROWS, COLS);
     fillSparseMat(matASparse, ROWS, COLS);
     double *matBSparse = mkColVec(ROWS);
     fillMatB_rdm(matBSparse, ROWS);
     double *matXSparse = mkColVec(COLS);
 
     printf("=======================\nGauss\n=======================\n");
-    gaussElim(matA_EZ, 3, 2, matB_EZ, matX_EZ, 0);
-    freeMat(matA_EZ, 3, 2);
-//    free(matB_EZ);
-//    free(matX_EZ);
-    printf("=======================\nGauss\n=======================\n");
     gaussElim(matASparse, ROWS, COLS, matBSparse, matXSparse, 0);
     freeMat(matASparse, ROWS, COLS);
     free(matBSparse);
-    free(matXSparse);
-//    printf("=======================\nGauss\n=======================\n");
-//    gaussElim(matA, ROWS, COLS, matB, matX);
-//    freeMat(matA, ROWS, COLS);
-//    free(matB);
-//    free(matX);
+    free(matXSparse);*/
+
     return 0;
 }
