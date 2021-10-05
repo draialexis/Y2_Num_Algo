@@ -50,8 +50,10 @@ void fillMatA_userInput(double **mat, int rows, int cols) {
         double input = 0;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                printf("A[%d][%d] <- ", i + 1, j + 1);
+                printf("A(%d, %d) <- ", i + 1, j + 1);
                 scanf("%lf", &input);
+                getchar();
+                fflush(stdin);
                 mat[i][j] = input;
             }
         }
@@ -65,8 +67,10 @@ void fillMatB_userInput(double *mat, int rows) {
     if (mat != NULL && rows > 0) {
         double input = 0;
         for (int i = 0; i < rows; i++) {
-            printf("B[%d] <- ", i + 1);
+            printf("B(%d) <- ", i + 1);
             scanf("%lf", &input);
+            getchar();
+            fflush(stdin);
             mat[i] = input;
         }
     } else {
@@ -181,11 +185,9 @@ void fillMatB_EZ(double *mat) {
 void doB(double *matB, int size, char choice) {
     switch (choice) {
         case 'a':
-            DEBUG
             fillMatB_rdm(matB, size);
             break;
         case 'C':
-            DEBUG
             fillMatB_userInput(matB, size);
             break;
         default:
@@ -199,23 +201,18 @@ void doA(double **matA, int rows, int cols, char choice, int isSquare) {
     if (isSquare) {
         switch (choice) {
             case 'b':
-                DEBUG
                 fillBord(matA, rows);
                 break;
             case 'd':
-                DEBUG
                 fillDingDong(matA, rows);
                 break;
             case 'a' :
-                DEBUG
                 fillMatA_rdm(matA, rows, cols);
                 break;
             case 'c' :
-                DEBUG
                 fillSparseMat(matA, rows, cols);
                 break;
             case 'C' :
-                DEBUG
                 fillMatA_userInput(matA, rows, cols);
                 break;
             default:
@@ -227,15 +224,12 @@ void doA(double **matA, int rows, int cols, char choice, int isSquare) {
     } else {
         switch (choice) {
             case 'a' :
-                DEBUG
                 fillMatA_rdm(matA, rows, cols);
                 break;
             case 'c' :
-                DEBUG
                 fillSparseMat(matA, rows, cols);
                 break;
             case 'C' :
-                DEBUG
                 fillMatA_userInput(matA, rows, cols);
                 break;
             default:

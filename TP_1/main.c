@@ -103,36 +103,44 @@ int main() {
 
     char go = '0';
     int first = 1;
-    while (go != 's') {
+    while (go != 'q') {
+
+        char str[30];
+
         if (first) {
             printf("bienvenue dans ce solveur de systemes d'equations lineaires\n");
             first = 0;
         }
-        printf("entrez le caractere 's' pour arreter,\nou autre pour continuer :\n>");
+        printf("entrez le caractere 'q' pour arreter,\nou autre pour continuer :\n>");
 
-        scanf("%c", &go);
+        go = (char) getchar();
         getchar();
         fflush(stdin);
+
+        if (go == 'q') {
+            break;
+        }
 
         char method = '0';
         printf("choisissez votre methode :"
                "\n* 'g' : Gauss"
                "\n* 'j' : Jacobi"
                "\n>");
-        scanf("%c", &method);
+        method = (char) getchar();
         getchar();
         fflush(stdin);
 
-        int max_i_input = 0;
-        int epsilon_input = 0;
+        int max_i_input;
+        int epsilon_input;
         if (method == 'j') {
             printf("choisissez le nombre max d'iterations, puis epsilon :\nmax_i\n>");
-            scanf("%d", &max_i_input);
-            getchar();
+            scanf("%s", str);
+            max_i_input = (int) strtol(str, NULL, 10);
             fflush(stdin);
+
             printf("epsilon\n>");
-            scanf("%d", &epsilon_input);
-            getchar();
+            scanf("%s", str);
+            epsilon_input = (int) strtol(str, NULL, 10);
             fflush(stdin);
         }
 
@@ -151,26 +159,28 @@ int main() {
                "\n* 'c' : creuse"
                "\n* 'C' : customisee (input via console)"
                "\n>");
-        scanf("%c", &matA_input);
+        matA_input = (char) getchar();
         getchar();
         fflush(stdin);
 
         int size_input = 0;
         int rows_input = 0;
         int cols_input = 0;
+
         if (matA_input == 'a' || matA_input == 'c' || matA_input == 'C') {
             printf("choisissez le nombre de rangees, puis de colonnes :\nrangees\n>");
-            scanf("%d", &rows_input);
-            getchar();
+            scanf("%s", str);
+            rows_input = (int) strtol(str, NULL, 10);
             fflush(stdin);
             printf("colonnes\n>");
-            scanf("%d", &cols_input);
-            getchar();
+            scanf("%s", str);
+            cols_input = (int) strtol(str, NULL, 10);
             fflush(stdin);
+
         } else {
-            printf("vous avez choisi une matrice carree ; choisissez sa taille :\n>");
-            scanf("%d", &size_input);
-            getchar();
+            printf("la matrice choisie est carree ; choisissez sa taille :\n>");
+            scanf("%s", str);
+            size_input = (int) strtol(str, NULL, 10);
             fflush(stdin);
         }
 
@@ -189,7 +199,7 @@ int main() {
                "\n* 'a' : \"aleatoire\" (utilise '(rand() mod 101) + 50')"
                "\n* 'C' : customisee (input via console)"
                "\n>");
-        scanf("%c", &matB_input);
+        matB_input = (char) getchar();
         getchar();
         fflush(stdin);
 
