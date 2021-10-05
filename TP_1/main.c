@@ -3,16 +3,16 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define ROWS 20
-#define COLS 21
+#define ROWS 15
+#define COLS 15
 #define EPSILON 0.00000000000022737367544323206000
 #define DEBUG printf("file %s; line %d\n", __FILE__, __LINE__);
 #define FAIL_OUT exit(EXIT_FAILURE);
 #define MALLOC_FAIL printf("!_malloc failed_!\n"); DEBUG FAIL_OUT
 #define EMPTY_OR_NULL printf("this data structure doesn't have a positive integer value as its size, or the pointer to it isn't valid\n"); DEBUG;
 
-#include "matrices_suite.h"
 #include "toolbox.h"
+#include "matrices_suite.h"
 #include "lin_alg.h"
 
 int main() {
@@ -51,27 +51,39 @@ int main() {
 */
 
     srand(time(NULL));
-    double **matA = mkMat(ROWS, COLS);
-    fillMatA_rdm(matA, ROWS, COLS);
-    double **matA_EZ = mkMat(4, 3);
+//    double **matA = mkMat(ROWS, COLS);
+//    fillMatA_rdm(matA, ROWS, COLS);
+//    double *matB = mkColVec(ROWS);
+//    fillMatB_rdm(matB, ROWS);
+//    double *matX = mkColVec(COLS);// "COLS" because: A(m,n) * X(_n_, p) = B(m, p) // p = 1
+
+    double **matA_EZ = mkMat(3, 2);
     fillMat_EZ(matA_EZ);
-
-
-    double *matX = mkColVec(COLS);// A(m,n) * X(_n_, p) = B(m, p) // p = 1
-    double *matX_EZ = mkColVec(4);
-
-
-    double *matB = mkColVec(ROWS);
-    fillMatB_rdm(matB, ROWS);
-    double *matB_EZ = mkColVec(4);
+    double *matB_EZ = mkColVec(3);
     fillMatB_EZ(matB_EZ);
+    double *matX_EZ = mkColVec(3);
 
 
+    double **matASparse = mkMat(ROWS, COLS);
+    fillSparseMat(matASparse, ROWS, COLS);
+    double *matBSparse = mkColVec(ROWS);
+    fillMatB_rdm(matBSparse, ROWS);
+    double *matXSparse = mkColVec(COLS);
+
     printf("=======================\nGauss\n=======================\n");
-    gaussElim(matA_EZ, 4, 3, matB_EZ, matX_EZ);
-    freeMat(matA_EZ, 4, 3);
+    gaussElim(matA_EZ, 3, 2, matB_EZ, matX_EZ, 0);
+    freeMat(matA_EZ, 3, 2);
+//    free(matB_EZ);
+//    free(matX_EZ);
     printf("=======================\nGauss\n=======================\n");
-    gaussElim(matA, ROWS, COLS, matB, matX);
-    freeMat(matA, ROWS, COLS);
+    gaussElim(matASparse, ROWS, COLS, matBSparse, matXSparse, 0);
+    freeMat(matASparse, ROWS, COLS);
+    free(matBSparse);
+    free(matXSparse);
+//    printf("=======================\nGauss\n=======================\n");
+//    gaussElim(matA, ROWS, COLS, matB, matX);
+//    freeMat(matA, ROWS, COLS);
+//    free(matB);
+//    free(matX);
     return 0;
 }

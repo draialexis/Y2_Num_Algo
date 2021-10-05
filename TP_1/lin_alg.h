@@ -9,7 +9,14 @@
 
 void solveForX(double **A, int rowsA, int colsA, double *B, double *X, int homSys);
 
-void gaussElim(double **A, int rowsA, int colsA, double *B, double *X);
+void gaussElim(double **A, int rowsA, int colsA, double *B, double *X, int isJacobiHelper);
+
+void jacobiMethod(double **A, int rowsA, int colsA, double *B, double *X, int maxIteration, double error);
+
+void jacobiMethod(double **A, int rowsA, int colsA, double *B, double *X, int maxIteration, double error) {
+    //TODO square matrix ? if yes, go on; if not, see if elimination can turn it into a square matrix
+    //TODO strictly diagnally dominant? if not, exit
+}
 
 void solveForX(double **A, int rowsA, int colsA, double *B, double *X, int homSys) {
     if (A == NULL || B == NULL || X == NULL || rowsA <= 0 || colsA <= 0) {
@@ -37,7 +44,6 @@ void solveForX(double **A, int rowsA, int colsA, double *B, double *X, int homSy
                 if (homSys) {
                     printf("...except the 0(%d)-vector\n", colsA);
                 }
-                free(X);
                 return;
             }
         }
@@ -61,8 +67,7 @@ void solveForX(double **A, int rowsA, int colsA, double *B, double *X, int homSy
             printf("X = \n");
             showCol(X, colsA);
         }
-        free(X);
-    } else if (rowsA - nilRows < colsA) { // deal with infinite amount of solutions
+    } else if (rowsA - nilRows < colsA) { // "deal" with infinite amount of solutions
         // could probably just be phrased as "else"
         printf("A * X = B has an infinite amount of solutions\n");
         if (homSys) {
@@ -76,7 +81,7 @@ void solveForX(double **A, int rowsA, int colsA, double *B, double *X, int homSy
 }
 
 // NB: this destructive function changes the matrices as a side-effect
-void gaussElim(double **A, int rowsA, int colsA, double *B, double *X) {
+void gaussElim(double **A, int rowsA, int colsA, double *B, double *X, int isJacobiHelper) {
     if (A == NULL || rowsA < 2 || colsA < 2 || B == NULL || X == NULL) {
         if (rowsA < 2 || colsA < 2) {
             printf("we will not deal with a matA(m, n) if m or n is below 2\n");
@@ -125,7 +130,11 @@ void gaussElim(double **A, int rowsA, int colsA, double *B, double *X) {
         }
     }
     printf("solving...\n");
-    solveForX(A, rowsA, colsA, B, X, homSys);
+    if(!isJacobiHelper){
+        solveForX(A, rowsA, colsA, B, X, homSys);
+    } else {
+        jacobiMethod(A, rowsA, colsA, B, X, 20, 0.001); //arbitrary values for testing purposes
+    }
 }
 
 #endif //Y2_NUM_ALGO_LIN_ALG_H

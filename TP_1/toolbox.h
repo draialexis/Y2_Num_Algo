@@ -27,7 +27,7 @@ void rowSwap(double **matA, double *matB, int i, int k, int cols);
 
 double **transverseMat(double **mat, int rowsM, int colsM);
 
-struct MaxValMaxPos maxInCol(double *col, int n);
+void shuffleMat(double **mat, int rows, int cols);
 
 double **mkMat(int rows, int cols) {
     if (rows > 0 && cols > 0) {
@@ -90,7 +90,7 @@ void showMat(double **mat, int rows, int cols) {
 void showCol(double *mat, int size) {
     if (size > 0 && mat != NULL) {
         for (int i = 0; i < size; i++) {
-            printf("|%+6.2f|\n", mat[i]);
+            printf("|%+8.2f|\n", mat[i]);
         }
         printf("\n");
     } else {
@@ -164,14 +164,12 @@ void rowSwap(double **matA, double *matB, int i, int k, int cols) {
             DEBUG
             FAIL_OUT
         }
-        double *tmpArrA = mkColVec(cols);
-        fillMatB_rdm(tmpArrA, cols);
-        tmpArrA = matA[i];
-        matA[i] = matA[k];
-        matA[k] = tmpArrA;
-//    free(tmpArrA);
-// that line caused a nasty bug... so, it's already being freed at end of the function because it's on the heap???
         double tmp;
+        for (int j = 0; j < cols; j++) {
+            tmp = matA[i][j];
+            matA[i][j] = matA[k][j];
+            matA[k][j] = tmp;
+        }
         tmp = matB[i];
         matB[i] = matB[k];
         matB[k] = tmp;
@@ -192,6 +190,22 @@ double **transverseMat(double **mat, int rowsM, int colsM) {
             }
         }
         return res;
+    } else {
+        EMPTY_OR_NULL
+        FAIL_OUT
+    }
+}
+
+void shuffleMat(double **mat, int rows, int cols) {
+    double tmp = 0.0;
+    if (mat != NULL && rows > 0 && cols > 0) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                tmp = mat[i][j];
+                mat[i][j] = mat[rand() % rows][rand() % cols];
+                mat[rand() % rows][rand() % cols] = tmp;
+            }
+        }
     } else {
         EMPTY_OR_NULL
         FAIL_OUT
