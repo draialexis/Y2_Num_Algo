@@ -39,10 +39,9 @@ void solveForX(double **A, int rowsA, int colsA, double *B, double *X, int homSy
         if (isNilRow) {
             nilRows++;
             if (fabs(B[i]) > EPSILON) { // deal with absence of solution (an empty i row corresponding to a non-0 B(i))
-                SHOWME
-                printf("A * X = B has no solution (L%d: 0.0 * x%d = %.1f)\n", i + 1, i + 1, B[i]);
+                printf("A * X = B n'a pas de solution (L%d: 0.0 * x%d = %.1f)\n", i + 1, i + 1, B[i]);
                 if (homSys) {
-                    printf("...except the 0(%d)-vector\n", colsA);
+                    printf("...a part le vecteur 0(%d)\n", colsA);
                 }
                 return;
             }
@@ -50,11 +49,10 @@ void solveForX(double **A, int rowsA, int colsA, double *B, double *X, int homSy
     }
 
     if (rowsA - nilRows == colsA) { // deal with unique solution
-        SHOWME
-        printf("A * X = B has one solution\n");
+        printf("A * X = B a une solution\n");
 
         if (homSys) {
-            printf("...the 0(%d)-vector\n", colsA);
+            printf("...le vecteur 0(%d)\n", colsA);
         } else {
             X[colsA - 1] = B[colsA - 1] / A[colsA - 1][colsA - 1];
             for (int i = colsA - 2; i >= 0; i--) { //we've already dealt with i = colsA - 1
@@ -69,13 +67,12 @@ void solveForX(double **A, int rowsA, int colsA, double *B, double *X, int homSy
         }
     } else if (rowsA - nilRows < colsA) { // "deal" with infinite amount of solutions
         // could probably just be phrased as "else"
-        printf("A * X = B has an infinite amount of solutions\n");
+        printf("A * X = B a une infinité de solutions\n");
         if (homSys) {
-            printf("...including the 0(%d)-vector\n", colsA);
+            printf("...y compris le vecteur 0(%d)\n", colsA);
         }
     } else {
         printf("we shouldn't be here... no solutions, right?\n");
-        SHOWME
         DEBUG
     }
 }
@@ -111,7 +108,7 @@ void gaussElim(double **A, int rowsA, int colsA, double *B, double *X, int isJac
         }
 
         if (maxPos != i) {
-            printf("R%d <-> R%d\n", i + 1, maxPos + 1);
+            printf("L%d <-> L%d\n", i + 1, maxPos + 1);
             rowSwap(A, B, i, maxPos, colsA);
             SHOWME
         }
@@ -122,14 +119,13 @@ void gaussElim(double **A, int rowsA, int colsA, double *B, double *X, int isJac
                 continue;
             } else {
                 factor = (A[k][i] / A[i][i]);
-                printf("R%d <- R%d - (%+06.1f * R%d)\n", k + 1, k + 1, factor, i + 1);
+                printf("L%d <- L%d - (%+06.1f * L%d)\n", k + 1, k + 1, factor, i + 1);
                 rowTransform(A[k], colsA, A[i], factor);
                 B[k] -= factor * B[i];
                 SHOWME
             }
         }
     }
-    printf("solving...\n");
     if(!isJacobiHelper){
         solveForX(A, rowsA, colsA, B, X, homSys);
     } else {

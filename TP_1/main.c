@@ -50,6 +50,7 @@ int main() {
 */
     srand(time(NULL));
 
+    /*
     double **matA = mkMat(ROWS, COLS);
     fillMatA_rdm(matA, ROWS, COLS);
     double *matB = mkColVec(ROWS);
@@ -73,7 +74,7 @@ int main() {
     free(matB_prime);
     free(matX_prime);
 
-    /*double **matA_EZ = mkMat(3, 2);
+    double **matA_EZ = mkMat(3, 2);
     fillMat_EZ(matA_EZ);
     double *matB_EZ = mkColVec(3);
     fillMatB_EZ(matB_EZ);
@@ -83,9 +84,9 @@ int main() {
     gaussElim(matA_EZ, 3, 2, matB_EZ, matX_EZ, 0);
     freeMat(matA_EZ, 3, 2);
     free(matB_EZ);
-    free(matX_EZ);*/
+    free(matX_EZ);
 
-    /*double **matASparse = mkMat(ROWS, COLS);
+    double **matASparse = mkMat(ROWS, COLS);
     fillSparseMat(matASparse, ROWS, COLS);
     double *matBSparse = mkColVec(ROWS);
     fillMatB_rdm(matBSparse, ROWS);
@@ -95,7 +96,133 @@ int main() {
     gaussElim(matASparse, ROWS, COLS, matBSparse, matXSparse, 0);
     freeMat(matASparse, ROWS, COLS);
     free(matBSparse);
-    free(matXSparse);*/
+    free(matXSparse);
+    */
 
+
+
+    char go = '0';
+    int first = 1;
+    while (go != 's') {
+        if (first) {
+            printf("bienvenue dans ce solveur de systemes d'equations lineaires\n");
+            first = 0;
+        }
+        printf("entrez le caractere 's' pour arreter,\nou autre pour continuer :\n>");
+
+        scanf("%c", &go);
+        getchar();
+        fflush(stdin);
+
+        char method = '0';
+        printf("choisissez votre methode :"
+               "\n* 'g' : Gauss"
+               "\n* 'j' : Jacobi"
+               "\n>");
+        scanf("%c", &method);
+        getchar();
+        fflush(stdin);
+
+        int max_i_input = 0;
+        int epsilon_input = 0;
+        if (method == 'j') {
+            printf("choisissez le nombre max d'iterations, puis epsilon :\nmax_i\n>");
+            scanf("%d", &max_i_input);
+            getchar();
+            fflush(stdin);
+            printf("epsilon\n>");
+            scanf("%d", &epsilon_input);
+            getchar();
+            fflush(stdin);
+        }
+
+        char matA_input = '0';
+        printf("choisissez votre matrice A :"
+               "\n* 'b' : Bord"
+               "\n* 'd' : Ding Dong"
+               //               "\n* 'f' : Franc"
+               //               "\n* 'h' : Hilbert -"
+               //               "\n* 'H' : Hilbert +"
+               //               "\n* 'k' : KMS"
+               //               "\n* 'l' : Lehmer"
+               //               "\n* 'L' : Lotkin"
+               //               "\n* 'm' : Moler"
+               "\n* 'a' : \"aleatoire\" (utilise '(rand() mod 101) + 50')"
+               "\n* 'c' : creuse"
+               "\n* 'C' : customisee (input via console)"
+               "\n>");
+        scanf("%c", &matA_input);
+        getchar();
+        fflush(stdin);
+
+        int size_input = 0;
+        int rows_input = 0;
+        int cols_input = 0;
+        if (matA_input == 'a' || matA_input == 'c' || matA_input == 'C') {
+            printf("choisissez le nombre de rangees, puis de colonnes :\nrangees\n>");
+            scanf("%d", &rows_input);
+            getchar();
+            fflush(stdin);
+            printf("colonnes\n>");
+            scanf("%d", &cols_input);
+            getchar();
+            fflush(stdin);
+        } else {
+            printf("vous avez choisi une matrice carree ; choisissez sa taille :\n>");
+            scanf("%d", &size_input);
+            getchar();
+            fflush(stdin);
+        }
+
+//        char degrade = '0';
+//        printf("voulez-vous comparer avec une matrice A perturbee (par '0.1', sur un coeff) ?"
+//               "\n* 'o' : oui"
+//               "\n* 'n' : non"
+//               "\n>");
+//        scanf("%c", &degrade);
+//        getchar();
+//        fflush(stdin);
+//TODO maybe, if there's time?
+
+        char matB_input = '0';
+        printf("choisissez votre matrice B :"
+               "\n* 'a' : \"aleatoire\" (utilise '(rand() mod 101) + 50')"
+               "\n* 'C' : customisee (input via console)"
+               "\n>");
+        scanf("%c", &matB_input);
+        getchar();
+        fflush(stdin);
+
+        int isSquare = 0;
+        if (!(rows_input && cols_input)) {
+            rows_input = size_input;
+            cols_input = size_input;
+            isSquare = 1;
+        }
+
+        double **matA_live = mkMat(rows_input, cols_input);
+        doA(matA_live, rows_input, cols_input, matA_input, isSquare);
+        double *matB_live = mkColVec(rows_input);
+        doB(matB_live, rows_input, matB_input);
+        double *matX_live = mkColVec(cols_input);
+
+        switch (method) {
+            case 'g' :
+                DEBUG
+                gaussElim(matA_live, rows_input, cols_input, matB_live, matX_live, 0);
+                break;
+            case 'j' :
+                DEBUG
+                jacobiMethod(matA_live, rows_input, cols_input, matB_live, matX_live, max_i_input, epsilon_input);
+                break;
+            default :
+                printf("votre choix de methode n'a pas ete compris. methode de Gauss.\n");
+                gaussElim(matA_live, rows_input, cols_input, matB_live, matX_live, 0);
+                break;
+        }
+        freeMat(matA_live, rows_input, cols_input);
+        free(matB_live);
+        free(matX_live);
+    }
     return 0;
 }

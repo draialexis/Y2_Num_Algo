@@ -162,6 +162,7 @@ void fillMat_EZ(double **mat) {
     }
 }
 
+//TODO add validation, add prototypes
 void fillMatB_EZ(double *mat) {
     if (mat != NULL) {
         mat[0] = 11.0;
@@ -174,6 +175,74 @@ void fillMatB_EZ(double *mat) {
     } else {
         EMPTY_OR_NULL
         FAIL_OUT
+    }
+}
+
+void doB(double *matB, int size, char choice) {
+    switch (choice) {
+        case 'a':
+            DEBUG
+            fillMatB_rdm(matB, size);
+            break;
+        case 'C':
+            DEBUG
+            fillMatB_userInput(matB, size);
+            break;
+        default:
+            printf("votre choix de type de matrice B n'a pas ete compris. mode aleatoire.\n");
+            fillMatB_rdm(matB, size);
+            break;
+    }
+}
+
+void doA(double **matA, int rows, int cols, char choice, int isSquare) {
+    if (isSquare) {
+        switch (choice) {
+            case 'b':
+                DEBUG
+                fillBord(matA, rows);
+                break;
+            case 'd':
+                DEBUG
+                fillDingDong(matA, rows);
+                break;
+            case 'a' :
+                DEBUG
+                fillMatA_rdm(matA, rows, cols);
+                break;
+            case 'c' :
+                DEBUG
+                fillSparseMat(matA, rows, cols);
+                break;
+            case 'C' :
+                DEBUG
+                fillMatA_userInput(matA, rows, cols);
+                break;
+            default:
+                printf("votre choix de type de matrice A n'a pas ete compris. mode aleatoire.\n");
+                fillMatA_rdm(matA, rows, cols);
+                break;
+        }
+        //TODO Etc.
+    } else {
+        switch (choice) {
+            case 'a' :
+                DEBUG
+                fillMatA_rdm(matA, rows, cols);
+                break;
+            case 'c' :
+                DEBUG
+                fillSparseMat(matA, rows, cols);
+                break;
+            case 'C' :
+                DEBUG
+                fillMatA_userInput(matA, rows, cols);
+                break;
+            default:
+                printf("votre choix de type de matrice A n'a pas ete compris. mode aleatoire.\n");
+                fillMatA_rdm(matA, rows, cols);
+                break;
+        }
     }
 }
 
