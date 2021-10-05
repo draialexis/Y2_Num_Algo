@@ -43,10 +43,6 @@ void solveForX(double **A, int rowsA, int colsA, double *B, double *X, int homSy
     }
 
     if (rowsA - nilRows == colsA) { // deal with unique solution
-//        int n = colsA - 1;
-//        printf("X[%d] = B[%d] / A[%d][%d]\n", n, n, n, n);
-//        printf("X[%d] = %f / %f = %f\n", n, B[n], A[n][n], B[n] / A[n][n]);
-//        printf("here: A[%d][%d]\n", n, n);
         SHOWME
         printf("A * X = B has one solution\n");
 
@@ -65,7 +61,8 @@ void solveForX(double **A, int rowsA, int colsA, double *B, double *X, int homSy
             showCol(X, colsA);
         }
         free(X);
-    } else if (rowsA - nilRows < colsA) {// could probably just be phrased as "else"
+    } else if (rowsA - nilRows < colsA) { // deal with infinite amount of solutions
+        // could probably just be phrased as "else"
         printf("A * X = B has an infinite amount of solutions\n");
         if (homSys) {
             printf("...including the 0(%d)-vector\n", colsA);
@@ -98,12 +95,10 @@ void gaussElim(double **A, int rowsA, int colsA, double *B, double *X) {
     SHOWME
     double factor;
     for (int i = 0; i < rowsA; ++i) {
-        printf("__i = %d\n", i);
         int maxPos = i;
         double maxVal = fabs(A[maxPos][i]);
 
         for (int k = i + 1; k < rowsA; ++k) {
-            printf("1_k = %d\n", k);
             if (fabs(A[k][i]) - maxVal > EPSILON) {
                 maxVal = fabs(A[k][i]);
                 maxPos = k;
@@ -115,20 +110,8 @@ void gaussElim(double **A, int rowsA, int colsA, double *B, double *X) {
             rowSwap(A, B, i, maxPos, colsA);
             SHOWME
         }
-        /*if (fabs(A[i][i]) < EPSILON) {
-            for (int k = i + 1; k < rowsA; ++k) {
-//                printf("1_k = %d\n", k);
-                if (fabs(A[k][i]) > EPSILON && i != k) {
-                    printf("R%d <-> R%d\n", i + 1, k + 1);
-                    rowSwap(A, B, i, k, colsA);
-                    i--; // we want to make sure to come back to where we found the A(i, j) == 0 && i == j, now that it's fixed
-                    SHOWME
-                    break;
-                }
-            }
-        } *//*else {*/
+
         for (int k = i + 1; k < rowsA; ++k) {
-//                printf("2_k = %d\n", k);
             if (fabs(A[k][i]) < EPSILON || fabs(A[i][i]) < EPSILON) {
                 continue;
             } else {
@@ -140,7 +123,6 @@ void gaussElim(double **A, int rowsA, int colsA, double *B, double *X) {
             }
         }
     }
-//    }
     printf("solving...\n");
     solveForX(A, rowsA, colsA, B, X, homSys);
 }
