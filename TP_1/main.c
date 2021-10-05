@@ -3,9 +3,9 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define ROWS 15
+#define ROWS 16
 #define COLS 15
-#define EPSILON 0.000000000000000222044604925031
+#define EPSILON 0.00000000000022737367544323206000
 #define DEBUG printf("file %s; line %d\n", __FILE__, __LINE__);
 #define FAIL_OUT exit(EXIT_FAILURE);
 #define MALLOC_FAIL printf("!_malloc failed_!\n"); DEBUG FAIL_OUT
@@ -24,16 +24,15 @@ int main() {
 
     //calculating machine epsilon
     double epsilon = 1.0;
-    int count = 0;
+    int count = 1;
     while (1.0 + (epsilon / 2.0) > 1.0) {
         // will be false as epsilon tends toward 0 ; will be interpreted as false after a few dozen iterations
         // on my desktop, 1.0 + 0.000000000000000444089209850063 / 2 > 1.0 is true
-        // which means it detects doubles as close to 0 as 0.000000000000000222044604925031 (2^-52)
+        // which means it detects doubles as close to 0 as 0.000000000000000222044604925031 (2^-51)
         epsilon = epsilon / 2.0;
-        printf("epsilon = %.32f\n", epsilon);
+        printf("2^-%d = %.32f\n", count, epsilon);
         count++;
     }
-    printf("epsilon = 2^-%d\n", count);
 
     //don't know why we do this... found that example in C# and C++ on https://newbedev.com/how-to-choose-epsilon-value-for-floating-point
     double epsilon_equation = sqrt(2 * epsilon * epsilon);
@@ -45,8 +44,11 @@ int main() {
     printf("epsilon is valid: ");
     // ternary conditionals are cool
     (fabs(1.0 + 2.0 - 3.0) < sqrt(3.0 * epsilon_equation * epsilon_equation)) ? printf("true\n") : printf("false\n");
-*/
 
+    //it turns out that my epsilon is too high at 2^-52, going for 2^-42 seems to work though
+
+    printf("EPSILON = %.32f\n", pow(2, -42));
+*/
 
     srand(time(NULL));
     double **matA = mkMat(ROWS, COLS);

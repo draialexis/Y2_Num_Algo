@@ -103,7 +103,7 @@ void showRow(double *mat, int size) {
     if (size > 0 && mat != NULL) {
         printf("[");
         for (int i = 0; i < size; i++) {
-            printf("%+06.1f ", mat[i]);
+            printf("%+20.20f ", mat[i]);
         }
         printf("]\n\n");
     } else {
