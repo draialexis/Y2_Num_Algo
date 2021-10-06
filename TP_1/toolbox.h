@@ -39,6 +39,8 @@ int isHomSys(double *matB, int size);
 
 int nilRows(double **matA, int rowsA, int colsA, double *matB, int isHomSys);
 
+int isSDD(double **matA, int rowsA, int colsA);
+
 double **mkMat(int rows, int cols) {
     if (rows > 0 && cols > 0) {
         double **mat = (double **) malloc(sizeof(double *) * rows);
@@ -305,6 +307,10 @@ int nilRows(double **matA, int rowsA, int colsA, double *matB, int isHomSys) {
         EMPTY_OR_NULL
         FAIL_OUT
     }
+}
+
+int isSDD(double **matA, int rowsA, int colsA) {
+    return 0;
 }
 
 #endif //Y2_NUM_ALGO_TOOLBOX_H

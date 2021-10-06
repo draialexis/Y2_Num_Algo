@@ -34,7 +34,7 @@ void jacobiMethod(double **A, int rowsA, int colsA, double *B, double *X, int ma
         return;
     }
     if(rowsA - nilRowsCount == colsA) {// the matrix is square after all, let's go
-        int strictDiagDom = isSDD(double **matA, int rowsA, int colsA, )
+        int strictDiagDom = isSDD(double **matA, int rowsA, int colsA);
 
 
     }
