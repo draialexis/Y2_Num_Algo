@@ -39,7 +39,7 @@ int isHomSys(double *matB, int size);
 
 int nilRows(double **matA, int rowsA, int colsA, double *matB, int isHomSys);
 
-int isSDD(double **matA, int rowsA, int colsA);
+int isSDD(double **matA, int size);
 
 double **mkMat(int rows, int cols) {
     if (rows > 0 && cols > 0) {
@@ -265,7 +265,7 @@ void shuffleMat(double **mat, int rows, int cols) {
 }
 
 int isHomSys(double *matB, int size) {
-    if(matB != NULL && size > 0) {
+    if (matB != NULL && size > 0) {
         int res = 1;// dealing with homogeneous systems
         for (int i = 0; i < size; i++) {
             if (res && matB[i] > EPSILON) {
@@ -280,7 +280,7 @@ int isHomSys(double *matB, int size) {
 }
 
 int nilRows(double **matA, int rowsA, int colsA, double *matB, int isHomSys) {
-    if(matA != NULL && rowsA > 0 && colsA > 0 && matB != NULL) {
+    if (matA != NULL && rowsA > 0 && colsA > 0 && matB != NULL) {
         int isNilRow = 1;
         int nilRows = 0;
         // in case we can ignore the bottom rows (000|0) and focus on the non-empty square subset of the matrix, thanks to Gauss
@@ -309,8 +309,21 @@ int nilRows(double **matA, int rowsA, int colsA, double *matB, int isHomSys) {
     }
 }
 
-int isSDD(double **matA, int rowsA, int colsA) {
-    return 0;
+int isSDD(double **matA, int size) {
+    double diag = 0.0;
+    double undiag = 0.0;
+    for (int i = 0; i < size; i++) {
+        diag = fabs(matA[i][i]);
+        for (int j = 0; j < size; j++) {
+            if (i != j) {
+                undiag += fabs(matA[i][j]);
+            }
+        }
+        if (diag <= undiag) {
+            return 0;
+        }
+    }
+    return 1;
 }
 
 #endif //Y2_NUM_ALGO_TOOLBOX_H

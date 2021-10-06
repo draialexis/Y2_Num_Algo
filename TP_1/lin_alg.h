@@ -14,7 +14,7 @@ void gaussElim(double **A, int rowsA, int colsA, double *B, double *X, int isJac
 void jacobiMethod(double **A, int rowsA, int colsA, double *B, double *X, int maxIteration, double error);
 
 void jacobiMethod(double **A, int rowsA, int colsA, double *B, double *X, int maxIteration, double error) {
-    if(A == NULL || rowsA < 2 || colsA < 2 || B == NULL || X == NULL || maxIteration < 1 || error < EPSILON){
+    if (A == NULL || rowsA < 2 || colsA < 2 || B == NULL || X == NULL || maxIteration < 1 || error < EPSILON) {
         printf("les matrices doivent etre non-nulles, A doit etre au moins (2, 2), max_iterations doit etre superieur a 1,"
                " l'epsilon ne peut pas etre inferieur a l'epsilon de la machine (%.30f)", EPSILON);
         EMPTY_OR_NULL
@@ -23,19 +23,23 @@ void jacobiMethod(double **A, int rowsA, int colsA, double *B, double *X, int ma
 
     int homSys = isHomSys(B, rowsA);
 
-    if(colsA > rowsA) {
+    if (colsA > rowsA) {
         printf("A * X = B a une infinite de solutions\n");
         if (homSys) {
             printf("...y compris le vecteur 0(%d)\n", colsA);
         }
     }
+    if(colsA < rowsA) {
+        gaussElim(A, rowsA, colsA, B, X, 1);
+    }
     int nilRowsCount = nilRows(A, rowsA, colsA, B, homSys);
-    if(nilRowsCount == -1) {
+    if (nilRowsCount == -1) {
         return;
     }
-    if(rowsA - nilRowsCount == colsA) {// the matrix is square after all, let's go
-        int strictDiagDom = isSDD(double **matA, int rowsA, int colsA);
-
+    if (rowsA - nilRowsCount == colsA) {// the matrix is square after all, let's go
+        int strictDiagDom = isSDD(A, colsA);
+        //COLSA! we make sure to only go through the square matrix, and since any nil rows should be at the bottom,
+        //this should work
 
     }
 
@@ -48,7 +52,7 @@ void solveForX(double **A, int rowsA, int colsA, double *B, double *X, int homSy
         FAIL_OUT
     }
     int nilRowsCount = nilRows(A, rowsA, colsA, B, homSys);
-    if(nilRowsCount == -1) {
+    if (nilRowsCount == -1) {
         return;
     }
 
@@ -125,7 +129,7 @@ void gaussElim(double **A, int rowsA, int colsA, double *B, double *X, int isJac
             }
         }
     }
-    if(!isJacobiHelper){
+    if (!isJacobiHelper) {
         solveForX(A, rowsA, colsA, B, X, homSys);
     } else {
         jacobiMethod(A, rowsA, colsA, B, X, 20, 0.001); //arbitrary values for testing purposes
