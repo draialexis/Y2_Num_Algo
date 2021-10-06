@@ -15,6 +15,7 @@ void solveGauss(double **A, int rowsA, int colsA, double *B, int homSys);
 
 // NB: this destructive function changes the matrices as a side-effect
 void gaussMethod(double **A, int rowsA, int colsA, double *B, int isJacobiHelper) {
+    //// O(n^2) * 8 bits used, for matrix of doubles
     if (A == NULL || rowsA < 2 || colsA < 2 || B == NULL) {
         if (rowsA < 2 || colsA < 2) {
             printf("we will not deal with a matA(m, n) if m or n is below 2\n");
@@ -115,6 +116,7 @@ void solveGauss(double **A, int rowsA, int colsA, double *B, int homSys) {
 
 // NB: this destructive function could change the matrices as a side-effect
 void jacobiMethod(double **A, int rowsA, int colsA, double *B, int maxIteration, double error) {
+    //// O(n^2) * 8 bits used, for matrix of doubles
     if (A == NULL || rowsA < 2 || colsA < 2 || B == NULL || maxIteration < 1 || fabs(error) < EPSILON) {
         printf("les matrices doivent etre non-nulles, A doit etre au moins (2, 2), max_iterations doit etre superieur a 1,"
                " l'epsilon ne peut pas etre inferieur a l'epsilon de la machine (%.30f)\n", EPSILON);
