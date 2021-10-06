@@ -207,7 +207,7 @@ void doB(double *matB, int size, char choice) {
 }
 
 void doA(double **matA, int rows, int cols, char choice, int isSquare) {
-    if(matA == NULL || rows <= 0 || cols <= 0) {
+    if (matA == NULL || rows <= 0 || cols <= 0) {
         EMPTY_OR_NULL
         FAIL_OUT
     }

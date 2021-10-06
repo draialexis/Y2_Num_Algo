@@ -37,11 +37,12 @@ void jacobiMethod(double **A, int rowsA, int colsA, double *B, int maxIteration,
         return;
     }
     if (rowsA - nilRowsCount == colsA) {// the matrix is square after all, let's go
-        int strictDiagDom = isSDD(A, colsA);
-        //COLSA! we make sure to only go through the square matrix,
+        int size = colsA;
+        int strictDiagDom = isSDD(A, size);
+        //we make sure to only go through the remaining square matrix,
         //and since any nil rows should be at the bottom, this should work
         if (!strictDiagDom) {
-            showMat(A, colsA, colsA);
+            showMat(A, size, size);
             char gaussInstead = '0';
             printf("A n'est pas a diagonale strictement dominante. Jacobi ne peut rien pour nous.\n"
                    "essayer avec Gauss ?\n"
@@ -49,11 +50,45 @@ void jacobiMethod(double **A, int rowsA, int colsA, double *B, int maxIteration,
                    "'n' : non\n>");
             gaussInstead = (char) getchar();
             if (gaussInstead == 'o') {
-                gaussMethod(A, rowsA, colsA, B, 0);
+                gaussMethod(A, size, size, B, 0);
             }
         } else {
-            double *X = mkColVec(colsA);
-
+            double *X = mkColVec(size);//our approximations, iteratively improved
+            double *Xprev = mkColVec(size);
+            for (int i = 0; i < size; ++i) {
+                // the initial guess ("X0") is that all our unknowns are 0
+                X[i] = 0.0;
+                Xprev[i] = 0.0;
+            }
+            int counter = 1;
+            double sum;
+            // if convergence is reached, print result and return
+            int isStable;
+            while (counter <= maxIteration) {
+                isStable = 1;
+                for (int i = 0; i < size; ++i) {
+                    sum = 0.0;
+                    for (int j = 0; j < size; ++j) {
+                        if (i != j) {
+                            sum += A[i][j] * X[j];
+                        }
+                    }
+                    Xprev[i] = X[i];
+                    X[i] = (1 / A[i][i]) * (B[i] - sum);
+                    if (fabs(Xprev[i] - X[i]) > error) {
+                        isStable = 0;
+                    }
+                }
+                if (isStable) {
+                    showEqSys(A, size, size, B);
+                    printf("apres l'iteration #%d, l'approximation s'est stabilisee en dessous de l'epsilon %.10f\n"
+                           "A * X = B a une solution\n"
+                           "X ->\n", counter, error);
+                    showCol(X, size);
+                    break;
+                }
+                counter++;
+            }
             free(X);
         }
     }
