@@ -249,7 +249,7 @@ double **transverseMat(double **mat, int rowsM, int colsM) {
 }
 
 void shuffleMat(double **mat, int rows, int cols) {
-    double tmp = 0.0;
+    double tmp;
     if (mat != NULL && rows > 0 && cols > 0) {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -310,8 +310,8 @@ int nilRows(double **matA, int rowsA, int colsA, double *matB, int isHomSys) {
 }
 
 int isSDD(double **matA, int size) {
-    double diag = 0.0;
-    double undiag = 0.0;
+    double diag;
+    double undiag;
     for (int i = 0; i < size; i++) {
         undiag = 0.0;
         diag = fabs(matA[i][i]);

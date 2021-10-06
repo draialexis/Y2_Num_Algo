@@ -69,7 +69,7 @@ int main() {
     free(matX);
 
     printf("=======================\nGauss\n=======================\n");
-    gaussElim(matA_prime, ROWS, COLS, matB_prime, matX_prime, 0);
+    gaussMethod(matA_prime, ROWS, COLS, matB_prime, matX_prime, 0);
     freeMat(matA_prime, ROWS, COLS);
     free(matB_prime);
     free(matX_prime);
@@ -78,15 +78,13 @@ int main() {
     fillMat_EZ(matA_EZ);
     double *matB_EZ = mkColVec(3);
     fillMatB_EZ(matB_EZ);
-    double *matX_EZ = mkColVec(3);
 
     printf("=======================\nJacobi\n=======================\n");
-    jacobiMethod(matA_EZ, 3, 2, matB_EZ, matX_EZ, 20, 0.1);
+    jacobiMethod(matA_EZ, 3, 2, matB_EZ, 20, 0.1);
     printf("=======================\nGauss\n=======================\n");
-    gaussElim(matA_EZ, 3, 2, matB_EZ, matX_EZ, 0);
+    gaussMethod(matA_EZ, 3, 2, matB_EZ, 0);
     freeMat(matA_EZ, 3, 2);
     free(matB_EZ);
-    free(matX_EZ);
     /*
     double **matASparse = mkMat(ROWS, COLS);
     fillSparseMat(matASparse, ROWS, COLS);
@@ -95,7 +93,7 @@ int main() {
     double *matXSparse = mkColVec(COLS);
 
     printf("=======================\nGauss\n=======================\n");
-    gaussElim(matASparse, ROWS, COLS, matBSparse, matXSparse, 0);
+    gaussMethod(matASparse, ROWS, COLS, matBSparse, matXSparse, 0);
     freeMat(matASparse, ROWS, COLS);
     free(matBSparse);
     free(matXSparse);
@@ -231,7 +229,7 @@ int main() {
                 break;
             default :
                 printf("votre choix de methode n'a pas ete compris. methode de Gauss.\n");
-                gaussElim(matA_live, rows_input, cols_input, matB_live, matX_live, 0);
+                gaussMethod(matA_live, rows_input, cols_input, matB_live, matX_live, 0);
                 break;
         }
         freeMat(matA_live, rows_input, cols_input);

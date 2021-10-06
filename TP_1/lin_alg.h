@@ -7,14 +7,14 @@
 
 #define SHOWME showEqSys(A, rowsA, colsA, B);
 
-void solveForX(double **A, int rowsA, int colsA, double *B, double *X, int homSys);
+void jacobiMethod(double **A, int rowsA, int colsA, double *B, int maxIteration, double error);
 
-void gaussElim(double **A, int rowsA, int colsA, double *B, double *X, int isJacobiHelper);
+void gaussMethod(double **A, int rowsA, int colsA, double *B, int isJacobiHelper);
 
-void jacobiMethod(double **A, int rowsA, int colsA, double *B, double *X, int maxIteration, double error);
+void solveGauss(double **A, int rowsA, int colsA, double *B, int homSys);
 
-void jacobiMethod(double **A, int rowsA, int colsA, double *B, double *X, int maxIteration, double error) {
-    if (A == NULL || rowsA < 2 || colsA < 2 || B == NULL || X == NULL || maxIteration < 1 || error < EPSILON) {
+void jacobiMethod(double **A, int rowsA, int colsA, double *B, int maxIteration, double error) {
+    if (A == NULL || rowsA < 2 || colsA < 2 || B == NULL || maxIteration < 1 || error < EPSILON) {
         printf("les matrices doivent etre non-nulles, A doit etre au moins (2, 2), max_iterations doit etre superieur a 1,"
                " l'epsilon ne peut pas etre inferieur a l'epsilon de la machine (%.30f)", EPSILON);
         EMPTY_OR_NULL
@@ -30,7 +30,7 @@ void jacobiMethod(double **A, int rowsA, int colsA, double *B, double *X, int ma
         }
     }
     if (colsA < rowsA) {
-        gaussElim(A, rowsA, colsA, B, X, 1);
+        gaussMethod(A, rowsA, colsA, B, 1);
     }
     int nilRowsCount = nilRows(A, rowsA, colsA, B, homSys);
     if (nilRowsCount == -1) {
@@ -49,58 +49,20 @@ void jacobiMethod(double **A, int rowsA, int colsA, double *B, double *X, int ma
                    "'n' : non\n>");
             gaussInstead = (char) getchar();
             if (gaussInstead == 'o') {
-                gaussElim(A, rowsA, colsA, B, X, 0);
+                gaussMethod(A, rowsA, colsA, B, 0);
             }
         } else {
+            double *X = mkColVec(colsA);
 
+            free(X);
         }
     }
 
-}
-
-void solveForX(double **A, int rowsA, int colsA, double *B, double *X, int homSys) {
-    if (A == NULL || B == NULL || X == NULL || rowsA <= 0 || colsA <= 0) {
-        printf("How on Earth?!\n");
-        EMPTY_OR_NULL
-        FAIL_OUT
-    }
-    int nilRowsCount = nilRows(A, rowsA, colsA, B, homSys);
-    if (nilRowsCount == -1) {
-        return;
-    }
-
-    if (rowsA - nilRowsCount == colsA) { // deal with unique solution
-        printf("A * X = B a une solution\n");
-
-        if (homSys) {
-            printf("...le vecteur 0(%d)\n", colsA);
-        } else {
-            X[colsA - 1] = B[colsA - 1] / A[colsA - 1][colsA - 1];
-            for (int i = colsA - 2; i >= 0; i--) { //we've already dealt with i = colsA - 1
-                double sum = 0;
-                for (int j = i + 1; j < colsA; j++) {
-                    sum += A[i][j] * X[j];
-                }
-                X[i] = (B[i] - sum) / A[i][i];
-            }
-            printf("X = \n");
-            showCol(X, colsA);
-        }
-    } else if (rowsA - nilRowsCount < colsA) { // "deal" with infinite amount of solutions
-        // could probably just be phrased as "else"
-        printf("A * X = B a une infinite de solutions\n");
-        if (homSys) {
-            printf("...y compris le vecteur 0(%d)\n", colsA);
-        }
-    } else {
-        printf("we shouldn't be here... no solutions, right?\n");
-        DEBUG
-    }
 }
 
 // NB: this destructive function changes the matrices as a side-effect
-void gaussElim(double **A, int rowsA, int colsA, double *B, double *X, int isJacobiHelper) {
-    if (A == NULL || rowsA < 2 || colsA < 2 || B == NULL || X == NULL) {
+void gaussMethod(double **A, int rowsA, int colsA, double *B, int isJacobiHelper) {
+    if (A == NULL || rowsA < 2 || colsA < 2 || B == NULL) {
         if (rowsA < 2 || colsA < 2) {
             printf("we will not deal with a matA(m, n) if m or n is below 2\n");
         }
@@ -143,7 +105,49 @@ void gaussElim(double **A, int rowsA, int colsA, double *B, double *X, int isJac
         }
     }
     if (!isJacobiHelper) {
-        solveForX(A, rowsA, colsA, B, X, homSys);
+        solveGauss(A, rowsA, colsA, B, homSys);
+    }
+}
+
+void solveGauss(double **A, int rowsA, int colsA, double *B, int homSys) {
+    if (A == NULL || B == NULL || rowsA <= 0 || colsA <= 0) {
+        printf("How on Earth?!\n");
+        EMPTY_OR_NULL
+        FAIL_OUT
+    }
+    int nilRowsCount = nilRows(A, rowsA, colsA, B, homSys);
+    if (nilRowsCount == -1) {
+        return;
+    }
+
+    if (rowsA - nilRowsCount == colsA) { // deal with unique solution
+        printf("A * X = B a une solution\n");
+
+        if (homSys) {
+            printf("...le vecteur 0(%d)\n", colsA);
+        } else {
+            double *X = mkColVec(colsA);
+            X[colsA - 1] = B[colsA - 1] / A[colsA - 1][colsA - 1];
+            for (int i = colsA - 2; i >= 0; i--) { //we've already dealt with i = colsA - 1
+                double sum = 0;
+                for (int j = i + 1; j < colsA; j++) {
+                    sum += A[i][j] * X[j];
+                }
+                X[i] = (B[i] - sum) / A[i][i];
+            }
+            printf("X = \n");
+            showCol(X, colsA);
+            free(X);
+        }
+    } else if (rowsA - nilRowsCount < colsA) { // "deal" with infinite amount of solutions
+        // could probably just be phrased as "else"
+        printf("A * X = B a une infinite de solutions\n");
+        if (homSys) {
+            printf("...y compris le vecteur 0(%d)\n", colsA);
+        }
+    } else {
+        printf("we shouldn't be here... no solutions, right?\n");
+        DEBUG
     }
 }
 
