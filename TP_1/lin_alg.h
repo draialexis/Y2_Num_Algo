@@ -7,14 +7,14 @@
 
 #define SHOWME showEqSys(A, rowsA, colsA, B);
 
-void jacobiMethod(double **A, int rowsA, int colsA, double *B, int maxIteration, double error);
+void jacobiMethod(double **A, int rowsA, int colsA, double *B, int maxIteration, double error, int show);
 
-void gaussMethod(double **A, int rowsA, int colsA, double *B, int isJacobiHelper);
+void gaussMethod(double **A, int rowsA, int colsA, double *B, int isJacobiHelper, int show);
 
 void solveGauss(double **A, int rowsA, int colsA, double *B, int homSys);
 
 // NB: this destructive function changes the matrices as a side-effect
-void gaussMethod(double **A, int rowsA, int colsA, double *B, int isJacobiHelper) {
+void gaussMethod(double **A, int rowsA, int colsA, double *B, int isJacobiHelper, int show) {
     //// O(n^2) * 8 bits used, for matrix of doubles
     if (A == NULL || rowsA < 2 || colsA < 2 || B == NULL) {
         if (rowsA < 2 || colsA < 2) {
@@ -29,7 +29,7 @@ void gaussMethod(double **A, int rowsA, int colsA, double *B, int isJacobiHelper
 
     int homSys = isHomSys(B, rowsA); //if B is nil, our job might just be made a lot easier
 
-    SHOWME
+    if (show) SHOWME
     double factor;
     for (int i = 0; i < rowsA; i++) {
         int maxPos = i;
@@ -44,9 +44,9 @@ void gaussMethod(double **A, int rowsA, int colsA, double *B, int isJacobiHelper
         }
 
         if (maxPos != i) {
-            printf("L%d <-> L%d\n", i + 1, maxPos + 1);
+            if (show) printf("L%d <-> L%d\n", i + 1, maxPos + 1);
             rowSwap(A, B, i, maxPos, colsA);                                               //at worst 2n attributions
-            SHOWME
+            if (show) SHOWME
         }
 
         for (int k = i + 1; k < rowsA; ++k) {
@@ -56,12 +56,12 @@ void gaussMethod(double **A, int rowsA, int colsA, double *B, int isJacobiHelper
             } else {
                 factor = (A[k][i] / A[i][i]);
                                 //// at worst (n(n+1)/2) - 1 + (n(n+1)/2) - 2 + ... -> O(n^2) arithmetic operations
-                printf("L%d <- L%d - (%+06.1f * L%d)\n", k + 1, k + 1, factor, i + 1);
+                if (show) printf("L%d <- L%d - (%+06.1f * L%d)\n", k + 1, k + 1, factor, i + 1);
                 rowTransform(A[k], colsA, A[i], factor);
                           //// at worst n * ((n(n+1)/2) - 1 + (n(n+1)/2) - 2 + ...) -> O(n^3) arithmetic operations
                 B[k] -= factor * B[i];
                                 //// at worst (n(n+1)/2) - 1 + (n(n+1)/2) - 2 + ... -> O(n^2) arithmetic operations
-                SHOWME
+                if (show) SHOWME
             }
         }
     }
@@ -115,7 +115,7 @@ void solveGauss(double **A, int rowsA, int colsA, double *B, int homSys) {
 }
 
 // NB: this destructive function could change the matrices as a side-effect
-void jacobiMethod(double **A, int rowsA, int colsA, double *B, int maxIteration, double error) {
+void jacobiMethod(double **A, int rowsA, int colsA, double *B, int maxIteration, double error, int show) {
     //// O(n^2) * 8 bits used, for matrix of doubles
     if (A == NULL || rowsA < 2 || colsA < 2 || B == NULL || maxIteration < 1 || fabs(error) < EPSILON) {
         printf("les matrices doivent etre non-nulles, A doit etre au moins (2, 2), max_iterations doit etre superieur a 1,"
@@ -124,6 +124,8 @@ void jacobiMethod(double **A, int rowsA, int colsA, double *B, int maxIteration,
         FAIL_OUT
     }
     printf("=======================\nJacobi\n=======================\n");
+
+    if (show) SHOWME
 
     int homSys = isHomSys(B, rowsA);
 
@@ -134,7 +136,7 @@ void jacobiMethod(double **A, int rowsA, int colsA, double *B, int maxIteration,
         }
     }
     if (colsA < rowsA) { // not a square matrix, but we may be able to save it
-        gaussMethod(A, rowsA, colsA, B, 1); //// at worst O(n^3) arithmetic operations
+        gaussMethod(A, rowsA, colsA, B, 1, show); //// at worst O(n^3) arithmetic operations
     }
     int nilRowsCount = nilRows(A, rowsA, colsA, B, homSys); /// at worst O(n^2) arithmetic operations
     if (nilRowsCount == -1) {
@@ -147,7 +149,7 @@ void jacobiMethod(double **A, int rowsA, int colsA, double *B, int maxIteration,
         //and since any nil rows should be at the bottom, this should work
         if (!strictDiagDom) {
             showMat(A, size, size);
-            char gaussInstead = '0';
+            char gaussInstead;
             printf("A n'est pas a diagonale strictement dominante. Jacobi ne peut rien pour nous.\n"
                    "essayer avec Gauss ?\n"
                    "'o' : oui\n"
@@ -155,7 +157,7 @@ void jacobiMethod(double **A, int rowsA, int colsA, double *B, int maxIteration,
             gaussInstead = (char) getchar();
             fflush(stdin);
             if (gaussInstead == 'o') {
-                gaussMethod(A, size, size, B, 0);
+                gaussMethod(A, size, size, B, 0, show);
             }
         } else {
             double *X = mkColVec(size);//our approximations, iteratively improved
@@ -185,8 +187,10 @@ void jacobiMethod(double **A, int rowsA, int colsA, double *B, int maxIteration,
                     }
                 }
 
-                printf("iteration #%d\n", counter);
-                showCol(X, size);
+                if (show) {
+                    printf("iteration #%d\n", counter);
+                    showCol(X, size);
+                }
 
                 if (isStable) {
                     showEqSys(A, size, size, B);

@@ -155,6 +155,17 @@ int main() {
             isSquare = 1;
         }
 
+        char details;
+        printf("derniere question : voulez-vous observer les etapes, ou juste le resultat ?"
+               "\n* 'e' : chaque etape / iteration"
+               "\n* 'r' : seulement le resultat"
+               "\n>");
+        details = (char) getchar();
+        cleanCheck(details);
+
+        int show = 0;
+        if (details == 'e') show = 1;
+
         double **matA_live = mkMat(rows, cols);
         doA(matA_live, rows, cols, matA, isSquare);
         double *matB_live = mkColVec(rows);
@@ -164,19 +175,19 @@ int main() {
             degradeMat(matA_live_prime, rows, cols);
             double *matB_live_prime = copyColVec(matB_live, rows);
             if (methd == 'g') {
-                gaussMethod(matA_live, rows, cols, matB_live, 0);
-                gaussMethod(matA_live_prime, rows, cols, matB_live_prime, 0);
+                gaussMethod(matA_live, rows, cols, matB_live, 0, show);
+                gaussMethod(matA_live_prime, rows, cols, matB_live_prime, 0, show);
             } else if (methd == 'j') {
-                jacobiMethod(matA_live, rows, cols, matB_live, max_i, eps);
-                jacobiMethod(matA_live_prime, rows, cols, matB_live_prime, max_i, eps);
+                jacobiMethod(matA_live, rows, cols, matB_live, max_i, eps, show);
+                jacobiMethod(matA_live_prime, rows, cols, matB_live_prime, max_i, eps, show);
             }
             freeMat(matA_live_prime, rows, cols);
             free(matB_live_prime);
         } else {
             if (methd == 'g') {
-                gaussMethod(matA_live, rows, cols, matB_live, 0);
+                gaussMethod(matA_live, rows, cols, matB_live, 0, show);
             } else if (methd == 'j') {
-                jacobiMethod(matA_live, rows, cols, matB_live, max_i, eps);
+                jacobiMethod(matA_live, rows, cols, matB_live, max_i, eps, show);
             }
         }
         freeMat(matA_live, rows, cols);
