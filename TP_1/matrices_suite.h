@@ -33,10 +33,6 @@ void fillMoler(double **moler, int size);
 
 void fillSDD(double **sdd, int size);
 
-void fillMat_EZ(double **mat);
-
-void fillMatB_EZ(double *mat);
-
 void doB(double *matB, int size, char choice);
 
 void doA(double **matA, int rows, int cols, char choice, int isSquare);
@@ -68,7 +64,7 @@ void fillMatA_rdm(double **mat, int rows, int cols) {
 void fillMatA_userInput(double **mat, int rows, int cols) {
     if (mat != NULL && rows > 0 && cols > 0) {
         char str[30];
-        char * endPtr;
+        char *endPtr;
         double input;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -88,7 +84,7 @@ void fillMatA_userInput(double **mat, int rows, int cols) {
 void fillMatB_userInput(double *mat, int rows) {
     if (mat != NULL && rows > 0) {
         char str[30];
-        char * endPtr;
+        char *endPtr;
         double input;
         for (int i = 0; i < rows; i++) {
             printf("B(%d) <- ", i + 1);
@@ -285,31 +281,6 @@ void fillSDD(double **sdd, int size) {
             }
             sdd[i][i] = sum + rdm;
         }
-    } else {
-        EMPTY_OR_NULL
-        FAIL_OUT
-    }
-}
-
-void fillMat_EZ(double **mat) {
-    if (mat != NULL) {
-        mat[0][0] = 2.0;
-        mat[0][1] = 1.0;
-        mat[1][0] = 5.0;
-        mat[1][1] = 3.0;
-        mat[2][0] = 4.0;
-        mat[2][1] = 2.0;
-    } else {
-        EMPTY_OR_NULL
-        FAIL_OUT
-    }
-}
-
-void fillMatB_EZ(double *mat) {
-    if (mat != NULL) {
-        mat[0] = 11.0;
-        mat[1] = 13.0;
-        mat[2] = 22.0;
     } else {
         EMPTY_OR_NULL
         FAIL_OUT

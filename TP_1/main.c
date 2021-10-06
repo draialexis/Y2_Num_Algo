@@ -18,7 +18,6 @@
 int main() {
 
     srand((unsigned) time(NULL));
-
 /*
     printf("size of doubles: %llu bits\n", sizeof(double) * 8);
 
@@ -48,81 +47,48 @@ int main() {
 
     printf("EPSILON = %.32f\n", pow(2, -42));
 */
-
-//    double **matA = mkMat(ROWS, COLS);
-//    fillMatA_rdm(matA, ROWS, COLS);
-//    double *matB = mkColVec(ROWS);
-//    fillMatB_rdm(matB, ROWS);
-//
-//    double **matA_prime = copyMat(matA, ROWS, COLS);
-//    degradeMat(matA_prime, ROWS, COLS);
-//    double *matB_prime = copyColVec(matB, ROWS);
-//
-//    gaussMethod(matA, ROWS, COLS, matB, 0);
-//    freeMat(matA, ROWS, COLS);
-//    free(matB);
-//
-//    gaussMethod(matA_prime, ROWS, COLS, matB_prime, 0);
-//    freeMat(matA_prime, ROWS, COLS);
-//    free(matB_prime);
-//    double **matA_EZ = mkMat(3, 2);
-//    fillMat_EZ(matA_EZ);
-//    double *matB_EZ = mkColVec(3);
-//    fillMatB_EZ(matB_EZ);
-//
-//    jacobiMethod(matA_EZ, 3, 2, matB_EZ, 20, 0.1);
-//    gaussMethod(matA_EZ, 3, 2, matB_EZ, 0);
-//    freeMat(matA_EZ, 3, 2);
-//    free(matB_EZ);
-//    double **matASparse = mkMat(ROWS, COLS);
-//    fillSparseMat(matASparse, ROWS, COLS);
-//    double *matBSparse = mkColVec(ROWS);
-//    fillMatB_rdm(matBSparse, ROWS);
-//
-//    gaussMethod(matASparse, ROWS, COLS, matBSparse, 0);
-//    freeMat(matASparse, ROWS, COLS);
-//    free(matBSparse);
-
     char go = '0';
     int first = 1;
     while (go != 'q') {
 
-        char str[30];
+        char inp[30];
         char *endPtr;
 
         if (first) {
             printf("\nbienvenue dans ce solveur de systemes d'equations lineaires\n");
             first = 0;
         }
-        printf("entrez le caractere 'q' pour arreter,\nou tout autre pour continuer :\n>");
+        printf("entrez le caractere 'q' pour arreter (a tout moment),\nou tout autre pour continuer :\n>");
 
         go = (char) getchar();
         cleanCheck(go);//cleans the console input buffer and checks if the user wants to quit
 
-
-        char method;
+        char methd;
         printf("choisissez votre methode :"
                "\n* 'g' : Gauss"
                "\n* 'j' : Jacobi"
                "\n>");
-        method = (char) getchar();
-        cleanCheck(method);
+        methd = (char) getchar();
+        cleanCheck(methd);
 
-        int max_i_input;
-        double epsilon_input;
-        if (method == 'j') {
-            printf("choisissez le nombre max d'iterations, puis epsilon :\nmax_i\n>");
-            scanf("%s", str);
-            max_i_input = (int) strtol(str, &endPtr, 10);
+        int max_i;
+        double eps;
+        if (methd == 'j') {
+            printf("choisissez le nombre max d'iterations, puis epsilon :"
+                   "\nmax_i"
+                   "\n>");
+            scanf("%s", inp);
+            max_i = (int) strtol(inp, &endPtr, 10);
             cleanCheck(*endPtr);
 
-            printf("epsilon\n>");
-            scanf("%s", str);
-            epsilon_input = (double) strtof(str, &endPtr);
+            printf("epsilon"
+                   "\n>");
+            scanf("%s", inp);
+            eps = strtod(inp, &endPtr);
             cleanCheck(*endPtr);
         }
 
-        char matA_input;
+        char matA;
         printf("choisissez votre matrice A :"
                "\n* 'b' : Bord"
                "\n* 'd' : Ding Dong"
@@ -138,27 +104,31 @@ int main() {
                "\n* 'c' : creuse"
                "\n* 'C' : customisee (input via console)"
                "\n>");
-        matA_input = (char) getchar();
-        cleanCheck(matA_input);
+        matA = (char) getchar();
+        cleanCheck(matA);
 
-        int size_input = 0;
-        int rows_input = 0;
-        int cols_input = 0;
+        int size = 0;
+        int rows = 0;
+        int cols = 0;
 
-        if (matA_input == 'a' || matA_input == 'c' || matA_input == 'C') {
-            printf("choisissez le nombre de rangees, puis de colonnes :\nrangees\n>");
-            scanf("%s", str);
-            rows_input = (int) strtol(str, &endPtr, 10);
+        if (matA == 'a' || matA == 'c' || matA == 'C') {
+            printf("choisissez le nombre de rangees, puis de colonnes :"
+                   "\nrangees"
+                   "\n>");
+            scanf("%s", inp);
+            rows = (int) strtol(inp, &endPtr, 10);
             cleanCheck(*endPtr);
 
-            printf("colonnes\n>");
-            scanf("%s", str);
-            cols_input = (int) strtol(str, &endPtr, 10);
+            printf("colonnes"
+                   "\n>");
+            scanf("%s", inp);
+            cols = (int) strtol(inp, &endPtr, 10);
             cleanCheck(*endPtr);
         } else {
-            printf("la matrice choisie est carree ; choisissez sa taille :\n>");
-            scanf("%s", str);
-            size_input = (int) strtol(str, &endPtr, 10);
+            printf("la matrice choisie est carree ; choisissez sa taille :"
+                   "\n>");
+            scanf("%s", inp);
+            size = (int) strtol(inp, &endPtr, 10);
             cleanCheck(*endPtr);
         }
 
@@ -170,48 +140,47 @@ int main() {
         degrade = (char) getchar();
         cleanCheck(degrade);
 
-        char matB_input;
+        char matB;
         printf("choisissez votre matrice B :"
                "\n* 'a' : \"aleatoire\" (utilise '(rand() mod 101) + 50')"
                "\n* 'C' : customisee (input via console)"
                "\n>");
-        matB_input = (char) getchar();
-        cleanCheck(matB_input);
+        matB = (char) getchar();
+        cleanCheck(matB);
 
         int isSquare = 0;
-        if (!(rows_input && cols_input)) {
-            rows_input = size_input;
-            cols_input = size_input;
+        if (!(rows && cols)) {
+            rows = size;
+            cols = size;
             isSquare = 1;
         }
 
-        double **matA_live = mkMat(rows_input, cols_input);
-        doA(matA_live, rows_input, cols_input, matA_input, isSquare);
-        double *matB_live = mkColVec(rows_input);
-        doB(matB_live, rows_input, matB_input);
+        double **matA_live = mkMat(rows, cols);
+        doA(matA_live, rows, cols, matA, isSquare);
+        double *matB_live = mkColVec(rows);
+        doB(matB_live, rows, matB);
         if (degrade == 'o') {
-            double **matA_live_prime = copyMat(matA_live, rows_input, cols_input);
-            degradeMat(matA_live_prime, rows_input, cols_input);
-            double *matB_live_prime = copyColVec(matB_live, rows_input);
-            if (method == 'g') {
-                gaussMethod(matA_live, rows_input, cols_input, matB_live, 0);
-                gaussMethod(matA_live_prime, rows_input, cols_input, matB_live_prime, 0);
-            } else if (method == 'j') {
-                jacobiMethod(matA_live, rows_input, cols_input, matB_live, max_i_input, epsilon_input);
-                jacobiMethod(matA_live_prime, rows_input, cols_input, matB_live_prime, max_i_input, epsilon_input);
+            double **matA_live_prime = copyMat(matA_live, rows, cols);
+            degradeMat(matA_live_prime, rows, cols);
+            double *matB_live_prime = copyColVec(matB_live, rows);
+            if (methd == 'g') {
+                gaussMethod(matA_live, rows, cols, matB_live, 0);
+                gaussMethod(matA_live_prime, rows, cols, matB_live_prime, 0);
+            } else if (methd == 'j') {
+                jacobiMethod(matA_live, rows, cols, matB_live, max_i, eps);
+                jacobiMethod(matA_live_prime, rows, cols, matB_live_prime, max_i, eps);
             }
-            freeMat(matA_live_prime, rows_input, cols_input);
+            freeMat(matA_live_prime, rows, cols);
             free(matB_live_prime);
         } else {
-            if (method == 'g') {
-                gaussMethod(matA_live, rows_input, cols_input, matB_live, 0);
-            } else if (method == 'j') {
-                jacobiMethod(matA_live, rows_input, cols_input, matB_live, max_i_input, epsilon_input);
+            if (methd == 'g') {
+                gaussMethod(matA_live, rows, cols, matB_live, 0);
+            } else if (methd == 'j') {
+                jacobiMethod(matA_live, rows, cols, matB_live, max_i, eps);
             }
         }
-        freeMat(matA_live, rows_input, cols_input);
+        freeMat(matA_live, rows, cols);
         free(matB_live);
     }
-
     return 0;
 }
