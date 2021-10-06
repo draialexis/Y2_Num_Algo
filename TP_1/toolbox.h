@@ -35,6 +35,8 @@ double **transverseMat(double **mat, int rowsM, int colsM);
 
 void shuffleMat(double **mat, int rows, int cols);
 
+int isHomSys(double *matB, int size);
+
 double **mkMat(int rows, int cols) {
     if (rows > 0 && cols > 0) {
         double **mat = (double **) malloc(sizeof(double *) * rows);
@@ -256,6 +258,40 @@ void shuffleMat(double **mat, int rows, int cols) {
         EMPTY_OR_NULL
         FAIL_OUT
     }
+}
+
+int isHomSys(double *matB, int size) {
+    int res = 1;// dealing with homogeneous systems
+    for (int i = 0; i < size; i++) {
+        if (res && matB[i] > EPSILON) {
+            res = 0;
+        }
+    }
+    return res;
+}
+
+int nilRows(double ** matA, int rowsA, int colsA, double *matB, int isHomSys){
+    int isNilRow = 1;
+    int nilRows = 0;
+    // in case we can ignore the bottom rows (000|0) and focus on the non-empty square subset of the matrix, thanks to Gauss
+    // so we would deal with A(p,p), B(p) and X(p). Remember that X has as many rows as A has cols; we can count on that
+    for (int i = rowsA - 1; i >= 0; i--) {
+        // we want to check for nil rows starting from the bottom: the forward elimination from the gauss function
+        // will have placed those at the very bottom
+        for (int j = 0; j < colsA; j++) {
+            if (isNilRow && fabs(matA[i][j]) > EPSILON) {//any non-0s in the rows?
+                isNilRow = 0;
+            }
+        }
+        if (isNilRow) {
+            nilRows++;
+            if (!isHomSys && fabs(matB[i]) > EPSILON) {// deal with absence of solution (an empty i row corresponding to a non-0 B(i))
+                printf("A * X = B n'admet aucune solution : L%d => %+06.1f = 0000.0\n", i+1, matB[i]);
+                return -1;
+            }
+        }
+    }
+    return nilRows;
 }
 
 #endif //Y2_NUM_ALGO_TOOLBOX_H

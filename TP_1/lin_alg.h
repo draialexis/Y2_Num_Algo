@@ -14,7 +14,32 @@ void gaussElim(double **A, int rowsA, int colsA, double *B, double *X, int isJac
 void jacobiMethod(double **A, int rowsA, int colsA, double *B, double *X, int maxIteration, double error);
 
 void jacobiMethod(double **A, int rowsA, int colsA, double *B, double *X, int maxIteration, double error) {
+    if(A == NULL || rowsA < 2 || colsA < 2 || B == NULL || X == NULL || maxIteration < 1 || error < EPSILON){
+        printf("les matrices doivent etre non-nulles, A doit etre au moins (2, 2), max_iterations doit etre superieur a 1,"
+               " l'epsilon ne peut pas etre inferieur a l'epsilon de la machine (%.30f)", EPSILON);
+        EMPTY_OR_NULL
+        FAIL_OUT
+    }
     //TODO square matrix ? if yes, go on; if not, see if elimination can turn it into a square matrix
+
+    int homSys = isHomSys(B, rowsA);
+
+    if(colsA > rowsA) {
+        printf("A * X = B a une infinite de solutions\n");
+        if (homSys) {
+            printf("...y compris le vecteur 0(%d)\n", colsA);
+        }
+    }
+    int nilRowsCount = nilRows(A, rowsA, colsA, B, homSys);
+    if(nilRowsCount == -1) {
+        return;
+    }
+    if(rowsA - nilRowsCount == colsA) {// the matrix is square after all, let's go
+
+
+
+    }
+
     //TODO strictly diagnally dominant? if not, exit
 }
 
@@ -24,31 +49,12 @@ void solveForX(double **A, int rowsA, int colsA, double *B, double *X, int homSy
         EMPTY_OR_NULL
         FAIL_OUT
     }
-    int isNilRow = 1;
-    int nilRows = 0;
-    // in case we can ignore the bottom rows (000|0) and focus on the non-empty square subset of the matrix, thanks to Gauss
-    // so we would deal with A(p,p), B(p) and X(p). Remember that X has as many rows as A has cols; we can count on that
-    for (int i = rowsA - 1; i >= 0; i--) {
-        // we want to check for nil rows starting from the bottom: the forward elimination from the gauss function
-        // will have placed those at the very bottom
-        for (int j = 0; j < colsA; j++) {
-            if (isNilRow && fabs(A[i][j]) > EPSILON) { //any non-0s in the rows?
-                isNilRow = 0;
-            }
-        }
-        if (isNilRow) {
-            nilRows++;
-            if (fabs(B[i]) > EPSILON) { // deal with absence of solution (an empty i row corresponding to a non-0 B(i))
-                printf("A * X = B n'a pas de solution (L%d: 0.0 * x%d = %.1f)\n", i + 1, i + 1, B[i]);
-                if (homSys) {
-                    printf("...a part le vecteur 0(%d)\n", colsA);
-                }
-                return;
-            }
-        }
+    int nilRowsCount = nilRows(A, rowsA, colsA, B, homSys);
+    if(nilRowsCount == -1) {
+        return;
     }
 
-    if (rowsA - nilRows == colsA) { // deal with unique solution
+    if (rowsA - nilRowsCount == colsA) { // deal with unique solution
         printf("A * X = B a une solution\n");
 
         if (homSys) {
@@ -65,9 +71,9 @@ void solveForX(double **A, int rowsA, int colsA, double *B, double *X, int homSy
             printf("X = \n");
             showCol(X, colsA);
         }
-    } else if (rowsA - nilRows < colsA) { // "deal" with infinite amount of solutions
+    } else if (rowsA - nilRowsCount < colsA) { // "deal" with infinite amount of solutions
         // could probably just be phrased as "else"
-        printf("A * X = B a une infinité de solutions\n");
+        printf("A * X = B a une infinite de solutions\n");
         if (homSys) {
             printf("...y compris le vecteur 0(%d)\n", colsA);
         }
@@ -87,12 +93,7 @@ void gaussElim(double **A, int rowsA, int colsA, double *B, double *X, int isJac
         FAIL_OUT
     }
 
-    int homSys = 1;// dealing with homogeneous systems
-    for (int i = 0; i < rowsA; i++) {
-        if (homSys && B[i] > EPSILON) {
-            homSys = 0;
-        }
-    }
+    int homSys = isHomSys(B, rowsA);
 
     SHOWME
     double factor;

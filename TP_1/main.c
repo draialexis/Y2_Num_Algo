@@ -145,6 +145,7 @@ int main() {
         }
 
         char matA_input = '0';
+        //TODO signal which ones are strictly diagonally dominant
         printf("choisissez votre matrice A :"
                "\n* 'b' : Bord"
                "\n* 'd' : Ding Dong"
