@@ -117,6 +117,7 @@ int main() {
                "\n>");
         method = (char) getchar();
         getchar();
+        if (method == 'q') exit(0);
         fflush(stdin);
 
         int max_i_input;
@@ -151,6 +152,7 @@ int main() {
                "\n>");
         matA_input = (char) getchar();
         getchar();
+        if (matA_input == 'q') exit(0);
         fflush(stdin);
 
         int size_input = 0;
@@ -191,6 +193,7 @@ int main() {
                "\n>");
         matB_input = (char) getchar();
         getchar();
+        if (matB_input == 'q') exit(0);
         fflush(stdin);
 
         int isSquare = 0;
