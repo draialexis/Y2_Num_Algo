@@ -336,4 +336,10 @@ double minDouble(double a, double b) {
     }
 }
 
+void cleanCheck(char input) {
+    getchar();
+    if (input == 'q') exit(0);
+    fflush(stdin);
+}
+
 #endif //Y2_NUM_ALGO_TOOLBOX_H

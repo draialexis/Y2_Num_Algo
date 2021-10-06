@@ -88,6 +88,7 @@ int main() {
     while (go != 'q') {
 
         char str[30];
+        char *endPtr;
 
         if (first) {
             printf("\nbienvenue dans ce solveur de systemes d'equations lineaires\n");
@@ -96,12 +97,8 @@ int main() {
         printf("entrez le caractere 'q' pour arreter,\nou tout autre pour continuer :\n>");
 
         go = (char) getchar();
-        getchar();
-        fflush(stdin);
+        cleanCheck(go);//cleans the console input buffer and checks if the user wants to quit
 
-        if (go == 'q') {
-            break;
-        }
 
         char method;
         printf("choisissez votre methode :"
@@ -109,22 +106,20 @@ int main() {
                "\n* 'j' : Jacobi"
                "\n>");
         method = (char) getchar();
-        getchar();
-        if (method == 'q') exit(0);
-        fflush(stdin);
+        cleanCheck(method);
 
         int max_i_input;
         double epsilon_input;
         if (method == 'j') {
             printf("choisissez le nombre max d'iterations, puis epsilon :\nmax_i\n>");
             scanf("%s", str);
-            max_i_input = (int) strtol(str, NULL, 10);
-            fflush(stdin);
+            max_i_input = (int) strtol(str, &endPtr, 10);
+            cleanCheck(*endPtr);
 
             printf("epsilon\n>");
             scanf("%s", str);
-            epsilon_input = (double) strtof(str, NULL);
-            fflush(stdin);
+            epsilon_input = (double) strtof(str, &endPtr);
+            cleanCheck(*endPtr);
         }
 
         char matA_input;
@@ -144,9 +139,7 @@ int main() {
                "\n* 'C' : customisee (input via console)"
                "\n>");
         matA_input = (char) getchar();
-        getchar();
-        fflush(stdin);
-        if (matA_input == 'q') exit(0);
+        cleanCheck(matA_input);
 
         int size_input = 0;
         int rows_input = 0;
@@ -155,18 +148,18 @@ int main() {
         if (matA_input == 'a' || matA_input == 'c' || matA_input == 'C') {
             printf("choisissez le nombre de rangees, puis de colonnes :\nrangees\n>");
             scanf("%s", str);
-            rows_input = (int) strtol(str, NULL, 10);
-            fflush(stdin);
+            rows_input = (int) strtol(str, &endPtr, 10);
+            cleanCheck(*endPtr);
+
             printf("colonnes\n>");
             scanf("%s", str);
-            cols_input = (int) strtol(str, NULL, 10);
-            fflush(stdin);
-
+            cols_input = (int) strtol(str, &endPtr, 10);
+            cleanCheck(*endPtr);
         } else {
             printf("la matrice choisie est carree ; choisissez sa taille :\n>");
             scanf("%s", str);
-            size_input = (int) strtol(str, NULL, 10);
-            fflush(stdin);
+            size_input = (int) strtol(str, &endPtr, 10);
+            cleanCheck(*endPtr);
         }
 
         char degrade;
@@ -175,8 +168,7 @@ int main() {
                "\n* 'n' : non"
                "\n>");
         degrade = (char) getchar();
-        getchar();
-        fflush(stdin);
+        cleanCheck(degrade);
 
         char matB_input;
         printf("choisissez votre matrice B :"
@@ -184,9 +176,7 @@ int main() {
                "\n* 'C' : customisee (input via console)"
                "\n>");
         matB_input = (char) getchar();
-        getchar();
-        if (matB_input == 'q') exit(0);
-        fflush(stdin);
+        cleanCheck(matB_input);
 
         int isSquare = 0;
         if (!(rows_input && cols_input)) {

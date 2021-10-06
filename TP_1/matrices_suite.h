@@ -67,13 +67,15 @@ void fillMatA_rdm(double **mat, int rows, int cols) {
 
 void fillMatA_userInput(double **mat, int rows, int cols) {
     if (mat != NULL && rows > 0 && cols > 0) {
-        double input = 0;
+        char str[30];
+        char * endPtr;
+        double input;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 printf("A(%d, %d) <- ", i + 1, j + 1);
-                scanf("%lf", &input);
-                getchar();
-                fflush(stdin);
+                scanf("%s", str);
+                input = strtod(str, &endPtr);
+                cleanCheck(*endPtr);
                 mat[i][j] = input;
             }
         }
@@ -85,12 +87,14 @@ void fillMatA_userInput(double **mat, int rows, int cols) {
 
 void fillMatB_userInput(double *mat, int rows) {
     if (mat != NULL && rows > 0) {
-        double input = 0;
+        char str[30];
+        char * endPtr;
+        double input;
         for (int i = 0; i < rows; i++) {
             printf("B(%d) <- ", i + 1);
-            scanf("%lf", &input);
-            getchar();
-            fflush(stdin);
+            scanf("%s", str);
+            input = strtod(str, &endPtr);
+            cleanCheck(*endPtr);
             mat[i] = input;
         }
     } else {
