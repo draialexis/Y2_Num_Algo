@@ -1,6 +1,6 @@
 # Algorithmique numérique -- TP#1
 
-Une fois le repo cloné, le fichier main.c peut être compilé en utilisatn l'option de librarie "-lm" 
+Une fois le repo cloné, le fichier main.c peut être compilé en utilisant l'option de librarie "-lm" 
 
 `gcc -Wall main.c -o main -lm`
 
