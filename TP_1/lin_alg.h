@@ -20,6 +20,7 @@ void jacobiMethod(double **A, int rowsA, int colsA, double *B, int maxIteration,
         EMPTY_OR_NULL
         FAIL_OUT
     }
+    printf("=======================\nJacobi\n=======================\n");
 
     int homSys = isHomSys(B, rowsA);
 
@@ -76,13 +77,17 @@ void jacobiMethod(double **A, int rowsA, int colsA, double *B, int maxIteration,
                     }
                     Xprev[i] = X[i];
                     X[i] = (1 / A[i][i]) * (B[i] - sum);
-                    if (fabs(Xprev[i] - X[i]) > error) {
+                    if (isStable && fabs(Xprev[i] - X[i]) > error) {
                         isStable = 0;
                     }
                 }
+
+                printf("iteration #%d\n", counter);
+                showCol(X, size);
+
                 if (isStable) {
                     showEqSys(A, size, size, B);
-                    printf("apres l'iteration #%d, l'approximation s'est stabilisee en dessous de l'epsilon %.10f\n"
+                    printf("a l'iteration #%d, l'approximation s'est stabilisee en dessous de l'epsilon %.10f\n"
                            "A * X = B a une solution\n"
                            "X ->\n", counter, error);
                     showCol(X, size);
@@ -105,6 +110,9 @@ void gaussMethod(double **A, int rowsA, int colsA, double *B, int isJacobiHelper
         EMPTY_OR_NULL
         FAIL_OUT
     }
+
+    printf("=======================\nGauss\n=======================\n");
+
 
     int homSys = isHomSys(B, rowsA);
 

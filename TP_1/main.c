@@ -58,12 +58,10 @@ int main() {
 //    degradeMat(matA_prime, ROWS, COLS);
 //    double *matB_prime = copyColVec(matB, ROWS);
 //
-//    printf("=======================\nGauss\n=======================\n");
 //    gaussMethod(matA, ROWS, COLS, matB, 0);
 //    freeMat(matA, ROWS, COLS);
 //    free(matB);
 //
-//    printf("=======================\nGauss\n=======================\n");
 //    gaussMethod(matA_prime, ROWS, COLS, matB_prime, 0);
 //    freeMat(matA_prime, ROWS, COLS);
 //    free(matB_prime);
@@ -72,9 +70,7 @@ int main() {
 //    double *matB_EZ = mkColVec(3);
 //    fillMatB_EZ(matB_EZ);
 //
-//    printf("=======================\nJacobi\n=======================\n");
 //    jacobiMethod(matA_EZ, 3, 2, matB_EZ, 20, 0.1);
-//    printf("=======================\nGauss\n=======================\n");
 //    gaussMethod(matA_EZ, 3, 2, matB_EZ, 0);
 //    freeMat(matA_EZ, 3, 2);
 //    free(matB_EZ);
@@ -83,7 +79,6 @@ int main() {
 //    double *matBSparse = mkColVec(ROWS);
 //    fillMatB_rdm(matBSparse, ROWS);
 //
-//    printf("=======================\nGauss\n=======================\n");
 //    gaussMethod(matASparse, ROWS, COLS, matBSparse, 0);
 //    freeMat(matASparse, ROWS, COLS);
 //    free(matBSparse);
@@ -108,7 +103,7 @@ int main() {
             break;
         }
 
-        char method = '0';
+        char method;
         printf("choisissez votre methode :"
                "\n* 'g' : Gauss"
                "\n* 'j' : Jacobi"
@@ -132,7 +127,7 @@ int main() {
             fflush(stdin);
         }
 
-        char matA_input = '0';
+        char matA_input;
         printf("choisissez votre matrice A :"
                "\n* 'b' : Bord"
                "\n* 'd' : Ding Dong"
@@ -174,7 +169,7 @@ int main() {
             fflush(stdin);
         }
 
-        char degrade = '0';
+        char degrade;
         printf("voulez-vous comparer A avec une matrice A' perturbee (par '0.1', sur l'un des coeffs) ?"
                "\n* 'o' : oui"
                "\n* 'n' : non"
@@ -183,7 +178,7 @@ int main() {
         getchar();
         fflush(stdin);
 
-        char matB_input = '0';
+        char matB_input;
         printf("choisissez votre matrice B :"
                "\n* 'a' : \"aleatoire\" (utilise '(rand() mod 101) + 50')"
                "\n* 'C' : customisee (input via console)"
