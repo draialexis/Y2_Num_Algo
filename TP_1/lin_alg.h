@@ -20,7 +20,6 @@ void jacobiMethod(double **A, int rowsA, int colsA, double *B, double *X, int ma
         EMPTY_OR_NULL
         FAIL_OUT
     }
-    //TODO square matrix ? if yes, go on; if not, see if elimination can turn it into a square matrix
 
     int homSys = isHomSys(B, rowsA);
 
@@ -35,12 +34,11 @@ void jacobiMethod(double **A, int rowsA, int colsA, double *B, double *X, int ma
         return;
     }
     if(rowsA - nilRowsCount == colsA) {// the matrix is square after all, let's go
-
+        int strictDiagDom = isSDD(double **matA, int rowsA, int colsA, )
 
 
     }
 
-    //TODO strictly diagnally dominant? if not, exit
 }
 
 void solveForX(double **A, int rowsA, int colsA, double *B, double *X, int homSys) {
