@@ -21,6 +21,10 @@ void fillMat_EZ(double **mat);
 
 void fillMatB_EZ(double *mat);
 
+void doB(double *matB, int size, char choice);
+
+void doA(double **matA, int rows, int cols, char choice, int isSquare);
+
 void fillMatB_rdm(double *mat, int size) {
     if (size > 0) {
         for (int i = 0; i < size; i++) {
@@ -183,21 +187,30 @@ void fillMatB_EZ(double *mat) {
 }
 
 void doB(double *matB, int size, char choice) {
-    switch (choice) {
-        case 'a':
-            fillMatB_rdm(matB, size);
-            break;
-        case 'C':
-            fillMatB_userInput(matB, size);
-            break;
-        default:
-            printf("votre choix de type de matrice B n'a pas ete compris. mode aleatoire.\n");
-            fillMatB_rdm(matB, size);
-            break;
+    if (matB != NULL && size > 0) {
+        switch (choice) {
+            case 'a':
+                fillMatB_rdm(matB, size);
+                break;
+            case 'C':
+                fillMatB_userInput(matB, size);
+                break;
+            default:
+                printf("votre choix de type de matrice B n'a pas ete compris. mode aleatoire.\n");
+                fillMatB_rdm(matB, size);
+                break;
+        }
+    } else {
+        EMPTY_OR_NULL
+        FAIL_OUT
     }
 }
 
 void doA(double **matA, int rows, int cols, char choice, int isSquare) {
+    if(matA == NULL || rows <= 0 || cols <= 0) {
+        EMPTY_OR_NULL
+        FAIL_OUT
+    }
     if (isSquare) {
         switch (choice) {
             case 'b':

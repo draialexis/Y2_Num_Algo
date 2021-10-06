@@ -73,7 +73,7 @@ int main() {
     freeMat(matA_prime, ROWS, COLS);
     free(matB_prime);
     free(matX_prime);
-
+    */
     double **matA_EZ = mkMat(3, 2);
     fillMat_EZ(matA_EZ);
     double *matB_EZ = mkColVec(3);
@@ -85,7 +85,7 @@ int main() {
     freeMat(matA_EZ, 3, 2);
     free(matB_EZ);
     free(matX_EZ);
-
+    /*
     double **matASparse = mkMat(ROWS, COLS);
     fillSparseMat(matASparse, ROWS, COLS);
     double *matBSparse = mkColVec(ROWS);
@@ -101,6 +101,7 @@ int main() {
 
 
 
+    /*
     char go = '0';
     int first = 1;
     while (go != 'q') {
@@ -235,5 +236,6 @@ int main() {
         free(matB_live);
         free(matX_live);
     }
+    */
     return 0;
 }
