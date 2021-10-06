@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define ROWS 15
-#define COLS 15
+#define ROWS 5
+#define COLS 5
 #define EPSILON 0.00000000000022737367544323206000
 #define DEBUG printf("file %s; line %d\n", __FILE__, __LINE__);
 #define FAIL_OUT exit(EXIT_FAILURE);
@@ -16,6 +16,8 @@
 #include "lin_alg.h"
 
 int main() {
+
+    srand((unsigned) time(NULL));
 
 /*
     printf("size of doubles: %llu bits\n", sizeof(double) * 8);
@@ -46,7 +48,6 @@ int main() {
 
     printf("EPSILON = %.32f\n", pow(2, -42));
 */
-    srand((unsigned) time(NULL));
 
 //    double **matA = mkMat(ROWS, COLS);
 //    fillMatA_rdm(matA, ROWS, COLS);
@@ -87,7 +88,6 @@ int main() {
 //    freeMat(matASparse, ROWS, COLS);
 //    free(matBSparse);
 
-
     char go = '0';
     int first = 1;
     while (go != 'q') {
@@ -95,7 +95,7 @@ int main() {
         char str[30];
 
         if (first) {
-            printf("bienvenue dans ce solveur de systemes d'equations lineaires\n");
+            printf("\nbienvenue dans ce solveur de systemes d'equations lineaires\n");
             first = 0;
         }
         printf("entrez le caractere 'q' pour arreter,\nou tout autre pour continuer :\n>");
@@ -133,17 +133,17 @@ int main() {
         }
 
         char matA_input = '0';
-        //TODO signal which ones are strictly diagonally dominant
         printf("choisissez votre matrice A :"
                "\n* 'b' : Bord"
                "\n* 'd' : Ding Dong"
-               //               "\n* 'f' : Franc"
-               //               "\n* 'h' : Hilbert -"
-               //               "\n* 'H' : Hilbert +"
-               //               "\n* 'k' : KMS"
-               //               "\n* 'l' : Lehmer"
-               //               "\n* 'L' : Lotkin"
-               //               "\n* 'm' : Moler"
+               "\n* 'f' : Franc"
+               "\n* 'h' : Hilbert -"
+               "\n* 'H' : Hilbert +"
+               "\n* 'k' : KMS"
+               "\n* 'l' : Lehmer"
+               "\n* 'L' : Lotkin"
+               "\n* 'm' : Moler"
+               "\n* 's' : matrice a diagonale strictement dominante"
                "\n* 'a' : \"aleatoire\" (utilise '(rand() mod 101) + 50')"
                "\n* 'c' : creuse"
                "\n* 'C' : customisee (input via console)"
@@ -180,6 +180,7 @@ int main() {
                "\n* 'n' : non"
                "\n>");
         degrade = (char) getchar();
+        getchar();
         fflush(stdin);
 
         char matB_input = '0';
@@ -206,7 +207,7 @@ int main() {
         if (degrade == 'o') {
             double **matA_live_prime = copyMat(matA_live, rows_input, cols_input);
             degradeMat(matA_live_prime, rows_input, cols_input);
-            double *matB_live_prime = copyColVec(matB_live, ROWS);
+            double *matB_live_prime = copyColVec(matB_live, rows_input);
             if (method == 'g') {
                 gaussMethod(matA_live, rows_input, cols_input, matB_live, 0);
                 gaussMethod(matA_live_prime, rows_input, cols_input, matB_live_prime, 0);

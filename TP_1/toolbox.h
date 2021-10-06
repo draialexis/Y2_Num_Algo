@@ -41,6 +41,8 @@ int nilRows(double **matA, int rowsA, int colsA, double *matB, int isHomSys);
 
 int isSDD(double **matA, int size);
 
+double minDouble(double a, double b);
+
 double **mkMat(int rows, int cols) {
     if (rows > 0 && cols > 0) {
         double **mat = (double **) malloc(sizeof(double *) * rows);
@@ -324,6 +326,14 @@ int isSDD(double **matA, int size) {
         }
     }
     return 1;
+}
+
+double minDouble(double a, double b) {
+    if (a >= b) {
+        return b;
+    } else {
+        return a;
+    }
 }
 
 #endif //Y2_NUM_ALGO_TOOLBOX_H
