@@ -29,7 +29,7 @@ void jacobiMethod(double **A, int rowsA, int colsA, double *B, double *X, int ma
             printf("...y compris le vecteur 0(%d)\n", colsA);
         }
     }
-    if(colsA < rowsA) {
+    if (colsA < rowsA) {
         gaussElim(A, rowsA, colsA, B, X, 1);
     }
     int nilRowsCount = nilRows(A, rowsA, colsA, B, homSys);
@@ -40,15 +40,15 @@ void jacobiMethod(double **A, int rowsA, int colsA, double *B, double *X, int ma
         int strictDiagDom = isSDD(A, colsA);
         //COLSA! we make sure to only go through the square matrix,
         //and since any nil rows should be at the bottom, this should work
-        if(!strictDiagDom) {
+        if (!strictDiagDom) {
             showMat(A, colsA, colsA);
             char gaussInstead = '0';
             printf("A n'est pas a diagonale strictement dominante. Jacobi ne peut rien pour nous.\n"
                    "essayer avec Gauss ?\n"
                    "'o' : oui\n"
                    "'n' : non\n>");
-            gaussInstead = getchar();
-            if(gaussInstead == 'o') {
+            gaussInstead = (char) getchar();
+            if (gaussInstead == 'o') {
                 gaussElim(A, rowsA, colsA, B, X, 0);
             }
         } else {
