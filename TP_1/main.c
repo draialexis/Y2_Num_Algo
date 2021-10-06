@@ -80,6 +80,8 @@ int main() {
     fillMatB_EZ(matB_EZ);
     double *matX_EZ = mkColVec(3);
 
+    printf("=======================\nJacobi\n=======================\n");
+    jacobiMethod(matA_EZ, 3, 2, matB_EZ, matX_EZ, 20, 0.1);
     printf("=======================\nGauss\n=======================\n");
     gaussElim(matA_EZ, 3, 2, matB_EZ, matX_EZ, 0);
     freeMat(matA_EZ, 3, 2);

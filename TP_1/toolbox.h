@@ -313,6 +313,7 @@ int isSDD(double **matA, int size) {
     double diag = 0.0;
     double undiag = 0.0;
     for (int i = 0; i < size; i++) {
+        undiag = 0.0;
         diag = fabs(matA[i][i]);
         for (int j = 0; j < size; j++) {
             if (i != j) {
