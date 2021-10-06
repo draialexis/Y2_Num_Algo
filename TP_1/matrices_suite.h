@@ -146,40 +146,17 @@ void fillMat_EZ(double **mat) {
         mat[1][1] = 3.0;
         mat[2][0] = 4.0;
         mat[2][1] = 2.0;
-//        mat[0][0] = 1.0;//1
-//        mat[0][1] = -2.0;//-2
-//        mat[0][2] = -1.0;//-1
-////        mat[0][3] = -1.0;
-////        mat[0][4] = 2.0;
-//        mat[1][0] = 2.0;//2
-//        mat[1][1] = -5.0;//-5
-//        mat[1][2] = -4.0;//-4
-////        mat[1][3] = -1.0;
-////        mat[1][4] = 5.0;
-//        mat[2][0] = -3.0;//-3
-//        mat[2][1] = 1.0;//1
-//        mat[2][2] = -5.0;//-5
-////        mat[2][3] = -7.0;
-////        mat[2][4] = -4.0;
-//        mat[3][0] = 3.0;
-//        mat[3][1] = -6.0;// 3 * L1
-//        mat[3][2] = -3.0;
     } else {
         EMPTY_OR_NULL
         FAIL_OUT
     }
 }
 
-//TODO add validation, add prototypes
 void fillMatB_EZ(double *mat) {
     if (mat != NULL) {
         mat[0] = 11.0;
         mat[1] = 13.0;
         mat[2] = 22.0;
-//        mat[0] = 2.0;//2
-//        mat[1] = 6.0;//6
-//        mat[2] = 1.0;//1
-//        mat[3] = 6.0;// 3 * L1
     } else {
         EMPTY_OR_NULL
         FAIL_OUT

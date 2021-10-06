@@ -17,8 +17,6 @@
 
 int main() {
 
-    // TODO "Pour tester la sensibilite des algorithmes, resoudre les systemes Ax=b et A'x=b (A' est la matrice A dont
-    //  les coefficients ont ete legerement perturbes) puis comparer les solutions x et x' obtenues est suffisant."
 /*
     printf("size of doubles: %llu bits\n", sizeof(double) * 8);
 
@@ -152,8 +150,8 @@ int main() {
                "\n>");
         matA_input = (char) getchar();
         getchar();
-        if (matA_input == 'q') exit(0);
         fflush(stdin);
+        if (matA_input == 'q') exit(0);
 
         int size_input = 0;
         int rows_input = 0;
@@ -176,15 +174,13 @@ int main() {
             fflush(stdin);
         }
 
-//        char degrade = '0';
-//        printf("voulez-vous comparer avec une matrice A perturbee (par '0.1', sur un coeff) ?"
-//               "\n* 'o' : oui"
-//               "\n* 'n' : non"
-//               "\n>");
-//        scanf("%c", &degrade);
-//        getchar();
-//        fflush(stdin);
-//TODO maybe, if there's time?
+        char degrade = '0';
+        printf("voulez-vous comparer A avec une matrice A' perturbee (par '0.1', sur l'un des coeffs) ?"
+               "\n* 'o' : oui"
+               "\n* 'n' : non"
+               "\n>");
+        degrade = (char) getchar();
+        fflush(stdin);
 
         char matB_input = '0';
         printf("choisissez votre matrice B :"
@@ -207,18 +203,25 @@ int main() {
         doA(matA_live, rows_input, cols_input, matA_input, isSquare);
         double *matB_live = mkColVec(rows_input);
         doB(matB_live, rows_input, matB_input);
-
-        switch (method) {
-            case 'g' :
+        if (degrade == 'o') {
+            double **matA_live_prime = copyMat(matA_live, rows_input, cols_input);
+            degradeMat(matA_live_prime, rows_input, cols_input);
+            double *matB_live_prime = copyColVec(matB_live, ROWS);
+            if (method == 'g') {
                 gaussMethod(matA_live, rows_input, cols_input, matB_live, 0);
-                break;
-            case 'j' :
+                gaussMethod(matA_live_prime, rows_input, cols_input, matB_live_prime, 0);
+            } else if (method == 'j') {
                 jacobiMethod(matA_live, rows_input, cols_input, matB_live, max_i_input, epsilon_input);
-                break;
-            default :
-                printf("votre choix de methode n'a pas ete compris. methode de Gauss.\n");
+                jacobiMethod(matA_live_prime, rows_input, cols_input, matB_live_prime, max_i_input, epsilon_input);
+            }
+            freeMat(matA_live_prime, rows_input, cols_input);
+            free(matB_live_prime);
+        } else {
+            if (method == 'g') {
                 gaussMethod(matA_live, rows_input, cols_input, matB_live, 0);
-                break;
+            } else if (method == 'j') {
+                jacobiMethod(matA_live, rows_input, cols_input, matB_live, max_i_input, epsilon_input);
+            }
         }
         freeMat(matA_live, rows_input, cols_input);
         free(matB_live);

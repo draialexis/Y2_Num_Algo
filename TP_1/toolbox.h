@@ -115,7 +115,6 @@ void degradeMat(double **mat, int rows, int cols) {
     if (mat != NULL && rows > 0 && cols > 0) {
         int i = rand() % rows;
         int j = rand() % cols;
-        printf("it's happening!\nmat[%d][%d]\n", i, j);
         mat[i][j] = mat[i][j] + 0.1;
     } else {
         EMPTY_OR_NULL
@@ -142,7 +141,7 @@ void showMat(double **mat, int rows, int cols) {
 void showCol(double *mat, int size) {
     if (size > 0 && mat != NULL) {
         for (int i = 0; i < size; i++) {
-            printf("|%+8.2f|\n", mat[i]);
+            printf("|%+8.10f|\n", mat[i]);
         }
         printf("\n");
     } else {
