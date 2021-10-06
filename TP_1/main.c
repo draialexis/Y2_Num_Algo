@@ -48,60 +48,48 @@ int main() {
 
     printf("EPSILON = %.32f\n", pow(2, -42));
 */
-    srand(time(NULL));
+    srand((unsigned) time(NULL));
 
-    /*
-    double **matA = mkMat(ROWS, COLS);
-    fillMatA_rdm(matA, ROWS, COLS);
-    double *matB = mkColVec(ROWS);
-    fillMatB_rdm(matB, ROWS);
-    double *matX = mkColVec(COLS);// "COLS" because: A(m,n) * X(_n_, p) = B(m, p) // p = 1
-
-    double **matA_prime = copyMat(matA, ROWS, COLS);
-    degradeMat(matA_prime, ROWS, COLS);
-    double *matB_prime = copyColVec(matB, ROWS);
-    double *matX_prime = mkColVec(COLS);
-
-    printf("=======================\nGauss\n=======================\n");
-    gaussElim(matA, ROWS, COLS, matB, matX, 0);
-    freeMat(matA, ROWS, COLS);
-    free(matB);
-    free(matX);
-
-    printf("=======================\nGauss\n=======================\n");
-    gaussMethod(matA_prime, ROWS, COLS, matB_prime, matX_prime, 0);
-    freeMat(matA_prime, ROWS, COLS);
-    free(matB_prime);
-    free(matX_prime);
-    */
-    double **matA_EZ = mkMat(3, 2);
-    fillMat_EZ(matA_EZ);
-    double *matB_EZ = mkColVec(3);
-    fillMatB_EZ(matB_EZ);
-
-    printf("=======================\nJacobi\n=======================\n");
-    jacobiMethod(matA_EZ, 3, 2, matB_EZ, 20, 0.1);
-    printf("=======================\nGauss\n=======================\n");
-    gaussMethod(matA_EZ, 3, 2, matB_EZ, 0);
-    freeMat(matA_EZ, 3, 2);
-    free(matB_EZ);
-    /*
-    double **matASparse = mkMat(ROWS, COLS);
-    fillSparseMat(matASparse, ROWS, COLS);
-    double *matBSparse = mkColVec(ROWS);
-    fillMatB_rdm(matBSparse, ROWS);
-    double *matXSparse = mkColVec(COLS);
-
-    printf("=======================\nGauss\n=======================\n");
-    gaussMethod(matASparse, ROWS, COLS, matBSparse, matXSparse, 0);
-    freeMat(matASparse, ROWS, COLS);
-    free(matBSparse);
-    free(matXSparse);
-    */
+//    double **matA = mkMat(ROWS, COLS);
+//    fillMatA_rdm(matA, ROWS, COLS);
+//    double *matB = mkColVec(ROWS);
+//    fillMatB_rdm(matB, ROWS);
+//
+//    double **matA_prime = copyMat(matA, ROWS, COLS);
+//    degradeMat(matA_prime, ROWS, COLS);
+//    double *matB_prime = copyColVec(matB, ROWS);
+//
+//    printf("=======================\nGauss\n=======================\n");
+//    gaussMethod(matA, ROWS, COLS, matB, 0);
+//    freeMat(matA, ROWS, COLS);
+//    free(matB);
+//
+//    printf("=======================\nGauss\n=======================\n");
+//    gaussMethod(matA_prime, ROWS, COLS, matB_prime, 0);
+//    freeMat(matA_prime, ROWS, COLS);
+//    free(matB_prime);
+//    double **matA_EZ = mkMat(3, 2);
+//    fillMat_EZ(matA_EZ);
+//    double *matB_EZ = mkColVec(3);
+//    fillMatB_EZ(matB_EZ);
+//
+//    printf("=======================\nJacobi\n=======================\n");
+//    jacobiMethod(matA_EZ, 3, 2, matB_EZ, 20, 0.1);
+//    printf("=======================\nGauss\n=======================\n");
+//    gaussMethod(matA_EZ, 3, 2, matB_EZ, 0);
+//    freeMat(matA_EZ, 3, 2);
+//    free(matB_EZ);
+//    double **matASparse = mkMat(ROWS, COLS);
+//    fillSparseMat(matASparse, ROWS, COLS);
+//    double *matBSparse = mkColVec(ROWS);
+//    fillMatB_rdm(matBSparse, ROWS);
+//
+//    printf("=======================\nGauss\n=======================\n");
+//    gaussMethod(matASparse, ROWS, COLS, matBSparse, 0);
+//    freeMat(matASparse, ROWS, COLS);
+//    free(matBSparse);
 
 
-
-    /*
     char go = '0';
     int first = 1;
     while (go != 'q') {
@@ -112,7 +100,7 @@ int main() {
             printf("bienvenue dans ce solveur de systemes d'equations lineaires\n");
             first = 0;
         }
-        printf("entrez le caractere 'q' pour arreter,\nou autre pour continuer :\n>");
+        printf("entrez le caractere 'q' pour arreter,\nou tout autre pour continuer :\n>");
 
         go = (char) getchar();
         getchar();
@@ -132,7 +120,7 @@ int main() {
         fflush(stdin);
 
         int max_i_input;
-        int epsilon_input;
+        double epsilon_input;
         if (method == 'j') {
             printf("choisissez le nombre max d'iterations, puis epsilon :\nmax_i\n>");
             scanf("%s", str);
@@ -141,7 +129,7 @@ int main() {
 
             printf("epsilon\n>");
             scanf("%s", str);
-            epsilon_input = (int) strtol(str, NULL, 10);
+            epsilon_input = (double) strtof(str, NULL);
             fflush(stdin);
         }
 
@@ -216,26 +204,22 @@ int main() {
         doA(matA_live, rows_input, cols_input, matA_input, isSquare);
         double *matB_live = mkColVec(rows_input);
         doB(matB_live, rows_input, matB_input);
-        double *matX_live = mkColVec(cols_input);
 
         switch (method) {
             case 'g' :
-                DEBUG
-                gaussElim(matA_live, rows_input, cols_input, matB_live, matX_live, 0);
+                gaussMethod(matA_live, rows_input, cols_input, matB_live, 0);
                 break;
             case 'j' :
-                DEBUG
-                jacobiMethod(matA_live, rows_input, cols_input, matB_live, matX_live, max_i_input, epsilon_input);
+                jacobiMethod(matA_live, rows_input, cols_input, matB_live, max_i_input, epsilon_input);
                 break;
             default :
                 printf("votre choix de methode n'a pas ete compris. methode de Gauss.\n");
-                gaussMethod(matA_live, rows_input, cols_input, matB_live, matX_live, 0);
+                gaussMethod(matA_live, rows_input, cols_input, matB_live, 0);
                 break;
         }
         freeMat(matA_live, rows_input, cols_input);
         free(matB_live);
-        free(matX_live);
     }
-    */
+
     return 0;
 }

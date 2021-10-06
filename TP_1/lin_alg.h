@@ -14,9 +14,17 @@ void gaussMethod(double **A, int rowsA, int colsA, double *B, int isJacobiHelper
 void solveGauss(double **A, int rowsA, int colsA, double *B, int homSys);
 
 void jacobiMethod(double **A, int rowsA, int colsA, double *B, int maxIteration, double error) {
-    if (A == NULL || rowsA < 2 || colsA < 2 || B == NULL || maxIteration < 1 || error < EPSILON) {
+    if (A == NULL || rowsA < 2 || colsA < 2 || B == NULL || maxIteration < 1 || fabs(error) < EPSILON) {
+        printf("A == NULL : %d\n", A == NULL);
+        printf("B == NULL : %d\n", B == NULL);
+        printf("rowsA < 2 : %d\n", rowsA < 2);
+        printf("colsA < 2 : %d\n", colsA < 2);
+        printf("maxIteration < 1 : %d\n", maxIteration < 1);
+        printf("fabs(error) < EPSILON : %d\n", fabs(error) < EPSILON);
+        printf("fabs(error) = %.30f\n", fabs(error));
+        printf("EPSILON = %.30f\n", EPSILON);
         printf("les matrices doivent etre non-nulles, A doit etre au moins (2, 2), max_iterations doit etre superieur a 1,"
-               " l'epsilon ne peut pas etre inferieur a l'epsilon de la machine (%.30f)", EPSILON);
+               " l'epsilon ne peut pas etre inferieur a l'epsilon de la machine (%.30f)\n", EPSILON);
         EMPTY_OR_NULL
         FAIL_OUT
     }
