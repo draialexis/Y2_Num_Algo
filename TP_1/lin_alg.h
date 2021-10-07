@@ -148,7 +148,9 @@ void jacobiMethod(double **A, int rowsA, int colsA, double *B, int maxIteration,
         //we make sure to only go through the remaining square matrix,
         //and since any nil rows should be at the bottom, this should work
         if (!strictDiagDom) {
-            showMat(A, size, size);
+            if (show) {
+                showMat(A, size, size);
+            }
             char gaussInstead;
             printf("A n'est pas a diagonale strictement dominante. Jacobi ne peut rien pour nous.\n"
                    "essayer avec Gauss ?\n"
@@ -193,7 +195,7 @@ void jacobiMethod(double **A, int rowsA, int colsA, double *B, int maxIteration,
                 }
 
                 if (isStable) {
-                    showEqSys(A, size, size, B);
+                    if (show) showEqSys(A, size, size, B);
                     printf("a l'iteration #%d, l'approximation s'est stabilisee en dessous de l'epsilon %.10f\n"
                            "A * X = B a une solution\n"
                            "X ->\n", counter, error);
