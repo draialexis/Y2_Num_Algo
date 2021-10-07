@@ -71,9 +71,17 @@ int main() {
         methd = (char) getchar();
         cleanCheck(methd);
 
+        char compare;
+        printf("voulez-vous comparer jacobi(A) avec gauss(A) ?"
+               "\n* 'o' : oui"
+               "\n* 'n' : non"
+               "\n>");
+        compare = (char) getchar();
+        cleanCheck(compare);
+
         int max_i;
         double eps;
-        if (methd == 'j') {
+        if (methd == 'j' || compare == 'o') {
             printf("choisissez le nombre max d'iterations, puis epsilon :"
                    "\nmax_i"
                    "\n>");
@@ -133,12 +141,14 @@ int main() {
         }
 
         char degrade;
-        printf("voulez-vous comparer A avec une matrice A' perturbee (par '0.1', sur l'un des coeffs) ?"
-               "\n* 'o' : oui"
-               "\n* 'n' : non"
-               "\n>");
-        degrade = (char) getchar();
-        cleanCheck(degrade);
+        if (compare != 'o') {
+            printf("voulez-vous comparer A avec une matrice A' perturbee (par '0.1', sur l'un des coeffs) ?"
+                   "\n* 'o' : oui"
+                   "\n* 'n' : non"
+                   "\n>");
+            degrade = (char) getchar();
+            cleanCheck(degrade);
+        }
 
         char matB;
         printf("choisissez votre matrice B :"
@@ -170,7 +180,7 @@ int main() {
         doA(matA_live, rows, cols, matA, isSquare);
         double *matB_live = mkColVec(rows);
         doB(matB_live, rows, matB);
-        if (degrade == 'o') {
+        if (compare != 'o' && degrade == 'o') {
             double **matA_live_prime = copyMat(matA_live, rows, cols);
             degradeMat(matA_live_prime, rows, cols);
             double *matB_live_prime = copyColVec(matB_live, rows);
@@ -183,6 +193,14 @@ int main() {
             }
             freeMat(matA_live_prime, rows, cols);
             free(matB_live_prime);
+        }
+        if (compare == 'o' && degrade != 'o') {
+            double **matA_live_scd = copyMat(matA_live, rows, cols);
+            double *matB_live_scd = copyColVec(matB_live, rows);
+            jacobiMethod(matA_live, rows, cols, matB_live, max_i, eps, show);
+            gaussMethod(matA_live_scd, rows, cols, matB_live_scd, 0, show);
+            freeMat(matA_live_scd, rows, cols);
+            free(matB_live_scd);
         } else {
             if (methd == 'g') {
                 gaussMethod(matA_live, rows, cols, matB_live, 0, show);
