@@ -3,10 +3,15 @@ project(Y2_Num_Algo C)
 
 set(CMAKE_C_STANDARD 11)
 
-include_directories(TP_1)
+include_directories(TP_1 TP_2)
 
-add_executable(TP_1
-        TP_1/main.c
-        TP_1/matrices_suite.h
-        TP_1/toolbox.h
-        TP_1/lin_alg.h)
+add_executable(
+#        TP_1
+#        TP_1/main.c
+#        TP_1/matrices_suite.h
+#        TP_1/toolbox.h
+#        TP_1/lin_alg.h
+
+        TP_2
+        TP_2/main.c
+)
