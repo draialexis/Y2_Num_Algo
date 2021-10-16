@@ -100,6 +100,9 @@ void findPolyNewt(coord *coords, int points) {
         }
     }
     showPoly(poly, n_coeffs, coords);
+
+    //TODO save poly on a .py file (respecting python syntax)
+    // so that we just have to execute it to see the graph
 }
 
 #endif //Y2_NUM_ALGO_NEWTON_H
