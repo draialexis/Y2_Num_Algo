@@ -5,6 +5,8 @@
 #ifndef Y2_NUM_ALGO_TOOLBOX_H
 #define Y2_NUM_ALGO_TOOLBOX_H
 
+#define BUFFER_SIZE 2048
+
 typedef struct Coordinate {
     double x;
     double y;
@@ -37,6 +39,8 @@ double minDouble(double a, double b);
 void cleanCheck(char input);
 
 void checkFopen(FILE *fileName);
+
+void writePy(coord *coords, char *eqStr, int degP, int points);
 
 double **mkMat(int rows, int cols) {
     if (rows > 0 && cols > 0) {
@@ -210,12 +214,11 @@ void showCoordArr(coord *arr, int points) {
 }
 
 char *printPoly(double *poly, int n_coeffs, coord *coords) {
-    printf("unsimplified polynomial equation:\n");
     char *res = (char *) malloc(sizeof(char) * n_coeffs * 32);
     sprintf(res, "%c", '\0');
     char *tmp = (char *) malloc(sizeof(char) * 32);
     for (int i = 0; i < n_coeffs; i++) {
-        if (poly[i != 0]) {
+        if (poly[i] > EPSILON) {
             if (i == 0) {
                 sprintf(tmp, "%+.10f", poly[i]);
                 strncat(res, tmp, 32);
@@ -341,6 +344,62 @@ void writeToFile(char *myStr, char *f2_name) {
     checkFopen(f2);
     fputs(myStr, f2);
     fclose(f2);
+}
+
+void writePy(coord *coords, char *eqStr, int degP, int points) {
+    char *pyStr = (char *) malloc(sizeof(char) * BUFFER_SIZE);
+    char *xStr = (char *) malloc(sizeof(char) * points * 64);//64 chars per coordinate should be enough on the whole
+    char *yStr = (char *) malloc(sizeof(char) * points * 64);
+    char *xPart = (char *) malloc(sizeof(char) * 32);
+    char *yPart = (char *) malloc(sizeof(char) * 32);
+    sprintf(xStr, "%c", '\0');
+    sprintf(yStr, "%c", '\0');
+    sprintf(xPart, "%c", '\0');
+    sprintf(yPart, "%c", '\0');
+    for (int i = 0; i < points; i++) {
+        sprintf(xPart, "%.10f", coords[i].x);
+        sprintf(yPart, "%.10f", coords[i].y);
+        strncat(xStr, xPart, 32);
+        strncat(yStr, yPart, 32);
+        if (i != points - 1) {
+            strncat(xStr, ", ", 3);
+            strncat(yStr, ", ", 3);
+        }
+    }
+    free(xPart);
+    free(yPart);
+
+    sprintf(pyStr,
+            "import numpy as np\n"
+            "import matplotlib.pyplot as plt\n"
+            "import sympy as sym\n"
+            "x = sym.symbols('x')\n"
+            "x_t = [%s]\n"
+            "y_d = [%s]\n"
+            "curve = np.polyfit(x_t, y_d, %d)\n"
+            "poly = np.poly1d(curve)\n"
+            "new_x_t = []\n"
+            "new_y_d = []\n"
+            "lo = int(min(x_t) - 2.0)\n"
+            "hi = int(max(x_t) + 2.0) + 1\n"
+            "for i in range(lo, hi):\n"
+            "    new_x_t.append(i)\n"
+            "    new_y_d.append(poly(i))\n"
+            "plt.plot(new_x_t, new_y_d, color='r', label='Newton')\n"
+            "plt.scatter(x_t, y_d, 50, color='b', label='Given datapoints')\n"
+            "plt.xlabel('x')\n"
+            "plt.ylabel('P(x)')\n"
+            "plt.title(sym.simplify(%s))\n"
+            "plt.legend()\n"
+            "plt.show()\n",
+            xStr, yStr, degP, eqStr);
+
+    char *fname = "newt_poly.py";
+    writeToFile(pyStr, fname);
+    free(pyStr);
+    free(eqStr);
+    free(xStr);
+    free(yStr);
 }
 
 #endif //Y2_NUM_ALGO_TOOLBOX_H

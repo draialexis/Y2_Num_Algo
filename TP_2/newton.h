@@ -5,8 +5,6 @@
 #ifndef Y2_NUM_ALGO_NEWTON_H
 #define Y2_NUM_ALGO_NEWTON_H
 
-#define BUFFER_SIZE 1000
-
 void findPolyNewt(coord *coords, int points) {
 
     if (coords == NULL && points < 2) {
@@ -25,6 +23,7 @@ void findPolyNewt(coord *coords, int points) {
     double prev;
     int isMonoPrev = 0;
     int ops = 0;
+
     for (int j = 0; j < degP; j++) {
         isMono = 1;
         for (int i = 0; i < degP - j; i++) {//we don't want to fill the entire matrix
@@ -83,6 +82,7 @@ void findPolyNewt(coord *coords, int points) {
             degP = j + 1;
         }
     }
+
     printf("operations: %d\n", ops);
     const int n_coeffs = degP + 1;//+ 1 for the x^0 coeff
 
@@ -95,9 +95,11 @@ void findPolyNewt(coord *coords, int points) {
             poly[i] = diffs[0][i - 1]; //b1 = diffs[0][0], b2 = diffs[0][1], etc.
         }
     }
+
     char *eqStr = printPoly(poly, n_coeffs, coords);
 
-    printf("unsimplified polynomial equation:\n%s\n", eqStr);
+    printf("equation polynomiale non simplifiee"
+           "\n(version simplifiee visible par le script python):\n%s\n", eqStr);
 
     char genPy;
     printf("generer un script \"newt_poly.py\"?"
@@ -107,59 +109,10 @@ void findPolyNewt(coord *coords, int points) {
     genPy = (char) getchar();
     cleanCheck(genPy);
 
-
     if (genPy == 'o') {
-        char *pyStr = (char *) malloc(sizeof(char) * BUFFER_SIZE);
-        char *xStr = (char *) malloc(sizeof(char) * points * 64);//64 chars per coordinate should be enough on the whole
-        char *yStr = (char *) malloc(sizeof(char) * points * 64);
-        char *xPart = (char *) malloc(sizeof(char) * 32);
-        char *yPart = (char *) malloc(sizeof(char) * 32);
-        sprintf(xStr, "%c", '\0');
-        sprintf(yStr, "%c", '\0');
-        sprintf(xPart, "%c", '\0');
-        sprintf(yPart, "%c", '\0');
-        for (int i = 0; i < points; i++) {
-            sprintf(xPart, "%.10f", coords[i].x);
-            sprintf(yPart, "%.10f", coords[i].y);
-            strncat(xStr, xPart, 32);
-            strncat(yStr, yPart, 32);
-            if (i != points - 1) {
-                strncat(xStr, ", ", 3);
-                strncat(yStr, ", ", 3);
-            }
-        }
-
-        sprintf(pyStr,
-                "import numpy as np\n"
-                "import matplotlib.pyplot as plt\n"
-                "import sympy as sym\n"
-                "x = sym.symbols('x')\n"
-                "x_t = [%s]\n"
-                "y_d = [%s]\n"
-                "curve = np.polyfit(x_t, y_d, %d)\n"
-                "poly = np.poly1d(curve)\n"
-                "new_x_t = []\n"
-                "new_y_d = []\n"
-                "lo = int(min(x_t) - 2.0)\n"
-                "hi = int(max(x_t) + 2.0) + 1\n"
-                "for i in range(lo, hi):\n"
-                "    new_x_t.append(i)\n"
-                "    new_y_d.append(poly(i))\n"
-                "plt.plot(new_x_t, new_y_d, color='r', label='Newton')\n"
-                "plt.scatter(x_t, y_d, 50, color='b', label='Given datapoints')\n"
-                "plt.xlabel('x')\n"
-                "plt.ylabel('P(x)')\n"
-                "plt.title(sym.simplify(%s))\n"
-                "plt.legend()\n"
-                "plt.show()\n",
-                xStr, yStr, degP, eqStr);
-
-        char *fname = "newt_poly.py";
-        writeToFile(pyStr, fname);
-        free(pyStr);
-        free(xStr);
-        free(yStr);
+        writePy(coords, eqStr, degP, points);
     }
+    free(eqStr);
 }
 
 #endif //Y2_NUM_ALGO_NEWTON_H
