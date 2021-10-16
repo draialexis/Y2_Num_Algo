@@ -36,6 +36,8 @@ double minDouble(double a, double b);
 
 void cleanCheck(char input);
 
+void checkFopen(FILE *fileName);
+
 double **mkMat(int rows, int cols) {
     if (rows > 0 && cols > 0) {
         double **mat = (double **) malloc(sizeof(double *) * rows);
@@ -314,6 +316,22 @@ void cleanCheck(char input) {
     getchar();
     if (input == 'q') exit(0);
     fflush(stdin);
+}
+
+
+void checkFopen(FILE *fileName) {
+    if (fileName == NULL) {
+        EMPTY_OR_NULL
+        perror("error while opening file");
+        FAIL_OUT
+    }
+}
+
+void writeToFile(char *myStr, char *f2_name) {
+    FILE *f2 = fopen(f2_name, "w+");
+    checkFopen(f2);
+    fputs(myStr, f2);
+    fclose(f2);
 }
 
 #endif //Y2_NUM_ALGO_TOOLBOX_H

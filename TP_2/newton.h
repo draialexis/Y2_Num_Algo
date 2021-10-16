@@ -5,20 +5,17 @@
 #ifndef Y2_NUM_ALGO_NEWTON_H
 #define Y2_NUM_ALGO_NEWTON_H
 
-void findPolyNewt(coord *coords, int points) {
-    //TODO input validation
+#define BUFFER_SIZE 1000
 
-    //TODO check if two coords.x are the same.
-    //  If not, go on.
-    //  If so, check if the corresponding coords.y are the same.
-    //      If not, exit with failure and alert,
-    //          (or average them?)
-    //      If so, remove one of the two entries and reset the check on the new coords
-    //           which implies:
-    //              points--;
-    //              coord *tmp = ...
-    //              coords = tmp;
-    //              free(tmp);
+void findPolyNewt(coord *coords, int points) {
+
+    if (coords == NULL && points < 2) {
+        if (points < 2) {
+            printf("we need at least two points to interpolate a polynomial\n");
+        }
+        EMPTY_OR_NULL
+        FAIL_OUT
+    }
 
     //using a table of divided differences, find the Newton interpolation polynomial that matches our datapoints
 
@@ -27,7 +24,6 @@ void findPolyNewt(coord *coords, int points) {
     int isMono;
     double prev;
     int isMonoPrev = 0;
-    int jMono;
     int ops = 0;
     for (int j = 0; j < degP; ++j) {
         isMono = 1;
@@ -101,8 +97,51 @@ void findPolyNewt(coord *coords, int points) {
     }
     showPoly(poly, n_coeffs, coords);
 
-    //TODO save poly on a .py file (respecting python syntax)
-    // so that we just have to execute it to see the graph
+    char *pyStr = (char *) malloc(sizeof(char) * BUFFER_SIZE);
+    char *xStr = (char *) malloc(sizeof(char) * points * 64);//64 chars per coordinate should be enough on the whole
+    char *yStr = (char *) malloc(sizeof(char) * points * 64);
+    char *yPart = (char *) malloc(sizeof(char) * 32);
+    char *xPart = (char *) malloc(sizeof(char) * 32);
+    sprintf(xStr, "%c", '\0');
+    sprintf(yStr, "%c", '\0');
+    sprintf(xPart, "%c", '\0');
+    sprintf(yPart, "%c", '\0');
+    for (int i = 0; i < points; ++i) {
+        sprintf(xPart, "%.10f", coords[i].x);
+        sprintf(yPart, "%.10f", coords[i].y);
+        strncat(xStr, xPart, 32);
+        strncat(yStr, yPart, 32);
+        if (i != points - 1) {
+            strncat(xStr, ", ", 3);
+            strncat(yStr, ", ", 3);
+        }
+    }
+
+    sprintf(pyStr,
+            "import numpy as np\n"
+            "import matplotlib.pyplot as plt\n"
+            "x_t = [%s]\n"
+            "y_d = [%s]\n"
+            "curve = np.polyfit(x_t, y_d, 3)\n"
+            "poly = np.poly1d(curve)\n"
+            "new_x_t = []\n"
+            "new_y_d = []\n"
+            "lo = int(min(x_t) - 2.0)\n"
+            "hi = int(max(x_t) + 2.0) + 1\n"
+            "for i in range(lo, hi):\n"
+            "    new_x_t.append(i)\n"
+            "    new_y_d.append(poly(i))\n"
+            "plt.plot(new_x_t, new_y_d, \"red\")\n"
+            "plt.scatter(x_t, y_d, 50)\n"
+            "plt.show()\n",
+            xStr, yStr);
+
+    char *fname = "newt_poly.py";
+    writeToFile(pyStr, fname);
+    free(pyStr);
+    free(xStr);
+    free(yStr);
+
 }
 
 #endif //Y2_NUM_ALGO_NEWTON_H
