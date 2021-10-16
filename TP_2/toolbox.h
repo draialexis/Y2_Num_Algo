@@ -209,30 +209,39 @@ void showCoordArr(coord *arr, int points) {
     }
 }
 
-void showPoly(double *poly, int n_coeffs, coord *coords) {
+char *printPoly(double *poly, int n_coeffs, coord *coords) {
     printf("unsimplified polynomial equation:\n");
-
+    char *res = (char *) malloc(sizeof(char) * n_coeffs * 32);
+    sprintf(res, "%c", '\0');
+    char *tmp = (char *) malloc(sizeof(char) * 32);
     for (int i = 0; i < n_coeffs; i++) {
         if (poly[i != 0]) {
             if (i == 0) {
-                printf("%+04.2f", poly[i]);
+                sprintf(tmp, "%+.10f", poly[i]);
+                strncat(res, tmp, 32);
             } else {
-                printf("%+04.2f * ", poly[i]);
-                for (int k = 0; k < i; ++k) {
+                sprintf(tmp, "%+.10f * ", poly[i]);
+                strncat(res, tmp, 32);
+                for (int k = 0; k < i; k++) {
                     if (fabs(coords[k].x) < EPSILON) {
-                        printf("(x)");
+                        sprintf(tmp, "(x)");
+                        strncat(res, tmp, 32);
                     } else {
-                        printf("(x - (%+04.2f))", coords[k].x);
+                        sprintf(tmp, "(x - (%+.10f))", coords[k].x);
+                        strncat(res, tmp, 32);
                     }
                     if (k < i - 1) {
-                        printf(" * ");
+                        sprintf(tmp, " * ");
+                        strncat(res, tmp, 32);
                     }
                 }
             }
         }
-        printf("\n");
+//        printf("\n");
     }
-    printf("\n\n");
+//    printf("\n\n");
+    free(tmp);
+    return res;
 }
 
 

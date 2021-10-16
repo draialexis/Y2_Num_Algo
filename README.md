@@ -19,5 +19,5 @@ command (you might have to install **GCC** first):
 
 If you are testing TP_2 specifically, you will see that a _*...poly.py_ file appear after execution. If you execute it
 from shell or cmd, a scatterplot of the initial input will appear together with the graph of the interpolated polynomial
-function. However, you might need to install **Python**, as well as the **numpy** and
+function. However, you might need to install **Python**, as well as the **numpy**, **sympy**, and
 **matplotlib** libraries
