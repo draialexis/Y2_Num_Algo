@@ -97,51 +97,64 @@ void findPolyNewt(coord *coords, int points) {
     }
     showPoly(poly, n_coeffs, coords);
 
-    char *pyStr = (char *) malloc(sizeof(char) * BUFFER_SIZE);
-    char *xStr = (char *) malloc(sizeof(char) * points * 64);//64 chars per coordinate should be enough on the whole
-    char *yStr = (char *) malloc(sizeof(char) * points * 64);
-    char *yPart = (char *) malloc(sizeof(char) * 32);
-    char *xPart = (char *) malloc(sizeof(char) * 32);
-    sprintf(xStr, "%c", '\0');
-    sprintf(yStr, "%c", '\0');
-    sprintf(xPart, "%c", '\0');
-    sprintf(yPart, "%c", '\0');
-    for (int i = 0; i < points; ++i) {
-        sprintf(xPart, "%.10f", coords[i].x);
-        sprintf(yPart, "%.10f", coords[i].y);
-        strncat(xStr, xPart, 32);
-        strncat(yStr, yPart, 32);
-        if (i != points - 1) {
-            strncat(xStr, ", ", 3);
-            strncat(yStr, ", ", 3);
+    char genPy;
+    printf("generer un script \"newt_poly.py\"?"
+           "\n* 'o' : oui"
+           "\n* 'n' : non"
+           "\n>");
+    genPy = (char) getchar();
+    cleanCheck(genPy);
+
+    if (genPy == 'o') {
+        char *pyStr = (char *) malloc(sizeof(char) * BUFFER_SIZE);
+        char *xStr = (char *) malloc(sizeof(char) * points * 64);//64 chars per coordinate should be enough on the whole
+        char *yStr = (char *) malloc(sizeof(char) * points * 64);
+        char *yPart = (char *) malloc(sizeof(char) * 32);
+        char *xPart = (char *) malloc(sizeof(char) * 32);
+        sprintf(xStr, "%c", '\0');
+        sprintf(yStr, "%c", '\0');
+        sprintf(xPart, "%c", '\0');
+        sprintf(yPart, "%c", '\0');
+        for (int i = 0; i < points; ++i) {
+            sprintf(xPart, "%.10f", coords[i].x);
+            sprintf(yPart, "%.10f", coords[i].y);
+            strncat(xStr, xPart, 32);
+            strncat(yStr, yPart, 32);
+            if (i != points - 1) {
+                strncat(xStr, ", ", 3);
+                strncat(yStr, ", ", 3);
+            }
         }
+
+        sprintf(pyStr,
+                "import numpy as np\n"
+                "import matplotlib.pyplot as plt\n"
+                "x_t = [%s]\n"
+                "y_d = [%s]\n"
+                "curve = np.polyfit(x_t, y_d, %d)\n"
+                "poly = np.poly1d(curve)\n"
+                "new_x_t = []\n"
+                "new_y_d = []\n"
+                "lo = int(min(x_t) - 2.0)\n"
+                "hi = int(max(x_t) + 2.0) + 1\n"
+                "for i in range(lo, hi):\n"
+                "    new_x_t.append(i)\n"
+                "    new_y_d.append(poly(i))\n"
+                "plt.plot(new_x_t, new_y_d, color='r', label='Newton')\n"
+                "plt.scatter(x_t, y_d, 50, color='b', label='Given datapoints')\n"
+                "plt.xlabel('x')\n"
+                "plt.ylabel('P(x)')\n"
+                "plt.title('Newton Polynomial Interpolation')\n"
+                "plt.legend()\n"
+                "plt.show()\n",
+                xStr, yStr, degP);
+
+        char *fname = "newt_poly.py";
+        writeToFile(pyStr, fname);
+        free(pyStr);
+        free(xStr);
+        free(yStr);
     }
-
-    sprintf(pyStr,
-            "import numpy as np\n"
-            "import matplotlib.pyplot as plt\n"
-            "x_t = [%s]\n"
-            "y_d = [%s]\n"
-            "curve = np.polyfit(x_t, y_d, 3)\n"
-            "poly = np.poly1d(curve)\n"
-            "new_x_t = []\n"
-            "new_y_d = []\n"
-            "lo = int(min(x_t) - 2.0)\n"
-            "hi = int(max(x_t) + 2.0) + 1\n"
-            "for i in range(lo, hi):\n"
-            "    new_x_t.append(i)\n"
-            "    new_y_d.append(poly(i))\n"
-            "plt.plot(new_x_t, new_y_d, \"red\")\n"
-            "plt.scatter(x_t, y_d, 50)\n"
-            "plt.show()\n",
-            xStr, yStr);
-
-    char *fname = "newt_poly.py";
-    writeToFile(pyStr, fname);
-    free(pyStr);
-    free(xStr);
-    free(yStr);
-
 }
 
 #endif //Y2_NUM_ALGO_NEWTON_H
