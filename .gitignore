@@ -54,3 +54,5 @@ dkms.conf
 # JetBrains
 cmake*/
 .idea*/
+sandbox*/
+sandbox/main.c

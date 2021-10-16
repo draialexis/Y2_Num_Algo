@@ -16,7 +16,7 @@ double **mk_X_Y(int rows);
 
 double *mkColVec(int rows);
 
-coord *mkCoordArr(int rows);
+coord *mkCoordArr(int points);
 
 double **copyMat(double **mat, int rows, int cols);
 
@@ -25,6 +25,8 @@ double *copyColVec(double *mat, int rows);
 void showMat(double **mat, int rows, int cols);
 
 void showCol(double *mat, int size);
+
+void showCoordArr(coord *arr, int points);
 
 void showRow(double *mat, int size);
 
@@ -76,9 +78,9 @@ double *mkColVec(int rows) {
     }
 }
 
-coord *mkCoordArr(int rows) {
-    if (rows > 0) {
-        coord *mat = (coord *) malloc(sizeof(coord) * rows);
+coord *mkCoordArr(int points) {
+    if (points > 0) {
+        coord *mat = (coord *) malloc(sizeof(coord) * points);
         if (mat == NULL) {
             MALLOC_FAIL
         }
@@ -89,12 +91,12 @@ coord *mkCoordArr(int rows) {
     }
 }
 
-void fill_X_Y(coord *mat, int rows) {
-    if (mat != NULL && rows > 0) {
+void fill_X_Y(coord *arr, int points) {
+    if (arr != NULL && points > 0) {
         char str[30];
         char *endPtr;
         coord input;
-        for (int i = 0; i < rows; i++) {
+        for (int i = 0; i < points; i++) {
             printf("x_%d <- ", i + 1);
             scanf("%s", str);
             input.x = strtod(str, &endPtr);
@@ -103,7 +105,7 @@ void fill_X_Y(coord *mat, int rows) {
             scanf("%s", str);
             input.y = strtod(str, &endPtr);
             cleanCheck(*endPtr);
-            mat[i] = input;
+            arr[i] = input;
         }
     } else {
         EMPTY_OR_NULL
@@ -156,9 +158,25 @@ void showMat(double **mat, int rows, int cols) {
         for (int i = 0; i < rows; i++) {
             if (i != 0) printf("|");
             for (int j = 0; j < cols; j++) {
-                printf("%+06.1f ", *(*(mat + i) + j));
+                printf("%+06.10f ", *(*(mat + i) + j));
             }
             i == rows - 1 ? printf("]\n") : printf("|\n");
+        }
+        printf("\n");
+    } else {
+        EMPTY_OR_NULL
+    }
+}
+
+void showDiffMat(double **mat, int n) {
+    if (n > 0 && mat != NULL) {
+        printf("[");
+        for (int i = 0; i < n; i++) {
+            if (i != 0) printf("|");
+            for (int j = 0; j < n - i; j++) {
+                printf("%+06.5f ", *(*(mat + i) + j));
+            }
+            i == n - 1 ? printf("]\n") : printf("|\n");
         }
         printf("\n");
     } else {
@@ -177,10 +195,10 @@ void showCol(double *mat, int size) {
     }
 }
 
-void showCoordArr(coord *arr, int size) {
-    if (size > 0 && arr != NULL) {
-        for (int i = 0; i < size; i++) {
-            printf("|%+8.10f | %+8.10f|\n", arr[i].x, arr[i].y);
+void showCoordArr(coord *arr, int points) {
+    if (points > 0 && arr != NULL) {
+        for (int i = 0; i < points; i++) {
+            printf("|%+010.5f, %+010.5f|\n", arr[i].x, arr[i].y);
         }
         printf("\n");
     } else {
@@ -188,12 +206,49 @@ void showCoordArr(coord *arr, int size) {
     }
 }
 
+void showPoly(double *poly, int n_coeffs, coord *coords) {
+    printf("unsimplified polynomial equation:\n");
+
+    for (int i = 0; i < n_coeffs; i++) {
+        if (poly[i != 0]) {
+            if (i == 0) {
+                printf("%+04.2f", poly[i]);
+            } else {
+                printf("%+04.2f * ", poly[i]);
+                for (int k = 0; k < i; ++k) {
+                    if (fabs(coords[k].x) < EPSILON) {
+                        printf("(x)");
+                    } else {
+                        printf("(x - (%+04.2f))", coords[k].x);
+                    }
+                    if (k < i - 1) {
+                        printf(" * ");
+                    }
+                }
+            }
+        }
+        printf("\n");
+    }
+    printf("\n\n");
+}
+
 
 void showRow(double *mat, int size) {
     if (size > 0 && mat != NULL) {
         printf("[");
         for (int i = 0; i < size; i++) {
-            printf("%+20.20f ", mat[i]);
+            printf("%+02.5f ", mat[i]);
+        }
+        printf("]\n\n");
+    } else {
+        EMPTY_OR_NULL
+    }
+}
+void showBs(double *diffs, int size, double y_0) {
+    if (size > 0 && diffs != NULL) {
+        printf("[%+02.5f ", y_0);
+        for (int i = 0; i < size; i++) {
+            printf("%+02.5f ", diffs[i]);
         }
         printf("]\n\n");
     } else {
