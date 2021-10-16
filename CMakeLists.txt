@@ -8,10 +8,13 @@ include_directories(TP_1 TP_2)
 add_executable(
 #        TP_1
 #        TP_1/main.c
-#        TP_1/matrices_suite.h
 #        TP_1/toolbox.h
+#        TP_1/matrices_suite.h
 #        TP_1/lin_alg.h
 
         TP_2
         TP_2/main.c
+        TP_2/toolbox.h
+        TP_2/newton.h
+        TP_2/lagrange.h
 )

@@ -1,12 +1,12 @@
 # TP_1 Alg Num
 
-To test TP_x, please navigate to the TP_x folder in Shell or some command line terminal, then enter the following command (you might have to install GCC or some other C compiler first):
+To test TP_x, please navigate to the TP_x folder in Shell or the command line terminal, then enter the following command (you might have to install GCC first):
 
-* To compile:
+* to compile:
 
       gcc -Wall main.c -o main -lm
 
-* To execute (on a Unix-like system):
+* to execute:
     
       ./main
 
