@@ -99,7 +99,6 @@ void findPolyNewt(coord *coords, int points) {
             poly[i] = diffs[0][i - 1]; //b1 = diffs[0][0], b2 = diffs[0][1], etc.
         }
     }
-    showRow(poly, n_coeffs);
     showPoly(poly, n_coeffs, coords);
 }
 

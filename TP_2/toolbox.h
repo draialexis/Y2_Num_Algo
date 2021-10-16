@@ -196,6 +196,7 @@ void showCol(double *mat, int size) {
 }
 
 void showCoordArr(coord *arr, int points) {
+    printf("coordinates (x, y):\n");
     if (points > 0 && arr != NULL) {
         for (int i = 0; i < points; i++) {
             printf("|%+010.5f, %+010.5f|\n", arr[i].x, arr[i].y);
@@ -238,17 +239,6 @@ void showRow(double *mat, int size) {
         printf("[");
         for (int i = 0; i < size; i++) {
             printf("%+02.5f ", mat[i]);
-        }
-        printf("]\n\n");
-    } else {
-        EMPTY_OR_NULL
-    }
-}
-void showBs(double *diffs, int size, double y_0) {
-    if (size > 0 && diffs != NULL) {
-        printf("[%+02.5f ", y_0);
-        for (int i = 0; i < size; i++) {
-            printf("%+02.5f ", diffs[i]);
         }
         printf("]\n\n");
     } else {
