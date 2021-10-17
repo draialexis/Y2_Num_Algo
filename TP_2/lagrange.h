@@ -18,7 +18,7 @@ char *findPolyLagr(coord *coords, int points) {
     }
 
     int ops = 0;
-    int bfr = 128;
+    int bfr = 256;
 
     char *eqStr = (char *) malloc(sizeof(char) * points * 2 * bfr);
     sprintf(eqStr, "%c", '\0');
@@ -47,7 +47,7 @@ char *findPolyLagr(coord *coords, int points) {
                     ops += 3;
 
                     if (fabs(coords[j].x) > EPSILON) {
-                        sprintf(tmp, "(x - (%+05.10f)) * ", coords[j].x);
+                        sprintf(tmp, "(x - (%+.10f)) * ", coords[j].x);
                         strncat(eqStr, tmp, bfr);
                     } else {
                         sprintf(tmp, "(x) * ");
@@ -55,7 +55,7 @@ char *findPolyLagr(coord *coords, int points) {
                     }
                 }
             }
-            sprintf(tmp, "(%+05.10f)", pdt);
+            sprintf(tmp, "(%+.10f)", pdt);
             strncat(eqStr, tmp, bfr);
         }
     }

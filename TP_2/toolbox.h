@@ -207,7 +207,7 @@ void showCol(double *mat, int size) {
 }
 
 void showCoordArr(coord *arr, int points) {
-    printf("coordinates (x, y):\n");
+    printf("coordonnees (x, y):\n");
     if (points > 0 && arr != NULL) {
         for (int i = 0; i < points; i++) {
             printf("|%+010.5f, %+010.5f|\n", arr[i].x, arr[i].y);
@@ -219,24 +219,24 @@ void showCoordArr(coord *arr, int points) {
 }
 
 char *printPoly(double *poly, int n_coeffs, const coord *coords) {
-    int bfr = 64;
+    int bfr = 256;
     char *res = (char *) malloc(sizeof(char) * n_coeffs * bfr);
     sprintf(res, "%c", '\0');
     char *tmp = (char *) malloc(sizeof(char) * bfr);
     for (int i = 0; i < n_coeffs; i++) {
         if (fabs(poly[i]) > EPSILON) {
             if (i == 0) {
-                sprintf(tmp, "%+05.10f ", poly[i]);
+                sprintf(tmp, "%+.10f ", poly[i]);
                 strncat(res, tmp, bfr);
             } else {
-                sprintf(tmp, "%+05.10f * ", poly[i]);
+                sprintf(tmp, "%+.10f * ", poly[i]);
                 strncat(res, tmp, bfr);
                 for (int k = 0; k < i; k++) {
                     if (fabs(coords[k].x) < EPSILON) {
                         sprintf(tmp, "(x)");
                         strncat(res, tmp, bfr);
                     } else {
-                        sprintf(tmp, "(x - (%+05.10f)) ", coords[k].x);
+                        sprintf(tmp, "(x - (%+.10f)) ", coords[k].x);
                         strncat(res, tmp, bfr);
                     }
                     if (k < i - 1) {
@@ -246,10 +246,7 @@ char *printPoly(double *poly, int n_coeffs, const coord *coords) {
                 }
             }
         }
-//        printf("\n");
     }
-//    printf("\n\n");
-    free(tmp);
     return res;
 }
 
@@ -258,7 +255,7 @@ void showRow(double *mat, int size) {
     if (size > 0 && mat != NULL) {
         printf("[");
         for (int i = 0; i < size; i++) {
-            printf("%+02.5f ", mat[i]);
+            printf("%+.10f ", mat[i]);
         }
         printf("]\n\n");
     } else {
@@ -353,9 +350,9 @@ void writeToFile(char *myStr, char *fname) {
 }
 
 void writePy(const coord *coords, char *eqStr, int points, char *mthd) {
-    int bfr = 128;//128 chars per coordinate should be enough on the whole
-    char *fname = (char *) malloc((sizeof(char)) * 20);
-    char *clr = (char *) malloc((sizeof(char)) * 20);
+    int bfr = 256;//256 chars per coordinate should be way more than enough on the whole
+    char *fname;
+    char *clr;
     if (strcmp(mthd, "Lagrange") == 0) {
         fname = "lagr_poly.py";
         clr = "green";
@@ -363,7 +360,7 @@ void writePy(const coord *coords, char *eqStr, int points, char *mthd) {
         fname = "newt_poly.py";
         clr = "cyan";
     }
-    char *pyStr = (char *) malloc(sizeof(char) * BUFFER_SIZE);
+
     char *xStr = (char *) malloc(sizeof(char) * points * bfr);
     char *yStr = (char *) malloc(sizeof(char) * points * bfr);
     char *xPart = (char *) malloc(sizeof(char) * bfr);
@@ -373,18 +370,13 @@ void writePy(const coord *coords, char *eqStr, int points, char *mthd) {
     sprintf(xPart, "%c", '\0');
     sprintf(yPart, "%c", '\0');
     for (int i = 0; i < points; i++) {
-        sprintf(xPart, "%.10f", coords[i].x);
-        sprintf(yPart, "%.10f", coords[i].y);
+        sprintf(xPart, "%.10f, ", coords[i].x);
+        sprintf(yPart, "%.10f, "
+                       "", coords[i].y);
         strncat(xStr, xPart, bfr);
         strncat(yStr, yPart, bfr);
-        if (i != points - 1) {
-            strncat(xStr, ", ", 3);
-            strncat(yStr, ", ", 3);
-        }
     }
-    free(xPart);
-    free(yPart);
-
+    char *pyStr = (char *) malloc(sizeof(char) * BUFFER_SIZE);
     sprintf(pyStr,
             "import numpy as np\n"
             "import matplotlib.pyplot as plt\n"
@@ -411,12 +403,7 @@ void writePy(const coord *coords, char *eqStr, int points, char *mthd) {
             "plt.axvline(0, color='black')\n"
             "plt.show()\n",
             eqStr, xStr, yStr, clr, mthd);
-
     writeToFile(pyStr, fname);
-    free(pyStr);
-    free(eqStr);
-    free(xStr);
-    free(yStr);
 }
 
 void askPy(const coord *coords, char *eqStr, int points, char *mthd) {
