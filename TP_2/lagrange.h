@@ -30,7 +30,7 @@ char *findPolyLagr(coord *coords, int points) {
     for (int i = 0; i < points; i++) {
         if (fabs(coords[i].y) > EPSILON) {
             if (!first) {
-                sprintf(tmp, " + ");
+                sprintf(tmp, "+");
                 strncat(eqStr, tmp, 3);
             } else {
                 first = 0;
@@ -38,24 +38,29 @@ char *findPolyLagr(coord *coords, int points) {
             pdt = coords[i].y;
             for (int j = 0; j < points; j++) {
                 if (j != i) {
-
-                    // we can extract the known factors from the unknowns, then combine them, for readability and file-size
-                    //      li = (x -xj) / (x_i - x_j)
-                    //
-                    // <=>  li = 1 / (x_i - x_j) * (x -xj)
-                    pdt *= (1 / (coords[i].x - coords[j].x));
-                    ops += 3;
-
-                    if (fabs(coords[j].x) > EPSILON) {
-                        sprintf(tmp, "(x - (%+.10f)) * ", coords[j].x);
-                        strncat(eqStr, tmp, bfr);
+                    if (fabs((coords[i].x - coords[j].x)) > EPSILON) {
+                        // we can extract the known factors from the unknowns, then combine them later
+                        // for readability and file-size
+                        //      li = (x -xj) / (x_i - x_j)
+                        //
+                        // <=>  li = 1 / (x_i - x_j) * (x -xj)
+                        pdt *= (1 / (coords[i].x - coords[j].x));
+                        ops += 3;
+                        if (fabs(coords[j].x) > EPSILON) {
+                            sprintf(tmp, "(x-(%.5f))*", coords[j].x);
+                            strncat(eqStr, tmp, bfr);
+                        } else {
+                            sprintf(tmp, "(x)*");
+                            strncat(eqStr, tmp, bfr);
+                        }
                     } else {
-                        sprintf(tmp, "(x) * ");
-                        strncat(eqStr, tmp, bfr);
+                        printf("deux coordonnees avec meme x.\n");
+                        DEBUG
+                        FAIL_OUT
                     }
                 }
             }
-            sprintf(tmp, "(%+.10f)", pdt);
+            sprintf(tmp, "(%+.50f)", pdt);
             strncat(eqStr, tmp, bfr);
         }
     }

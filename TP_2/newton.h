@@ -5,9 +5,9 @@
 #ifndef Y2_NUM_ALGO_NEWTON_H
 #define Y2_NUM_ALGO_NEWTON_H
 
-char * findPolyNewt(const coord *coords, int points);
+char *findPolyNewt(const coord *coords, int points);
 
-char * findPolyNewt(const coord *coords, const int points) {
+char *findPolyNewt(const coord *coords, const int points) {
 
     if (coords == NULL && points < 2) {
         if (points < 2) {
@@ -25,11 +25,10 @@ char * findPolyNewt(const coord *coords, const int points) {
     double prev;
     int isMonoPrev = 0;
     int ops = 0;
-
+    double div;
     for (int j = 0; j < degP; j++) {
         isMono = 1;
         for (int i = 0; i < degP - j; i++) {//we don't want to fill the entire matrix
-
             /*
 
             *   *   *   *   *
@@ -39,12 +38,16 @@ char * findPolyNewt(const coord *coords, const int points) {
             *   0   0   0   0
 
              */
-
+            if(fabs(coords[i + j + 1].x - coords[i].x) > EPSILON) {
+                div = 1 / (coords[i + j + 1].x - coords[i].x);
+            } else {
+                printf("deux coordonnees avec meme x.\n");
+                DEBUG
+                FAIL_OUT
+            }
             //fill in first column of differences table
             if (j == 0) {
-//                printf("diffs[%d][%d] = (coords[%d].y - coords[%d].y) / (coords[%d].x - coords[%d].x\n",
-//                                i, j, i + 1, i, i + j + 1, i);
-                diffs[i][j] = (coords[i + 1].y - coords[i].y) / (coords[i + 1].x - coords[i].x);
+                diffs[i][j] = (coords[i + 1].y - coords[i].y) * div;
                 ops += 3;
                 // δ(y_i) = y_i - y_1
                 //          ----------  for i ≥ 2
@@ -52,15 +55,14 @@ char * findPolyNewt(const coord *coords, const int points) {
                 //
             } else {
                 //fill in the rest thanks to the first column
-//                printf("diffs[%d][%d] = (diffs[%d][%d] - diffs[%d][%d]) / (coords[%d].x - coords[%d].x)\n",
-//                       i, j, i + 1, j - 1, i, j - 1, i + j + 1, i);
+
                 if (!isMonoPrev) {
-                    diffs[i][j] = (diffs[i + 1][j - 1] - diffs[i][j - 1]) / (coords[i + j + 1].x - coords[i].x);
+                    diffs[i][j] = (diffs[i + 1][j - 1] - diffs[i][j - 1]) * div;
                     ops += 3;
                 }
-                    // δ_n(y_i) = δ_(n-1)(y_i) - δ_(n-1)(y_n)
-                    //           -----------------------------  for i ≥ n+1
-                    //                   x_i - x_n
+                    // δ^k(y_i) = δ^(k-1)(y_i) - δ^(k-1)(y_k)
+                    //           -----------------------------  for i ≥ k+1
+                    //                   x_i - x_k
                 else {
                     diffs[i][j] = 0.0;
                 }

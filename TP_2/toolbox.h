@@ -13,39 +13,31 @@ typedef struct Coordinate {
 
 double **mkMat(int rows, int cols);
 
-char *printPoly(double *poly, int n_coeffs, const coord *coords);
-
-double **mk_X_Y(int rows);
-
 double *mkColVec(int rows);
 
 coord *mkCoordArr(int points);
 
-double **copyMat(double **mat, int rows, int cols);
+void fill_X_Y(coord *arr, int points);
 
-double *copyColVec(double *mat, int rows);
+void degradeCoordArr(coord *arr, int rows);
 
-void showMat(double **mat, int rows, int cols);
-
-void showCol(double *mat, int size);
+void showDiffMat(double **mat, int n);
 
 void showCoordArr(coord *arr, int points);
 
+char *printPoly(double *poly, int n_coeffs, const coord *coords);
+
 void showRow(double *mat, int size);
-
-void freeMat(double **mat, int rows, int cols);
-
-double minDouble(double a, double b);
 
 void cleanCheck(char input);
 
 void checkFopen(FILE *fileName);
 
+void writeToFile(char *myStr, char *fname);
+
 void writePy(const coord *coords, char *eqStr, int points, char *mthd);
 
 void askPy(const coord *coords, char *eqStr, int points, char *mthd);
-
-void writeToFile(char *myStr, char *fname);
 
 double **mkMat(int rows, int cols) {
     if (rows > 0 && cols > 0) {
@@ -78,11 +70,11 @@ double **mkMat(int rows, int cols) {
 
 double *mkColVec(int rows) {
     if (rows > 0) {
-        double *mat = malloc(sizeof(double) * rows);
-        if (mat == NULL) {
+        double *vec = malloc(sizeof(double) * rows);
+        if (vec == NULL) {
             MALLOC_FAIL
         }
-        return mat;
+        return vec;
     } else {
         EMPTY_OR_NULL
         FAIL_OUT
@@ -91,11 +83,11 @@ double *mkColVec(int rows) {
 
 coord *mkCoordArr(int points) {
     if (points > 0) {
-        coord *mat = (coord *) malloc(sizeof(coord) * points);
-        if (mat == NULL) {
+        coord *arr = (coord *) malloc(sizeof(coord) * points);
+        if (arr == NULL) {
             MALLOC_FAIL
         }
-        return mat;
+        return arr;
     } else {
         EMPTY_OR_NULL
         FAIL_OUT
@@ -124,58 +116,13 @@ void fill_X_Y(coord *arr, int points) {
     }
 }
 
-double **copyMat(double **mat, int rows, int cols) {
-    double **res = mkMat(rows, cols);
-    if (mat != NULL && res != NULL && rows > 0 && cols > 0) {
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                res[i][j] = mat[i][j];
-            }
-        }
-        return res;
-    } else {
-        EMPTY_OR_NULL
-        FAIL_OUT
-    }
-}
-
-double *copyColVec(double *mat, int rows) {
-    double *res = mkColVec(rows);
-    if (mat != NULL && res != NULL && rows > 0) {
-        for (int i = 0; i < rows; i++) {
-            res[i] = mat[i];
-        }
-        return res;
-    } else {
-        EMPTY_OR_NULL
-        FAIL_OUT
-    }
-}
-
-void degradeMat(double **mat, int rows, int cols) {
-    if (mat != NULL && rows > 0 && cols > 0) {
+void degradeCoordArr(coord *arr, int rows) {
+    if (arr != NULL && rows > 0) {
         int i = rand() % rows;
-        int j = rand() % cols;
-        mat[i][j] = mat[i][j] + 0.1;
+        arr[i].y += (1.0/70);
     } else {
         EMPTY_OR_NULL
         FAIL_OUT
-    }
-}
-
-void showMat(double **mat, int rows, int cols) {
-    if (rows > 0 && cols > 0 && mat != NULL) {
-        printf("[");
-        for (int i = 0; i < rows; i++) {
-            if (i != 0) printf("|");
-            for (int j = 0; j < cols; j++) {
-                printf("%+06.10f ", *(*(mat + i) + j));
-            }
-            i == rows - 1 ? printf("]\n") : printf("|\n");
-        }
-        printf("\n");
-    } else {
-        EMPTY_OR_NULL
     }
 }
 
@@ -188,17 +135,6 @@ void showDiffMat(double **mat, int n) {
                 printf("%+06.5f ", *(*(mat + i) + j));
             }
             i == n - 1 ? printf("]\n") : printf("|\n");
-        }
-        printf("\n");
-    } else {
-        EMPTY_OR_NULL
-    }
-}
-
-void showCol(double *mat, int size) {
-    if (size > 0 && mat != NULL) {
-        for (int i = 0; i < size; i++) {
-            printf("|%+8.10f|\n", mat[i]);
         }
         printf("\n");
     } else {
@@ -226,21 +162,21 @@ char *printPoly(double *poly, int n_coeffs, const coord *coords) {
     for (int i = 0; i < n_coeffs; i++) {
         if (fabs(poly[i]) > EPSILON) {
             if (i == 0) {
-                sprintf(tmp, "%+.10f ", poly[i]);
+                sprintf(tmp, "%+.50f", poly[i]);
                 strncat(res, tmp, bfr);
             } else {
-                sprintf(tmp, "%+.10f * ", poly[i]);
+                sprintf(tmp, "%+.50f*", poly[i]);
                 strncat(res, tmp, bfr);
                 for (int k = 0; k < i; k++) {
                     if (fabs(coords[k].x) < EPSILON) {
                         sprintf(tmp, "(x)");
                         strncat(res, tmp, bfr);
                     } else {
-                        sprintf(tmp, "(x - (%+.10f)) ", coords[k].x);
+                        sprintf(tmp, "(x-(%.5f))", coords[k].x);
                         strncat(res, tmp, bfr);
                     }
                     if (k < i - 1) {
-                        sprintf(tmp, "* ");
+                        sprintf(tmp, "*");
                         strncat(res, tmp, bfr);
                     }
                 }
@@ -250,80 +186,15 @@ char *printPoly(double *poly, int n_coeffs, const coord *coords) {
     return res;
 }
 
-
 void showRow(double *mat, int size) {
     if (size > 0 && mat != NULL) {
         printf("[");
         for (int i = 0; i < size; i++) {
-            printf("%+.10f ", mat[i]);
+            printf("%+10.5f ", mat[i]);
         }
         printf("]\n\n");
     } else {
         EMPTY_OR_NULL
-    }
-}
-
-void freeMat(double **mat, int rows, int cols) {
-    if (rows > 0 && cols > 0 && mat != NULL) {
-        for (int i = 0; i < rows; i++) {
-            if (mat[i] != NULL) {
-                free(mat[i]);
-            }
-        }
-        free(mat);
-    } else {
-        EMPTY_OR_NULL
-        FAIL_OUT
-    }
-}
-
-void rowSwap(double **matA, double *matB, int i, int k, int cols) {
-    if (matA != NULL && matB != NULL && cols > 0) {
-        // not checking for non-nullity of arrays inside A... *
-        // presumably, the error would have been caught at malloc or in another function
-        // no need to multiply complexity of rowSwap by 'rows'
-        if (i == k) {
-            printf("swapper and swapped appear to be the same\n");
-            DEBUG
-            FAIL_OUT
-        }
-        double tmp;
-        for (int j = 0; j < cols; j++) {
-            tmp = matA[i][j];
-            matA[i][j] = matA[k][j];
-            matA[k][j] = tmp;
-        }
-        tmp = matB[i];
-        matB[i] = matB[k];
-        matB[k] = tmp;
-    } else {
-        EMPTY_OR_NULL
-        FAIL_OUT
-    }
-}
-
-
-void shuffleMat(double **mat, int rows, int cols) {
-    double tmp;
-    if (mat != NULL && rows > 0 && cols > 0) {
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                tmp = mat[i][j];
-                mat[i][j] = mat[rand() % rows][rand() % cols];
-                mat[rand() % rows][rand() % cols] = tmp;
-            }
-        }
-    } else {
-        EMPTY_OR_NULL
-        FAIL_OUT
-    }
-}
-
-double minDouble(double a, double b) {
-    if (a >= b) {
-        return b;
-    } else {
-        return a;
     }
 }
 
@@ -332,7 +203,6 @@ void cleanCheck(char input) {
     if (input == 'q') exit(0);
     fflush(stdin);
 }
-
 
 void checkFopen(FILE *fileName) {
     if (fileName == NULL) {
@@ -350,7 +220,7 @@ void writeToFile(char *myStr, char *fname) {
 }
 
 void writePy(const coord *coords, char *eqStr, int points, char *mthd) {
-    int bfr = 256;//256 chars per coordinate should be way more than enough on the whole
+    int bfr = 256;//128 chars per coordinate were not enough for lagrange
     char *fname;
     char *clr;
     if (strcmp(mthd, "Lagrange") == 0) {
@@ -393,14 +263,14 @@ void writePy(const coord *coords, char *eqStr, int points, char *mthd) {
             "for i in range(lo, hi):\n"
             "    new_x_t.append(i)\n"
             "    new_y_d.append(formula(i))\n"
+            "plt.axhline(0, color='grey')\n"
+            "plt.axvline(0, color='grey')\n"
             "plt.plot(new_x_t, new_y_d, color='%s', label='%s')\n"
             "plt.scatter(x_t, y_d, 50, color='blue', label='Given datapoints')\n"
             "plt.xlabel('x')\n"
             "plt.ylabel('P(x)')\n"
             "plt.title(formula(x_))\n"
             "plt.legend()\n"
-            "plt.axhline(0, color='black')\n"
-            "plt.axvline(0, color='black')\n"
             "plt.show()\n",
             eqStr, xStr, yStr, clr, mthd);
     writeToFile(pyStr, fname);
