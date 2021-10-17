@@ -5,6 +5,8 @@
 #ifndef Y2_NUM_ALGO_NEWTON_H
 #define Y2_NUM_ALGO_NEWTON_H
 
+void findPolyNewt(coord *coords, int points);
+
 void findPolyNewt(coord *coords, int points) {
 
     if (coords == NULL && points < 2) {
