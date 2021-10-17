@@ -44,7 +44,7 @@ char *findPolyLagr(coord *coords, int points) {
                     //
                     // <=>  li = 1 / (x_i - x_j) * (x -xj)
                     pdt *= (1 / (coords[i].x - coords[j].x));
-                    ops += 2;
+                    ops += 3;
 
                     if (fabs(coords[j].x) > EPSILON) {
                         sprintf(tmp, "(x - (%+05.10f)) * ", coords[j].x);

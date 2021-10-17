@@ -72,6 +72,23 @@ int main() {
 //    printf("interpolation de Lagrange non simplifiee (version simplifiee visible par le script python):\n%s\n", eqLagr);
 //    askPy(arr, eqLagr, points, "Lagrange");
 
+//    points = 6;
+//    arr = mkCoordArr(points);
+//    arr[0] = (coord) {-2, -1};
+//    arr[1] = (coord) {1, 2};
+//    arr[2] = (coord) {4, 59};
+//    arr[3] = (coord) {-1, 4};
+//    arr[4] = (coord) {3, 24};
+//    arr[5] = (coord) {-4, -53};
+//    showCoordArr(arr, points);
+//    char * eqNewt = findPolyNewt(arr, points);
+//    printf("interpolation de Newton non simplifiee (version simplifiee visible par le script python):\n%s\n", eqNewt);
+//    askPy(arr, eqNewt, points, "Newton");
+//    showCoordArr(arr, points);
+//    char * eqLagr = findPolyLagr(arr, points);
+//    printf("interpolation de Lagrange non simplifiee (version simplifiee visible par le script python):\n%s\n", eqLagr);
+//    askPy(arr, eqLagr, points, "Lagrange");
+
     points = 6;
     arr = mkCoordArr(points);
     arr[0] = (coord) {-2, -1};
