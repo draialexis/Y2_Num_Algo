@@ -21,46 +21,46 @@ int main() {
     int points;
     coord *arr;
 
-    char str[30];
-    char *endPtr;
-    printf("to exit at any point, press 'q' and enter\n");
-    printf("how many datapoints?\n>");
-    scanf("%s", str);
-    points = strtol(str, &endPtr, 10);
-    cleanCheck(*endPtr);
+//    char str[30];
+//    char *endPtr;
+//    printf("to exit at any point, press 'q' and enter\n");
+//    printf("how many datapoints?\n>");
+//    scanf("%s", str);
+//    points = strtol(str, &endPtr, 10);
+//    cleanCheck(*endPtr);
+//    arr = mkCoordArr(points);
+//    printf("\n");
+//    fill_X_Y(arr, points);
+//    showCoordArr(arr, points);
+//    findPolyNewt(arr, points);
+
+    points = 4;
     arr = mkCoordArr(points);
-    printf("\n");
-    fill_X_Y(arr, points);
+    arr[0] = (coord) {-5, -2};
+    arr[1] = (coord) {-1, 6};
+    arr[2] = (coord) {0, 1};
+    arr[3] = (coord) {2, 3};
     showCoordArr(arr, points);
     findPolyNewt(arr, points);
 
-//    points = 4;
+//    points = 5;
 //    arr = mkCoordArr(points);
-//    arr[0].x = -5;
-//    arr[1].x = -1;
-//    arr[2].x = 0;
-//    arr[3].x = 2;
-//    arr[0].y = -2;
-//    arr[1].y = 6;
-//    arr[2].y = 1;
-//    arr[3].y = 3;
+//    arr[0] = (coord) {-1, -1.5};
+//    arr[1] = (coord) {-0.5, 0};
+//    arr[2] = (coord) {0, 0.25};
+//    arr[3] = (coord) {0.5, 0};
+//    arr[4] = (coord) {1, 0};
 //    showCoordArr(arr, points);
 //    findPolyNewt(arr, points);
-//
+
 //    points = 6;
 //    arr = mkCoordArr(points);
-//    arr[0].x = -2;
-//    arr[1].x = 1;
-//    arr[2].x = 4;
-//    arr[3].x = -1;
-//    arr[4].x = 3;
-//    arr[5].x = -4;
-//    arr[0].y = -1;
-//    arr[1].y = 2;
-//    arr[2].y = 59;
-//    arr[3].y = 4;
-//    arr[4].y = 24;
-//    arr[5].y = -53;
+//    arr[0] = (coord) {-2, -1};
+//    arr[1] = (coord) {1, 2};
+//    arr[2] = (coord) {4, 59};
+//    arr[3] = (coord) {-1, 4};
+//    arr[4] = (coord) {3, 24};
+//    arr[5] = (coord) {-4, -53};
 //    showCoordArr(arr, points);
 //    findPolyNewt(arr, points);
 

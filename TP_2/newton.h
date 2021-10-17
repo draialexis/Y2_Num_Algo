@@ -85,7 +85,7 @@ void findPolyNewt(coord *coords, int points) {
 
     printf("operations: %d\n", ops);
     const int n_coeffs = degP + 1;//+ 1 for the x^0 coeff
-
+    showDiffMat(diffs, degP);
     //we put all our 'b's in an array, b0 first
     double *poly = mkColVec(n_coeffs);
     for (int i = 0; i < degP + 1; i++) {
@@ -95,14 +95,13 @@ void findPolyNewt(coord *coords, int points) {
             poly[i] = diffs[0][i - 1]; //b1 = diffs[0][0], b2 = diffs[0][1], etc.
         }
     }
-
+    showRow(poly, n_coeffs);
     char *eqStr = printPoly(poly, n_coeffs, coords);
 
-    printf("equation polynomiale non simplifiee"
-           "\n(version simplifiee visible par le script python):\n%s\n", eqStr);
+    printf("equation polynomiale non simplifiee (version simplifiee visible par le script python):\n%s\n", eqStr);
 
     char genPy;
-    printf("generer un script \"newt_poly.py\"?"
+    printf("\ngenerer un script \"newt_poly.py\"?"
            "\n* 'o' : oui"
            "\n* 'n' : non"
            "\n>");

@@ -214,28 +214,29 @@ void showCoordArr(coord *arr, int points) {
 }
 
 char *printPoly(double *poly, int n_coeffs, coord *coords) {
-    char *res = (char *) malloc(sizeof(char) * n_coeffs * 32);
+    int bfr = 32;
+    char *res = (char *) malloc(sizeof(char) * n_coeffs * bfr);
     sprintf(res, "%c", '\0');
-    char *tmp = (char *) malloc(sizeof(char) * 32);
+    char *tmp = (char *) malloc(sizeof(char) * bfr);
     for (int i = 0; i < n_coeffs; i++) {
-        if (poly[i] > EPSILON) {
+        if (fabs(poly[i]) > EPSILON) {
             if (i == 0) {
-                sprintf(tmp, "%+.10f", poly[i]);
-                strncat(res, tmp, 32);
+                sprintf(tmp, "%+05.10f", poly[i]);
+                strncat(res, tmp, bfr);
             } else {
-                sprintf(tmp, "%+.10f * ", poly[i]);
-                strncat(res, tmp, 32);
+                sprintf(tmp, "%+05.10f * ", poly[i]);
+                strncat(res, tmp, bfr);
                 for (int k = 0; k < i; k++) {
                     if (fabs(coords[k].x) < EPSILON) {
                         sprintf(tmp, "(x)");
-                        strncat(res, tmp, 32);
+                        strncat(res, tmp, bfr);
                     } else {
-                        sprintf(tmp, "(x - (%+.10f))", coords[k].x);
-                        strncat(res, tmp, 32);
+                        sprintf(tmp, "(x - (%+05.10f))", coords[k].x);
+                        strncat(res, tmp, bfr);
                     }
                     if (k < i - 1) {
                         sprintf(tmp, " * ");
-                        strncat(res, tmp, 32);
+                        strncat(res, tmp, bfr);
                     }
                 }
             }
@@ -373,26 +374,28 @@ void writePy(coord *coords, char *eqStr, int degP, int points) {
             "import numpy as np\n"
             "import matplotlib.pyplot as plt\n"
             "import sympy as sym\n"
-            "x = sym.symbols('x')\n"
+            "def formula(x):\n"
+            "    return sym.simplify(%s)\n"
+            "x_ = sym.symbols('x')\n"
             "x_t = [%s]\n"
             "y_d = [%s]\n"
-            "curve = np.polyfit(x_t, y_d, %d)\n"
-            "poly = np.poly1d(curve)\n"
             "new_x_t = []\n"
             "new_y_d = []\n"
             "lo = int(min(x_t) - 2.0)\n"
             "hi = int(max(x_t) + 2.0) + 1\n"
             "for i in range(lo, hi):\n"
             "    new_x_t.append(i)\n"
-            "    new_y_d.append(poly(i))\n"
-            "plt.plot(new_x_t, new_y_d, color='r', label='Newton')\n"
-            "plt.scatter(x_t, y_d, 50, color='b', label='Given datapoints')\n"
+            "    new_y_d.append(formula(i))\n"
+            "plt.plot(new_x_t, new_y_d, color='red', label='Newton')\n"
+            "plt.scatter(x_t, y_d, 50, color='blue', label='Given datapoints')\n"
             "plt.xlabel('x')\n"
             "plt.ylabel('P(x)')\n"
-            "plt.title(sym.simplify(%s))\n"
+            "plt.title(formula(x_))\n"
             "plt.legend()\n"
+            "plt.axhline(0, color='black')\n"
+            "plt.axvline(0, color='black')\n"
             "plt.show()\n",
-            xStr, yStr, degP, eqStr);
+            eqStr, xStr, yStr);
 
     char *fname = "newt_poly.py";
     writeToFile(pyStr, fname);
