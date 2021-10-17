@@ -30,9 +30,9 @@ char *findPolyLagr(coord *coords, int points) {
 
     for (int i = 0; i < points; i++) {
         if (fabs(coords[i].y) > EPSILON) {
+            ops++;
             if (!first) {
                 sprintf(tmp, "+");
-                ops++;
                 strncat(eqStr, tmp, 3);
             } else {
                 first = 0;
@@ -68,7 +68,6 @@ char *findPolyLagr(coord *coords, int points) {
             }
             sprintf(tmp, "(%+.50f)", pdt);
             strncat(eqStr, tmp, bfr);
-            ops++;
         }
     }
     printf("operations: %d\n", ops);
