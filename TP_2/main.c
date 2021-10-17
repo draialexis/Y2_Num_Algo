@@ -7,6 +7,7 @@
 #include <math.h>
 #include <string.h>
 
+#define BUFFER_SIZE 16384
 #define EPSILON 0.00000000000022737367544323206000
 #define DEBUG printf("file %s; line %d\n", __FILE__, __LINE__);
 #define FAIL_OUT exit(EXIT_FAILURE);
@@ -41,7 +42,13 @@ int main() {
     arr[2] = (coord) {0, 1};
     arr[3] = (coord) {2, 3};
     showCoordArr(arr, points);
-    findPolyNewt(arr, points);
+    char * eqNewt = findPolyNewt(arr, points);
+    printf("interpolation de Newton non simplifiee (version simplifiee visible par le script python):\n%s\n", eqNewt);
+    askPy(arr, eqNewt, points, "Newton");
+    showCoordArr(arr, points);
+    char * eqLagr = findPolyLagr(arr, points);
+    printf("interpolation de Lagrange non simplifiee (version simplifiee visible par le script python):\n%s\n", eqLagr);
+    askPy(arr, eqLagr, points, "Lagrange");
 
 //    points = 5;
 //    arr = mkCoordArr(points);

@@ -5,9 +5,9 @@
 #ifndef Y2_NUM_ALGO_NEWTON_H
 #define Y2_NUM_ALGO_NEWTON_H
 
-void findPolyNewt(coord *coords, int points);
+char * findPolyNewt(const coord *coords, int points);
 
-void findPolyNewt(coord *coords, int points) {
+char * findPolyNewt(const coord *coords, const int points) {
 
     if (coords == NULL && points < 2) {
         if (points < 2) {
@@ -87,7 +87,7 @@ void findPolyNewt(coord *coords, int points) {
 
     printf("operations: %d\n", ops);
     const int n_coeffs = degP + 1;//+ 1 for the x^0 coeff
-    showDiffMat(diffs, degP);
+    showDiffMat(diffs, degP);//TODO remove
     //we put all our 'b's in an array, b0 first
     double *poly = mkColVec(n_coeffs);
     for (int i = 0; i < degP + 1; i++) {
@@ -97,23 +97,8 @@ void findPolyNewt(coord *coords, int points) {
             poly[i] = diffs[0][i - 1]; //b1 = diffs[0][0], b2 = diffs[0][1], etc.
         }
     }
-    showRow(poly, n_coeffs);
-    char *eqStr = printPoly(poly, n_coeffs, coords);
-
-    printf("equation polynomiale non simplifiee (version simplifiee visible par le script python):\n%s\n", eqStr);
-
-    char genPy;
-    printf("\ngenerer un script \"newt_poly.py\"?"
-           "\n* 'o' : oui"
-           "\n* 'n' : non"
-           "\n>");
-    genPy = (char) getchar();
-    cleanCheck(genPy);
-
-    if (genPy == 'o') {
-        writePy(coords, eqStr, degP, points);
-    }
-    free(eqStr);
+    showRow(poly, n_coeffs);//TODO remove
+    return printPoly(poly, n_coeffs, coords);
 }
 
 #endif //Y2_NUM_ALGO_NEWTON_H

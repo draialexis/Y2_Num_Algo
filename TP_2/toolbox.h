@@ -5,7 +5,6 @@
 #ifndef Y2_NUM_ALGO_TOOLBOX_H
 #define Y2_NUM_ALGO_TOOLBOX_H
 
-#define BUFFER_SIZE 2048
 
 typedef struct Coordinate {
     double x;
@@ -13,6 +12,8 @@ typedef struct Coordinate {
 } coord;
 
 double **mkMat(int rows, int cols);
+
+char *printPoly(double *poly, int n_coeffs, const coord *coords);
 
 double **mk_X_Y(int rows);
 
@@ -40,7 +41,11 @@ void cleanCheck(char input);
 
 void checkFopen(FILE *fileName);
 
-void writePy(coord *coords, char *eqStr, int degP, int points);
+void writePy(const coord *coords, char *eqStr, int points, char *mthd);
+
+void askPy(const coord *coords, char *eqStr, int points, char *mthd);
+
+void writeToFile(char *myStr, char *fname);
 
 double **mkMat(int rows, int cols) {
     if (rows > 0 && cols > 0) {
@@ -213,15 +218,15 @@ void showCoordArr(coord *arr, int points) {
     }
 }
 
-char *printPoly(double *poly, int n_coeffs, coord *coords) {
-    int bfr = 32;
+char *printPoly(double *poly, int n_coeffs, const coord *coords) {
+    int bfr = 64;
     char *res = (char *) malloc(sizeof(char) * n_coeffs * bfr);
     sprintf(res, "%c", '\0');
     char *tmp = (char *) malloc(sizeof(char) * bfr);
     for (int i = 0; i < n_coeffs; i++) {
         if (fabs(poly[i]) > EPSILON) {
             if (i == 0) {
-                sprintf(tmp, "%+05.10f", poly[i]);
+                sprintf(tmp, "%+05.10f ", poly[i]);
                 strncat(res, tmp, bfr);
             } else {
                 sprintf(tmp, "%+05.10f * ", poly[i]);
@@ -231,11 +236,11 @@ char *printPoly(double *poly, int n_coeffs, coord *coords) {
                         sprintf(tmp, "(x)");
                         strncat(res, tmp, bfr);
                     } else {
-                        sprintf(tmp, "(x - (%+05.10f))", coords[k].x);
+                        sprintf(tmp, "(x - (%+05.10f)) ", coords[k].x);
                         strncat(res, tmp, bfr);
                     }
                     if (k < i - 1) {
-                        sprintf(tmp, " * ");
+                        sprintf(tmp, "* ");
                         strncat(res, tmp, bfr);
                     }
                 }
@@ -340,19 +345,29 @@ void checkFopen(FILE *fileName) {
     }
 }
 
-void writeToFile(char *myStr, char *f2_name) {
-    FILE *f2 = fopen(f2_name, "w+");
-    checkFopen(f2);
-    fputs(myStr, f2);
-    fclose(f2);
+void writeToFile(char *myStr, char *fname) {
+    FILE *fp = fopen(fname, "w");
+    checkFopen(fp);
+    fputs(myStr, fp);
+    fclose(fp);
 }
 
-void writePy(coord *coords, char *eqStr, int degP, int points) {
+void writePy(const coord *coords, char *eqStr, int points, char *mthd) {
+    int bfr = 128;//128 chars per coordinate should be enough on the whole
+    char *fname = (char *) malloc((sizeof(char)) * 20);
+    char *clr = (char *) malloc((sizeof(char)) * 20);
+    if (strcmp(mthd, "Lagrange") == 0) {
+        fname = "lagr_poly.py";
+        clr = "green";
+    } else {
+        fname = "newt_poly.py";
+        clr = "cyan";
+    }
     char *pyStr = (char *) malloc(sizeof(char) * BUFFER_SIZE);
-    char *xStr = (char *) malloc(sizeof(char) * points * 64);//64 chars per coordinate should be enough on the whole
-    char *yStr = (char *) malloc(sizeof(char) * points * 64);
-    char *xPart = (char *) malloc(sizeof(char) * 32);
-    char *yPart = (char *) malloc(sizeof(char) * 32);
+    char *xStr = (char *) malloc(sizeof(char) * points * bfr);
+    char *yStr = (char *) malloc(sizeof(char) * points * bfr);
+    char *xPart = (char *) malloc(sizeof(char) * bfr);
+    char *yPart = (char *) malloc(sizeof(char) * bfr);
     sprintf(xStr, "%c", '\0');
     sprintf(yStr, "%c", '\0');
     sprintf(xPart, "%c", '\0');
@@ -360,8 +375,8 @@ void writePy(coord *coords, char *eqStr, int degP, int points) {
     for (int i = 0; i < points; i++) {
         sprintf(xPart, "%.10f", coords[i].x);
         sprintf(yPart, "%.10f", coords[i].y);
-        strncat(xStr, xPart, 32);
-        strncat(yStr, yPart, 32);
+        strncat(xStr, xPart, bfr);
+        strncat(yStr, yPart, bfr);
         if (i != points - 1) {
             strncat(xStr, ", ", 3);
             strncat(yStr, ", ", 3);
@@ -386,7 +401,7 @@ void writePy(coord *coords, char *eqStr, int degP, int points) {
             "for i in range(lo, hi):\n"
             "    new_x_t.append(i)\n"
             "    new_y_d.append(formula(i))\n"
-            "plt.plot(new_x_t, new_y_d, color='red', label='Newton')\n"
+            "plt.plot(new_x_t, new_y_d, color='%s', label='%s')\n"
             "plt.scatter(x_t, y_d, 50, color='blue', label='Given datapoints')\n"
             "plt.xlabel('x')\n"
             "plt.ylabel('P(x)')\n"
@@ -395,14 +410,26 @@ void writePy(coord *coords, char *eqStr, int degP, int points) {
             "plt.axhline(0, color='black')\n"
             "plt.axvline(0, color='black')\n"
             "plt.show()\n",
-            eqStr, xStr, yStr);
+            eqStr, xStr, yStr, clr, mthd);
 
-    char *fname = "newt_poly.py";
     writeToFile(pyStr, fname);
     free(pyStr);
     free(eqStr);
     free(xStr);
     free(yStr);
+}
+
+void askPy(const coord *coords, char *eqStr, int points, char *mthd) {
+    char genPy;
+    printf("\ngenerer un script .py?"
+           "\n* 'o' : oui"
+           "\n* 'n' : non"
+           "\n>");
+    genPy = (char) getchar();
+    cleanCheck(genPy);
+    if (genPy == 'o') {
+        writePy(coords, eqStr, points, mthd);
+    }
 }
 
 #endif //Y2_NUM_ALGO_TOOLBOX_H
