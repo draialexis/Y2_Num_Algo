@@ -390,7 +390,7 @@ void writePy(const coord *coords, char *eqStr, int points, char *mthd) {
             "import matplotlib.pyplot as plt\n"
             "import sympy as sym\n"
             "def formula(x):\n"
-            "    return sym.simplify(%s)\n"
+            "    return sym.expand(%s)\n"
             "x_ = sym.symbols('x')\n"
             "x_t = [%s]\n"
             "y_d = [%s]\n"

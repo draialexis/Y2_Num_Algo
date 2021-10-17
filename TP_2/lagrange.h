@@ -19,35 +19,44 @@ char *findPolyLagr(coord *coords, int points) {
 
     int ops = 0;
     int bfr = 128;
-    int cnt = 0;
 
     char *eqStr = (char *) malloc(sizeof(char) * points * 2 * bfr);
     sprintf(eqStr, "%c", '\0');
     char *tmp = (char *) malloc(sizeof(char) * bfr);
 
+    double pdt;
+    int first = 1;
+
     for (int i = 0; i < points; i++) {
         if (fabs(coords[i].y) > EPSILON) {
-            sprintf(tmp, "(%+05.10f", coords[i].y);
-            strncat(eqStr, tmp, bfr);
+            if (!first) {
+                sprintf(tmp, " + ");
+                strncat(eqStr, tmp, 3);
+            } else {
+                first = 0;
+            }
+            pdt = coords[i].y;
             for (int j = 0; j < points; j++) {
                 if (j != i) {
-                    cnt++;
-                    sprintf(tmp, " * ((x - (%+05.10f)) / ((%+05.10f) - (%+05.10f)))", coords[j].x, coords[i].x,
-                            coords[j].x);
-                    ops += 3;
-                    strncat(eqStr, tmp, bfr);
-//                    if (j < points - 1) {
-//                        sprintf(tmp, " * ");
-//                        strncat(eqStr, tmp, 30);
-//                    }
+
+                    // we can extract the known factors from the unknowns, then combine them, for readability and file-size
+                    //      li = (x -xj) / (x_i - x_j)
+                    //
+                    // <=>  li = 1 / (x_i - x_j) * (x -xj)
+                    pdt *= (1 / (coords[i].x - coords[j].x));
+                    ops += 2;
+
+                    if (fabs(coords[j].x) > EPSILON) {
+                        sprintf(tmp, "(x - (%+05.10f)) * ", coords[j].x);
+                        strncat(eqStr, tmp, bfr);
+                    } else {
+                        sprintf(tmp, "(x) * ");
+                        strncat(eqStr, tmp, bfr);
+                    }
                 }
             }
-            if (i < points - 1) {
-                sprintf(tmp, ") + ");
-            } else {
-                sprintf(tmp, ")");
-            }
-            strncat(eqStr, tmp, 5);
+            sprintf(tmp, "(%+05.10f)", pdt);
+            strncat(eqStr, tmp, bfr);
         }
     }
     printf("operations: %d\n", ops);
