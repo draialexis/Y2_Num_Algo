@@ -25,6 +25,7 @@ char *findPolyNewt(const coord *coords, const int points) {
     double prev;
     int isMonoPrev = 0;
     int ops = 0;
+    double denom;
     double div;
     for (int j = 0; j < degP; j++) {
         isMono = 1;
@@ -38,8 +39,11 @@ char *findPolyNewt(const coord *coords, const int points) {
             *   0   0   0   0
 
              */
-            if(fabs(coords[i + j + 1].x - coords[i].x) > EPSILON) {
-                div = 1 / (coords[i + j + 1].x - coords[i].x);
+            denom = coords[i + j + 1].x - coords[i].x;
+            ops++;
+            if (fabs(denom) > EPSILON) {
+                div = 1 / denom;
+                ops++;
             } else {
                 printf("deux coordonnees avec meme x.\n");
                 DEBUG
@@ -48,7 +52,7 @@ char *findPolyNewt(const coord *coords, const int points) {
             //fill in first column of differences table
             if (j == 0) {
                 diffs[i][j] = (coords[i + 1].y - coords[i].y) * div;
-                ops += 3;
+                ops += 2;
                 // δ(y_i) = y_i - y_1
                 //          ----------  for i ≥ 2
                 //           x_i - x_1
@@ -72,7 +76,7 @@ char *findPolyNewt(const coord *coords, const int points) {
             // if we've spotted a mono column already, we don't need to check all that
             if (!isMonoPrev) {
                 if (isMono && i != 0) {
-                    if (diffs[i][j] != prev) {
+                    if (fabs(diffs[i][j] - prev) > EPSILON) {
                         isMono = 0;
                     }
                 }

@@ -25,12 +25,14 @@ char *findPolyLagr(coord *coords, int points) {
     char *tmp = (char *) malloc(sizeof(char) * bfr);
 
     double pdt;
+    double denom;
     int first = 1;
 
     for (int i = 0; i < points; i++) {
         if (fabs(coords[i].y) > EPSILON) {
             if (!first) {
                 sprintf(tmp, "+");
+                ops++;
                 strncat(eqStr, tmp, 3);
             } else {
                 first = 0;
@@ -38,20 +40,24 @@ char *findPolyLagr(coord *coords, int points) {
             pdt = coords[i].y;
             for (int j = 0; j < points; j++) {
                 if (j != i) {
-                    if (fabs((coords[i].x - coords[j].x)) > EPSILON) {
+                    denom = coords[i].x - coords[j].x;
+                    ops++;
+                    if (fabs(denom) > EPSILON) {
                         // we can extract the known factors from the unknowns, then combine them later
                         // for readability and file-size
                         //      li = (x -xj) / (x_i - x_j)
                         //
                         // <=>  li = 1 / (x_i - x_j) * (x -xj)
-                        pdt *= (1 / (coords[i].x - coords[j].x));
-                        ops += 3;
+                        pdt *= (1 / denom);
+                        ops += 2;
                         if (fabs(coords[j].x) > EPSILON) {
                             sprintf(tmp, "(x-(%.5f))*", coords[j].x);
                             strncat(eqStr, tmp, bfr);
+                            ops++;
                         } else {
                             sprintf(tmp, "(x)*");
                             strncat(eqStr, tmp, bfr);
+                            ops++;
                         }
                     } else {
                         printf("deux coordonnees avec meme x.\n");
@@ -62,6 +68,7 @@ char *findPolyLagr(coord *coords, int points) {
             }
             sprintf(tmp, "(%+.50f)", pdt);
             strncat(eqStr, tmp, bfr);
+            ops++;
         }
     }
     printf("operations: %d\n", ops);
