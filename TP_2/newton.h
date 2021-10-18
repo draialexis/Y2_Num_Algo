@@ -26,61 +26,58 @@ char *findPolyNewt(const coord *coords, const int points) {
     int isMonoPrev = 0;
     int ops = 0;
     double denom;
-    double div;
     for (int j = 0; j < degP; j++) {
         isMono = 1;
         for (int i = 0; i < degP - j; i++) {//we don't want to fill the entire matrix
             /*
 
-            *   *   *   *   *
-            *   *   *   *   0
-            *   *   *   0   0
-            *   *   0   0   0
-            *   0   0   0   0
+            *   *   *   *   *   *
+            *   *   *   *   *   0
+            *   *   *   *   0   0
+            *   *   *   0   0   0
+            *   *   0   0   0   0
+            *   0   0   0   0   0
 
              */
-            denom = coords[i + j + 1].x - coords[i].x;
+            denom = coords[i + j + 1].x - coords[i].x;////<< sum from 1 to n
             ops++;
             if (fabs(denom) > EPSILON) {
-                div = 1 / denom;
-                ops++;
+                //fill in first column of differences table
+                if (j == 0) {
+                    diffs[i][j] = (coords[i + 1].y - coords[i].y) / denom;
+                    ops += 2;
+                    // δ(y_i) = y_i - y_1
+                    //          ----------  for i ≥ 2
+                    //           x_i - x_1
+                    //
+                } else {
+                    //fill in the rest thanks to the first column
+
+                    if (!isMonoPrev) {
+                        diffs[i][j] = (diffs[i + 1][j - 1] - diffs[i][j - 1]) / denom;
+                        ops += 3;
+                    }
+                        // δ^k(y_i) = δ^(k-1)(y_i) - δ^(k-1)(y_k)
+                        //           -----------------------------  for i ≥ k+1
+                        //                   x_i - x_k
+                    else {
+                        diffs[i][j] = 0.0;
+                    }
+                }
+                // we assume the column has all same coeffs. If two coeffs are different on one column, we take note
+                // if we've spotted a mono column already, we don't need to check all that
+                if (!isMonoPrev) {
+                    if (isMono && i != 0) {
+                        if (fabs(diffs[i][j] - prev) > EPSILON) {
+                            isMono = 0;
+                        }
+                    }
+                    prev = diffs[i][j];
+                }
             } else {
                 printf("deux coordonnees avec meme x.\n");
                 DEBUG
                 FAIL_OUT
-            }
-            //fill in first column of differences table
-            if (j == 0) {
-                diffs[i][j] = (coords[i + 1].y - coords[i].y) * div;
-                ops += 2;
-                // δ(y_i) = y_i - y_1
-                //          ----------  for i ≥ 2
-                //           x_i - x_1
-                //
-            } else {
-                //fill in the rest thanks to the first column
-
-                if (!isMonoPrev) {
-                    diffs[i][j] = (diffs[i + 1][j - 1] - diffs[i][j - 1]) * div;
-                    ops += 3;
-                }
-                    // δ^k(y_i) = δ^(k-1)(y_i) - δ^(k-1)(y_k)
-                    //           -----------------------------  for i ≥ k+1
-                    //                   x_i - x_k
-                else {
-                    diffs[i][j] = 0.0;
-                }
-            }
-
-            // we assume the column has all same coeffs. If two coeffs are different on one column, we take note
-            // if we've spotted a mono column already, we don't need to check all that
-            if (!isMonoPrev) {
-                if (isMono && i != 0) {
-                    if (fabs(diffs[i][j] - prev) > EPSILON) {
-                        isMono = 0;
-                    }
-                }
-                prev = diffs[i][j];
             }
         }
         //if we haven't proved that the column isn't monotone, it means that it is. We can fill rest with 0s and stop calculating

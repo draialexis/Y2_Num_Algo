@@ -9,7 +9,7 @@
 #include <time.h>
 
 #define BUFFER_SIZE 32768
-#define EPSILON 0.00000000000022737367544323206000
+#define EPSILON 0.00000000000000022204460492503131
 #define DEBUG printf("file %s; line %d\n", __FILE__, __LINE__);
 #define FAIL_OUT exit(EXIT_FAILURE);
 #define MALLOC_FAIL printf("!_malloc failed_!\n"); DEBUG FAIL_OUT
@@ -30,8 +30,8 @@ int main() {
 
     char str[30];
     char *endPtr;
-    printf("to exit at any point, press 'q' and enter\n");
-    printf("how many datapoints?\n>");
+    printf("pour quitter ce programme, entrez 'q' en reponse a une requete\n");
+    printf("combien de coordonnees voulez-vous entrer?\n>");
     scanf("%s", str);
     points = strtol(str, &endPtr, 10);
     cleanCheck(*endPtr);
@@ -39,6 +39,8 @@ int main() {
     printf("\n");
     fill_X_Y(arr, points);
     showCoordArr(arr, points);
+    printf("%d points, %d degres, complexite 4n^2-3n-1, nb d'ops attendu %d\n",
+           points - 1, points, ((4 * points * points) - (3 * points) - 1));
     eqLagr = findPolyLagr(arr, points);
     printf("interpolation de Lagrange non simplifiee (version simplifiee visible par le script python):\nP(x) = %s\n",
            eqLagr);
@@ -57,13 +59,14 @@ int main() {
 //    arr[2] = (coord) {0, 1};
 //    arr[3] = (coord) {2, 3};
 //    showCoordArr(arr, points);
-//    eqNewt = findPolyNewt(arr, points);
-//    printf("interpolation de Newton non simplifiee (version simplifiee visible par le script python):\n%s\n", eqNewt);
-//    askPy(arr, eqNewt, points, "Newton");
-//    showCoordArr(arr, points);
 //    eqLagr = findPolyLagr(arr, points);
 //    printf("interpolation de Lagrange non simplifiee (version simplifiee visible par le script python):\n%s\n", eqLagr);
 //    askPy(arr, eqLagr, points, "Lagrange");
+//    showCoordArr(arr, points);
+//    eqNewt = findPolyNewt(arr, points);
+//    printf("interpolation de Newton non simplifiee (version simplifiee visible par le script python):\n%s\n", eqNewt);
+//    askPy(arr, eqNewt, points, "Newton");
+
 
 //    points = 5;
 //    arr = mkCoordArr(points);
@@ -73,13 +76,14 @@ int main() {
 //    arr[3] = (coord) {0.5, 0};
 //    arr[4] = (coord) {1, 0};
 //    showCoordArr(arr, points);
-//    eqNewt = findPolyNewt(arr, points);
-//    printf("interpolation de Newton non simplifiee (version simplifiee visible par le script python):\n%s\n", eqNewt);
-//    askPy(arr, eqNewt, points, "Newton");
-//    showCoordArr(arr, points);
 //    eqLagr = findPolyLagr(arr, points);
 //    printf("interpolation de Lagrange non simplifiee (version simplifiee visible par le script python):\n%s\n", eqLagr);
 //    askPy(arr, eqLagr, points, "Lagrange");
+//    showCoordArr(arr, points);
+//    eqNewt = findPolyNewt(arr, points);
+//    printf("interpolation de Newton non simplifiee (version simplifiee visible par le script python):\n%s\n", eqNewt);
+//    askPy(arr, eqNewt, points, "Newton");
+
 
 //    points = 6;
 //    arr = mkCoordArr(points);
@@ -90,13 +94,14 @@ int main() {
 //    arr[4] = (coord) {3, 24};
 //    arr[5] = (coord) {-4, -53};
 //    showCoordArr(arr, points);
-//    eqNewt = findPolyNewt(arr, points);
-//    printf("interpolation de Newton non simplifiee (version simplifiee visible par le script python):\n%s\n", eqNewt);
-//    askPy(arr, eqNewt, points, "Newton");
-//    showCoordArr(arr, points);
 //    eqLagr = findPolyLagr(arr, points);
 //    printf("interpolation de Lagrange non simplifiee (version simplifiee visible par le script python):\n%s\n", eqLagr);
 //    askPy(arr, eqLagr, points, "Lagrange");
+//    showCoordArr(arr, points);
+//    eqNewt = findPolyNewt(arr, points);
+//    printf("interpolation de Newton non simplifiee (version simplifiee visible par le script python):\n%s\n", eqNewt);
+//    askPy(arr, eqNewt, points, "Newton");
+
 
 //    points = 20;
 //    arr = mkCoordArr(points);
@@ -121,13 +126,14 @@ int main() {
 //    arr[18] = (coord) {36, 0.99333};
 //    arr[19] = (coord) {38, 0.99326};
 //    showCoordArr(arr, points);
-//    eqNewt = findPolyNewt(arr, points);
-//    printf("interpolation de Newton non simplifiee (version simplifiee visible par le script python):\n%s\n", eqNewt);
-//    askPy(arr, eqNewt, points, "Newton");
-//    showCoordArr(arr, points);
 //    eqLagr = findPolyLagr(arr, points);
 //    printf("interpolation de Lagrange non simplifiee (version simplifiee visible par le script python):\n%s\n", eqLagr);
 //    askPy(arr, eqLagr, points, "Lagrange");
+//    showCoordArr(arr, points);
+//    eqNewt = findPolyNewt(arr, points);
+//    printf("interpolation de Newton non simplifiee (version simplifiee visible par le script python):\n%s\n", eqNewt);
+//    askPy(arr, eqNewt, points, "Newton");
+
 
 //    points = 11;
 //    arr = mkCoordArr(points);
@@ -143,13 +149,14 @@ int main() {
 //    arr[9] = (coord) {7, 7.26};
 //    arr[10] = (coord) {5, 4.74};
 //    showCoordArr(arr, points);
-//    eqNewt = findPolyNewt(arr, points);
-//    printf("interpolation de Newton non simplifiee (version simplifiee visible par le script python):\n%s\n", eqNewt);
-//    askPy(arr, eqNewt, points, "Newton");
-//    showCoordArr(arr, points);
 //    eqLagr = findPolyLagr(arr, points);
 //    printf("interpolation de Lagrange non simplifiee (version simplifiee visible par le script python):\n%s\n", eqLagr);
 //    askPy(arr, eqLagr, points, "Lagrange");
+//    showCoordArr(arr, points);
+//    eqNewt = findPolyNewt(arr, points);
+//    printf("interpolation de Newton non simplifiee (version simplifiee visible par le script python):\n%s\n", eqNewt);
+//    askPy(arr, eqNewt, points, "Newton");
+
 
 //    points = 11;
 //    arr = mkCoordArr(points);
@@ -165,13 +172,14 @@ int main() {
 //    arr[9] = (coord) {7, 6.42};
 //    arr[10] = (coord) {5, 5.73};
 //    showCoordArr(arr, points);
-//    eqNewt = findPolyNewt(arr, points);
-//    printf("interpolation de Newton non simplifiee (version simplifiee visible par le script python):\n%s\n", eqNewt);
-//    askPy(arr, eqNewt, points, "Newton");
-//    showCoordArr(arr, points);
 //    eqLagr = findPolyLagr(arr, points);
 //    printf("interpolation de Lagrange non simplifiee (version simplifiee visible par le script python):\n%s\n", eqLagr);
 //    askPy(arr, eqLagr, points, "Lagrange");
+//    showCoordArr(arr, points);
+//    eqNewt = findPolyNewt(arr, points);
+//    printf("interpolation de Newton non simplifiee (version simplifiee visible par le script python):\n%s\n", eqNewt);
+//    askPy(arr, eqNewt, points, "Newton");
+
 
 //    points = 11;
 ////this one causes the program to fail out
@@ -188,13 +196,14 @@ int main() {
 //    arr[9] = (coord) {8, 7.26};
 //    arr[10] = (coord) {8, 4.74};
 //    showCoordArr(arr, points);
-//    eqNewt = findPolyNewt(arr, points);
-//    printf("interpolation de Newton non simplifiee (version simplifiee visible par le script python):\n%s\n", eqNewt);
-//    askPy(arr, eqNewt, points, "Newton");
-//    showCoordArr(arr, points);
 //    eqLagr = findPolyLagr(arr, points);
 //    printf("interpolation de Lagrange non simplifiee (version simplifiee visible par le script python):\n%s\n", eqLagr);
 //    askPy(arr, eqLagr, points, "Lagrange");
+//    showCoordArr(arr, points);
+//    eqNewt = findPolyNewt(arr, points);
+//    printf("interpolation de Newton non simplifiee (version simplifiee visible par le script python):\n%s\n", eqNewt);
+//    askPy(arr, eqNewt, points, "Newton");
+
 
 //    points = 21;
 //    arr = mkCoordArr(points);
@@ -220,13 +229,14 @@ int main() {
 //    arr[19] = (coord) {809, 77};
 //    arr[20] = (coord) {894, 223};
 //    showCoordArr(arr, points);
-//    eqNewt = findPolyNewt(arr, points);
-//    printf("interpolation de Newton non simplifiee (version simplifiee visible par le script python):\n%s\n", eqNewt);
-//    askPy(arr, eqNewt, points, "Newton");
-//    showCoordArr(arr, points);
 //    eqLagr = findPolyLagr(arr, points);
 //    printf("interpolation de Lagrange non simplifiee (version simplifiee visible par le script python):\n%s\n", eqLagr);
 //    askPy(arr, eqLagr, points, "Lagrange");
+//    showCoordArr(arr, points);
+//    eqNewt = findPolyNewt(arr, points);
+//    printf("interpolation de Newton non simplifiee (version simplifiee visible par le script python):\n%s\n", eqNewt);
+//    askPy(arr, eqNewt, points, "Newton");
+
 
     free(arr);
     return 0;

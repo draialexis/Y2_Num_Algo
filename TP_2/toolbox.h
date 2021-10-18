@@ -132,7 +132,7 @@ void showDiffMat(double **mat, int n) {
         for (int i = 0; i < n; i++) {
             if (i != 0) printf("|");
             for (int j = 0; j < n - i; j++) {
-                printf("%+06.5f ", *(*(mat + i) + j));
+                printf("%+.15f ", *(*(mat + i) + j));
             }
             i == n - 1 ? printf("]\n") : printf("|\n");
         }
@@ -155,29 +155,29 @@ void showCoordArr(coord *arr, int points) {
 }
 
 char *printPoly(double *poly, int n_coeffs, const coord *coords) {
-    int bfr = 256;
-    char *res = (char *) malloc(sizeof(char) * n_coeffs * bfr);
+    int bfr = 32;
+    char *res = (char *) malloc(sizeof(char) * n_coeffs * 512);
     sprintf(res, "%c", '\0');
     char *tmp = (char *) malloc(sizeof(char) * bfr);
     for (int i = 0; i < n_coeffs; i++) {
         if (fabs(poly[i]) > EPSILON) {
             if (i == 0) {
-                sprintf(tmp, "%+.50f", poly[i]);
+                sprintf(tmp, "%+.15f", poly[i]);//y0
                 strncat(res, tmp, bfr);
             } else {
-                sprintf(tmp, "%+.50f*", poly[i]);
+                sprintf(tmp, "%+.15f*", poly[i]);
                 strncat(res, tmp, bfr);
                 for (int k = 0; k < i; k++) {
                     if (fabs(coords[k].x) < EPSILON) {
                         sprintf(tmp, "(x)");
-                        strncat(res, tmp, bfr);
+                        strncat(res, tmp, 4);
                     } else {
                         sprintf(tmp, "(x-(%.5f))", coords[k].x);
                         strncat(res, tmp, bfr);
                     }
                     if (k < i - 1) {
                         sprintf(tmp, "*");
-                        strncat(res, tmp, bfr);
+                        strncat(res, tmp, 2);
                     }
                 }
             }
@@ -220,7 +220,7 @@ void writeToFile(char *myStr, char *fname) {
 }
 
 void writePy(const coord *coords, char *eqStr, int points, char *mthd) {
-    int bfr = 256;//128 chars per coordinate were not enough for lagrange
+    int bfr = 32;
     char *fname;
     char *clr;
     if (strcmp(mthd, "Lagrange") == 0) {
