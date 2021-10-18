@@ -29,9 +29,9 @@ char *findPolyLagr(coord *coords, int points) {
     for (int i = 0; i < points; i++) {
         if (fabs(coords[i].y) > EPSILON) {
             if (!first) {
-                ops++;////<< n-1
                 sprintf(tmp, "+");
                 strncat(eqStr, tmp, 2);
+                ops++;////<< n-1
             } else {
                 first = 0;
             }
@@ -49,13 +49,13 @@ char *findPolyLagr(coord *coords, int points) {
                         pdt /= denom;////<< n(n-1)
                         ops++;
                         if (fabs(coords[j].x) > EPSILON) {
-                            sprintf(tmp, "(x-(%.5f))*", coords[j].x);
+                            sprintf(tmp, "(x-(%.5f))*", coords[j].x);////<< 2(n(n-1))
                             strncat(eqStr, tmp, bfr);
                         } else {
                             sprintf(tmp, "(x)*");
                             strncat(eqStr, tmp, bfr);
                         }
-                        ops += 2;////<< 2(n(n-1))
+                        ops += 2;
                     } else {
                         printf("deux coordonnees avec meme x.\n");
                         DEBUG

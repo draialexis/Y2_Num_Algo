@@ -39,13 +39,15 @@ int main() {
     printf("\n");
     fill_X_Y(arr, points);
     showCoordArr(arr, points);
-    printf("%d points, %d degres, complexite 4n^2-3n-1, nb d'ops attendu %d\n",
+    printf("%d points, %d degres, complexite: 4n^2-3n-1, nb d'ops attendu: %d\n",
            points - 1, points, ((4 * points * points) - (3 * points) - 1));
     eqLagr = findPolyLagr(arr, points);
     printf("interpolation de Lagrange non simplifiee (version simplifiee visible par le script python):\nP(x) = %s\n",
            eqLagr);
     askPy(arr, eqLagr, points, "Lagrange");
     showCoordArr(arr, points);
+    printf("%d points, %d degres, complexite: (5n^2-n-4)/2, nb d'ops attendu: %d\n",
+           points - 1, points, ((5 * points * points) - (points) - 4) / 2);
     eqNewt = findPolyNewt(arr, points);
     printf("interpolation de Newton non simplifiee (version simplifiee visible par le script python):\nP(x) = %s\n",
            eqNewt);

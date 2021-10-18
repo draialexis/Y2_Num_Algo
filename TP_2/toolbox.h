@@ -25,7 +25,7 @@ void showDiffMat(double **mat, int n);
 
 void showCoordArr(coord *arr, int points);
 
-char *printPoly(double *poly, int n_coeffs, const coord *coords);
+char *printPoly(double *poly, int n_coeffs, const coord *coords, int ops);
 
 void showRow(double *mat, int size);
 
@@ -119,7 +119,7 @@ void fill_X_Y(coord *arr, int points) {
 void degradeCoordArr(coord *arr, int rows) {
     if (arr != NULL && rows > 0) {
         int i = rand() % rows;
-        arr[i].y += (1.0/70);
+        arr[i].y += (1.0 / 70);
     } else {
         EMPTY_OR_NULL
         FAIL_OUT
@@ -154,7 +154,7 @@ void showCoordArr(coord *arr, int points) {
     }
 }
 
-char *printPoly(double *poly, int n_coeffs, const coord *coords) {
+char *printPoly(double *poly, int n_coeffs, const coord *coords, int ops) {
     int bfr = 32;
     char *res = (char *) malloc(sizeof(char) * n_coeffs * 512);
     sprintf(res, "%c", '\0');
@@ -162,27 +162,31 @@ char *printPoly(double *poly, int n_coeffs, const coord *coords) {
     for (int i = 0; i < n_coeffs; i++) {
         if (fabs(poly[i]) > EPSILON) {
             if (i == 0) {
-                sprintf(tmp, "%+.15f", poly[i]);//y0
+                sprintf(tmp, "%+.15f", poly[i]);
                 strncat(res, tmp, bfr);
             } else {
-                sprintf(tmp, "%+.15f*", poly[i]);
+                sprintf(tmp, "%+.15f*", poly[i]);////<< 2(n-1)
                 strncat(res, tmp, bfr);
+                ops += 2;
                 for (int k = 0; k < i; k++) {
-                    if (fabs(coords[k].x) < EPSILON) {
-                        sprintf(tmp, "(x)");
-                        strncat(res, tmp, 4);
-                    } else {
+                    if (fabs(coords[k].x) > EPSILON) {
                         sprintf(tmp, "(x-(%.5f))", coords[k].x);
                         strncat(res, tmp, bfr);
+                    } else {
+                        sprintf(tmp, "(x)");
+                        strncat(res, tmp, 4);
                     }
                     if (k < i - 1) {
-                        sprintf(tmp, "*");
+                        sprintf(tmp, "*");////<< 2(n(n-1))/2
                         strncat(res, tmp, 2);
+                        ops += 2;
                     }
                 }
             }
         }
     }
+    printf("operations: %d\n", ops);
+
     return res;
 }
 

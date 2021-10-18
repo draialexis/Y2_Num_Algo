@@ -31,20 +31,19 @@ char *findPolyNewt(const coord *coords, const int points) {
         for (int i = 0; i < degP - j; i++) {//we don't want to fill the entire matrix
             /*
 
-            *   *   *   *   *   *
-            *   *   *   *   *   0
-            *   *   *   *   0   0
-            *   *   *   0   0   0
-            *   *   0   0   0   0
-            *   0   0   0   0   0
+            *   *   *   *   *
+            *   *   *   *   0
+            *   *   *   0   0
+            *   *   0   0   0
+            *   0   0   0   0
 
              */
-            denom = coords[i + j + 1].x - coords[i].x;////<< sum from 1 to n
+            denom = coords[i + j + 1].x - coords[i].x;////<< (n*(n-1))/2
             ops++;
             if (fabs(denom) > EPSILON) {
                 //fill in first column of differences table
                 if (j == 0) {
-                    diffs[i][j] = (coords[i + 1].y - coords[i].y) / denom;
+                    diffs[i][j] = (coords[i + 1].y - coords[i].y) / denom;////<< 2*(n*(n-1))/2 au pire, 0 au mieux
                     ops += 2;
                     // δ(y_i) = y_i - y_1
                     //          ----------  for i ≥ 2
@@ -55,11 +54,16 @@ char *findPolyNewt(const coord *coords, const int points) {
 
                     if (!isMonoPrev) {
                         diffs[i][j] = (diffs[i + 1][j - 1] - diffs[i][j - 1]) / denom;
-                        ops += 3;
+                        ops += 2;
                     }
                         // δ^k(y_i) = δ^(k-1)(y_i) - δ^(k-1)(y_k)
                         //           -----------------------------  for i ≥ k+1
                         //                   x_i - x_k
+
+                        //si la colonne prec de cette table a des coeff identiques, tous les coeffs suivants seront 0
+                        // on s'epargne des calculs et on peut réévaluer le degré du polynome cherché
+                        // possible aussi avec lagrange, mais difficile à implémenter si ce n'est pas à la main.
+                        // du au manque de précision des calculs de floats
                     else {
                         diffs[i][j] = 0.0;
                     }
@@ -88,20 +92,19 @@ char *findPolyNewt(const coord *coords, const int points) {
         }
     }
 
-    printf("operations: %d\n", ops);
     const int n_coeffs = degP + 1;//+ 1 for the x^0 coeff
-    showDiffMat(diffs, degP);//TODO remove
+    printf("differences divisees:\n");
+    showDiffMat(diffs, degP);
     //we put all our 'b's in an array, b0 first
     double *poly = mkColVec(n_coeffs);
-    for (int i = 0; i < degP + 1; i++) {
+    for (int i = 0; i < n_coeffs; i++) {
         if (i == 0) {
             poly[i] = coords[0].y;
         } else {
             poly[i] = diffs[0][i - 1]; //b1 = diffs[0][0], b2 = diffs[0][1], etc.
         }
     }
-    showRow(poly, n_coeffs);//TODO remove
-    return printPoly(poly, n_coeffs, coords);
+    return printPoly(poly, n_coeffs, coords, ops);
 }
 
 #endif //Y2_NUM_ALGO_NEWTON_H
