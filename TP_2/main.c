@@ -69,13 +69,13 @@ int main() {
 //    printf("interpolation de Newton non simplifiee (version simplifiee visible par le script python):\n%s\n", eqNewt);
 //    askPy(arr, eqNewt, points, "Newton");
 
-
+//
 //    points = 5;
 //    arr = mkCoordArr(points);
 //    arr[0] = (coord) {-1, -1.5};
 //    arr[1] = (coord) {-0.5, 0};
 //    arr[2] = (coord) {0, 0.25};
-//    arr[3] = (coord) {0.5, 0};
+//    arr[3] = (coord) {0.5, -0.01};
 //    arr[4] = (coord) {1, 0};
 //    showCoordArr(arr, points);
 //    eqLagr = findPolyLagr(arr, points);

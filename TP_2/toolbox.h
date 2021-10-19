@@ -19,15 +19,11 @@ coord *mkCoordArr(int points);
 
 void fill_X_Y(coord *arr, int points);
 
-void degradeCoordArr(coord *arr, int rows);
-
 void showDiffMat(double **mat, int n);
 
 void showCoordArr(coord *arr, int points);
 
 char *printPoly(double *poly, int n_coeffs, const coord *coords, int ops);
-
-void showRow(double *mat, int size);
 
 void cleanCheck(char input);
 
