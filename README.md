@@ -1,4 +1,4 @@
-# TP_1 Alg Num
+# TP Alg Num
 
 To test TP_x, please navigate to the TP_x folder in shell or the command line terminal, then enter the following
 command (you might have to install **GCC** first):
