@@ -10,4 +10,20 @@ typedef struct Coordinate {
     double y;
 } coord;
 
+coord *mkCoordArr(int points);
+
+coord *mkCoordArr(int points) {
+    if (points > 0) {
+        coord *arr = NULL;
+        arr = (coord *) malloc(sizeof(coord) * points);
+        if (arr == NULL) {
+            MALLOC_FAIL
+        }
+        return arr;
+    } else {
+        EMPTY_OR_NULL
+        FAIL_OUT
+    }
+}
+
 #endif //Y2_NUM_ALGO_TOOLBOX_H
