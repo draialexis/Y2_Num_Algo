@@ -42,29 +42,50 @@ int main() {
 //        printf("an error occurred\n");
 //    }
 
+//    3.1
+//    n = 11;
+//    arr = mkCoordArr(n);
+//    arr[0] = (coord) {10, 8.04};
+//    arr[1] = (coord) {8, 6.95};
+//    arr[2] = (coord) {13, 7.58};
+//    arr[3] = (coord) {9, 8.81};
+//    arr[4] = (coord) {11, 8.11};
+//    arr[5] = (coord) {14, 9.96};
+//    arr[6] = (coord) {6, 7.24};
+//    arr[7] = (coord) {4, 4.26};
+//    arr[8] = (coord) {12, 10.84};
+//    arr[9] = (coord) {7, 4.82};
+//    arr[10] = (coord) {5, 5.68};
+//    showCoordArr(arr, n);
+//    if (leastSqu(arr, n, &a, &b)) {
+//        printf("y = %f x + %f\n", a, b);
+//        askPy(arr, a, b, n, 'r');
+//    } else {
+//        printf("an error occurred\n");
+//    }
 
 //    3.2 S1
-    n = 11;
-    arr = mkCoordArr(n);
-    arr[0] = (coord) {10, 9.14};
-    arr[1] = (coord) {8, 8.14};
-    arr[2] = (coord) {13, 8.74};
-    arr[3] = (coord) {9, 8.77};
-    arr[4] = (coord) {11, 9.26};
-    arr[5] = (coord) {14, 8.1};
-    arr[6] = (coord) {6, 6.13};
-    arr[7] = (coord) {4, 3.1};
-    arr[8] = (coord) {12, 9.13};
-    arr[9] = (coord) {7, 7.26};
-    arr[10] = (coord) {5, 4.74};
-    showCoordArr(arr, n);
-    if (leastSqu(arr, n, &a, &b)) {
-        printf("y = %f x + %f\n", a, b);
-        askPy(arr, a, b, n, 'r');
-    } else {
-        printf("an error occurred\n");
-    }
-//
+//    n = 11;
+//    arr = mkCoordArr(n);
+//    arr[0] = (coord) {10, 9.14};
+//    arr[1] = (coord) {8, 8.14};
+//    arr[2] = (coord) {13, 8.74};
+//    arr[3] = (coord) {9, 8.77};
+//    arr[4] = (coord) {11, 9.26};
+//    arr[5] = (coord) {14, 8.1};
+//    arr[6] = (coord) {6, 6.13};
+//    arr[7] = (coord) {4, 3.1};
+//    arr[8] = (coord) {12, 9.13};
+//    arr[9] = (coord) {7, 7.26};
+//    arr[10] = (coord) {5, 4.74};
+//    showCoordArr(arr, n);
+//    if (leastSqu(arr, n, &a, &b)) {
+//        printf("y = %f x + %f\n", a, b);
+//        askPy(arr, a, b, n, 'r');
+//    } else {
+//        printf("an error occurred\n");
+//    }
+
 //    3.2 S2
 //    n = 11;
 //    arr = mkCoordArr(n);
@@ -79,7 +100,14 @@ int main() {
 //    arr[8] = (coord) {12, 8.15};
 //    arr[9] = (coord) {7, 6.42};
 //    arr[10] = (coord) {5, 5.73};
-//
+//    showCoordArr(arr, n);
+//    if (leastSqu(arr, n, &a, &b)) {
+//        printf("y = %f x + %f\n", a, b);
+//        askPy(arr, a, b, n, 'r');
+//    } else {
+//        printf("an error occurred\n");
+//    }
+
 //    3.2 S3
 //    n = 11;
 //    arr = mkCoordArr(n);
@@ -94,6 +122,81 @@ int main() {
 //    arr[8] = (coord) {8, 5.56};
 //    arr[9] = (coord) {8, 7.91};
 //    arr[10] = (coord) {8, 6.89};
+//    showCoordArr(arr, n);
+//    if (leastSqu(arr, n, &a, &b)) {
+//        printf("y = %f x + %f\n", a, b);
+//        askPy(arr, a, b, n, 'r');
+//    } else {
+//        printf("an error occurred\n");
+//    }
+
+//    3.3.1-2
+//    n = 11;
+//    arr = mkCoordArr(n);
+//    arr[0] = (coord) {752, 85};
+//    arr[1] = (coord) {855, 83};
+//    arr[2] = (coord) {871, 162};
+//    arr[3] = (coord) {734, 79};
+//    arr[4] = (coord) {610, 81};
+//    arr[5] = (coord) {582, 83};
+//    arr[6] = (coord) {921, 281};
+//    arr[7] = (coord) {492, 81};
+//    arr[8] = (coord) {569, 81};
+//    arr[9] = (coord) {462, 80};
+//    arr[10] = (coord) {907, 243};
+//    showCoordArr(arr, n);
+//    if (leastSqu(arr, n, &a, &b)) {
+//        printf("y = %f x + %f\n", a, b);
+////        askPy(arr, a, b, n, 'r');
+//    } else {
+//        printf("an error occurred\n");
+//    }
+//    n = 10;
+//    arr = mkCoordArr(n);
+//    arr[0] = (coord) {643, 84};
+//    arr[1] = (coord) {862, 84};
+//    arr[2] = (coord) {524, 82};
+//    arr[3] = (coord) {679, 80};
+//    arr[4] = (coord) {902, 226};
+//    arr[5] = (coord) {918, 260};
+//    arr[6] = (coord) {828, 82};
+//    arr[7] = (coord) {875, 186};
+//    arr[8] = (coord) {809, 77};
+//    arr[9] = (coord) {894, 223};
+//    showCoordArr(arr, n);
+//    if (leastSqu(arr, n, &a, &b)) {
+//        printf("y = %.15f x + %.15f\n", a, b);
+////        askPy(arr, a, b, n, 'r');
+//    } else {
+//        printf("an error occurred\n");
+//    }
+
+//    n = 10;
+//    arr = mkCoordArr(n);
+//    arr[0] = (coord) {88, 5.89};
+//    arr[1] = (coord) {89, 6.77};
+//    arr[2] = (coord) {90, 7.87};
+//    arr[3] = (coord) {91, 9.11};
+//    arr[4] = (coord) {92, 10.56};
+//    arr[5] = (coord) {93, 12.27};
+//    arr[6] = (coord) {94, 13.92};
+//    arr[7] = (coord) {95, 15.72};
+//    arr[8] = (coord) {96, 17.91};
+//    arr[9] = (coord) {97, 22.13};
+//    showCoordArr(arr, n);
+//TODO exp_adj
+
+//    n = 7;
+//    arr = mkCoordArr(n);
+//    arr[0] = (coord) {20, 352};
+//    arr[1] = (coord) {30, 128};
+//    arr[2] = (coord) {40, 62.3};
+//    arr[3] = (coord) {50, 35.7};
+//    arr[4] = (coord) {100, 6.3};
+//    arr[5] = (coord) {300, 0.4};
+//    arr[6] = (coord) {500, 0.1};
+//    showCoordArr(arr, n);
+//TODO pow_adj
 
     return 0;
 }
