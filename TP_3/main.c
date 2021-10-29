@@ -23,22 +23,51 @@ int main() {
     int n;
     coord *arr;
 
-//    char str[20];
-//    char *endPtr;
-//    printf("pour quitter ce programme, entrez 'q' en reponse a une requete\n");
-//    printf("combien de coordonnees voulez-vous entrer?\n>");
-//    scanf("%s", str);
-//    n = strtol(str, &endPtr, 10);
-//    cleanCheck(*endPtr);
-//    arr = mkCoordArr(n);
-//    printf("\n");
-//    fill_X_Y(arr, n);
-//    showCoordArr(arr, n);
-//    if (linReg(arr, n, &a, &b) == 1) {
-//        printf("y = %f x + %f\n", a, b);
-//    } else {
-//        DEBUG
-//    }
+    char str[20];
+    char *endPtr;
+    printf("pour quitter ce programme, entrez 'q' en reponse a une requete\n");
+    printf("combien de coordonnees voulez-vous entrer?\n>");
+    scanf("%s", str);
+    n = strtol(str, &endPtr, 10);
+    cleanCheck(*endPtr);
+    arr = mkCoordArr(n);
+    printf("\n");
+    fill_X_Y(arr, n);
+    showCoordArr(arr, n);
+    char mthd;
+    printf("\nquelle methode utiliser ?"
+           "\n* 'l' : regression lineaire"
+           "\n* 'e' : ajustement exponentiel"
+           "\n* 'p' : ajustement puissance"
+           "\n>");
+    mthd = (char) getchar();
+    cleanCheck(mthd);
+    if (mthd == 'l') {
+        if (linReg(arr, n, &a, &b) == 1) {
+            printf("y = %f x + %f\n", a, b);
+            askPy(arr, a, b, n, mthd);
+        } else {
+            DEBUG
+        }
+    } else if (mthd == 'e') {
+        if (expReg(arr, n, &a, &b) == 1) {
+            printf("y = e^(%.15f * x %+.15f)\n", a, b);
+            askPy(arr, a, b, n, mthd);
+        } else {
+            DEBUG
+        }
+    } else if (mthd == 'p') {
+        if (powReg(arr, n, &a, &b) == 1) {
+            printf("y = pow(x, %.15f) * %.15f\n", a, b);
+            askPy(arr, a, b, n, mthd);
+        } else {
+            DEBUG
+        }
+    } else {
+        printf("exiting program\n");
+        return 0;
+    }
+
 
 //    3.1
 //    n = 11;
@@ -57,7 +86,7 @@ int main() {
 //    showCoordArr(arr, n);
 //    if (linReg(arr, n, &a, &b) == 1) {
 //        printf("y = %f x + %f\n", a, b);
-//        askPy(arr, a, b, n, 'r');
+//        askPy(arr, a, b, n, 'l');
 //    } else {
 //        DEBUG
 //    }
@@ -79,7 +108,7 @@ int main() {
 //    showCoordArr(arr, n);
 //    if (linReg(arr, n, &a, &b) == 1) {
 //        printf("y = %f x + %f\n", a, b);
-//        askPy(arr, a, b, n, 'r');
+//        askPy(arr, a, b, n, 'l');
 //    } else {
 //        DEBUG
 //    }
@@ -101,7 +130,7 @@ int main() {
 //    showCoordArr(arr, n);
 //    if (linReg(arr, n, &a, &b) == 1) {
 //        printf("y = %f x + %f\n", a, b);
-//        askPy(arr, a, b, n, 'r');
+//        askPy(arr, a, b, n, 'l');
 //    } else {
 //        DEBUG
 //    }
@@ -123,7 +152,7 @@ int main() {
 //    showCoordArr(arr, n);
 //    if (linReg(arr, n, &a, &b) == 1) {
 //        printf("y = %f x + %f\n", a, b);
-//        askPy(arr, a, b, n, 'r');
+//        askPy(arr, a, b, n, 'l');
 //    } else {
 //        DEBUG
 //    }
@@ -145,7 +174,7 @@ int main() {
 //    showCoordArr(arr, n);
 //    if (linReg(arr, n, &a, &b) == 1) {
 //        printf("y = %f x + %f\n", a, b);
-////        askPy(arr, a, b, n, 'r');
+////        askPy(arr, a, b, n, 'l');
 //    } else {
 //        DEBUG
 //    }
@@ -164,7 +193,7 @@ int main() {
 //    showCoordArr(arr, n);
 //    if (linReg(arr, n, &a, &b) == 1) {
 //        printf("y = %.15f x + %.15f\n", a, b);
-////        askPy(arr, a, b, n, 'r');
+////        askPy(arr, a, b, n, 'l');
 //    } else {
 //        DEBUG
 //    }
@@ -182,17 +211,6 @@ int main() {
 //    arr[7] = (coord) {95, 15.72};
 //    arr[8] = (coord) {96, 17.91};
 //    arr[9] = (coord) {97, 22.13};
-//    n = 9;
-//    arr = mkCoordArr(n);
-//    arr[0] = (coord) {0, 100};
-//    arr[1] = (coord) {2, 132};
-//    arr[2] = (coord) {4, 174};
-//    arr[3] = (coord) {6, 232};
-//    arr[4] = (coord) {8, 305};
-//    arr[5] = (coord) {9, 351};
-//    arr[6] = (coord) {10, 405};
-//    arr[7] = (coord) {12, 535};
-//    arr[8] = (coord) {15, 813};
 //    showCoordArr(arr, n);
 //    if (expReg(arr, n, &a, &b) == 1) {
 //        printf("y = e^(%.15f * x %+.15f)\n", a, b);

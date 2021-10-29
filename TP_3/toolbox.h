@@ -99,7 +99,7 @@ void writePy(const coord *coords, double a, double b, int n, char mthd) {
     char *eqStr = (char *) malloc(sizeof(char) * bfr);
     sprintf(eqStr, "%c", '\0');
 
-    if (mthd == 'r') {
+    if (mthd == 'l') {
         fname = "lin.py";
         sprintf(eqStr, "%.15f * x %+.15f", a, b);
     } else if (mthd == 'e') {
