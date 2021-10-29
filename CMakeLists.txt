@@ -21,7 +21,7 @@ add_executable(
         TP_3
         TP_3/main.c
         TP_3/toolbox.h
-        TP_3/regression.h
-        TP_3/exp_adjust.h
-        TP_3/pow_adjust.h
+        TP_3/linear.h
+        TP_3/exponential.h
+        TP_3/power.h
 )

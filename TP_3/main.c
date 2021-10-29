@@ -8,15 +8,15 @@
 
 #define BUFFER_SIZE 32768
 #define EPSILON 0.00000000000000022204460492503131
-#define DEBUG printf("file %s; line %d\n", __FILE__, __LINE__);
+#define DEBUG printf("an error occurred\nfile %s; line %d\n", __FILE__, __LINE__);
 #define FAIL_OUT exit(EXIT_FAILURE);
 #define MALLOC_FAIL printf("!_malloc failed_!\n"); DEBUG FAIL_OUT
 #define EMPTY_OR_NULL printf("this data structure doesn't have a positive integer value as its size, or the pointer to it isn't valid\n"); DEBUG;
 
 #include "toolbox.h"
-#include "regression.h"
-#include "exp_adjust.h"
-#include "pow_adjust.h"
+#include "linear.h"
+#include "exponential.h"
+#include "power.h"
 
 int main() {
     double a, b;
@@ -36,10 +36,10 @@ int main() {
 //    showCoordArr(arr, n);
 //    printf("%d points, complexite: ____, nb d'ops attendu: %d\n",
 //           n, 0);//TODO update
-//    if (leastSqu(arr, n, &a, &b)) {
+//    if (linReg(arr, n, &a, &b)) == 1) {
 //        printf("y = %f x + %f\n", a, b);
 //    } else {
-//        printf("an error occurred\n");
+//        DEBUG
 //    }
 
 //    3.1
@@ -57,11 +57,11 @@ int main() {
 //    arr[9] = (coord) {7, 4.82};
 //    arr[10] = (coord) {5, 5.68};
 //    showCoordArr(arr, n);
-//    if (leastSqu(arr, n, &a, &b)) {
+//    if (linReg(arr, n, &a, &b)) == 1) {
 //        printf("y = %f x + %f\n", a, b);
 //        askPy(arr, a, b, n, 'r');
 //    } else {
-//        printf("an error occurred\n");
+//        DEBUG
 //    }
 
 //    3.2 S1
@@ -79,11 +79,11 @@ int main() {
 //    arr[9] = (coord) {7, 7.26};
 //    arr[10] = (coord) {5, 4.74};
 //    showCoordArr(arr, n);
-//    if (leastSqu(arr, n, &a, &b)) {
+//    if (linReg(arr, n, &a, &b)) == 1) {
 //        printf("y = %f x + %f\n", a, b);
 //        askPy(arr, a, b, n, 'r');
 //    } else {
-//        printf("an error occurred\n");
+//        DEBUG
 //    }
 
 //    3.2 S2
@@ -101,11 +101,11 @@ int main() {
 //    arr[9] = (coord) {7, 6.42};
 //    arr[10] = (coord) {5, 5.73};
 //    showCoordArr(arr, n);
-//    if (leastSqu(arr, n, &a, &b)) {
+//    if (linReg(arr, n, &a, &b) == 1) {
 //        printf("y = %f x + %f\n", a, b);
 //        askPy(arr, a, b, n, 'r');
 //    } else {
-//        printf("an error occurred\n");
+//        DEBUG
 //    }
 
 //    3.2 S3
@@ -123,11 +123,11 @@ int main() {
 //    arr[9] = (coord) {8, 7.91};
 //    arr[10] = (coord) {8, 6.89};
 //    showCoordArr(arr, n);
-//    if (leastSqu(arr, n, &a, &b)) {
+//    if (linReg(arr, n, &a, &b)) == 1) {
 //        printf("y = %f x + %f\n", a, b);
 //        askPy(arr, a, b, n, 'r');
 //    } else {
-//        printf("an error occurred\n");
+//        DEBUG
 //    }
 
 //    3.3.1-2
@@ -145,11 +145,11 @@ int main() {
 //    arr[9] = (coord) {462, 80};
 //    arr[10] = (coord) {907, 243};
 //    showCoordArr(arr, n);
-//    if (leastSqu(arr, n, &a, &b)) {
+//    if (linReg(arr, n, &a, &b)) == 1) {
 //        printf("y = %f x + %f\n", a, b);
 ////        askPy(arr, a, b, n, 'r');
 //    } else {
-//        printf("an error occurred\n");
+//        DEBUG
 //    }
 //    n = 10;
 //    arr = mkCoordArr(n);
@@ -164,28 +164,36 @@ int main() {
 //    arr[8] = (coord) {809, 77};
 //    arr[9] = (coord) {894, 223};
 //    showCoordArr(arr, n);
-//    if (leastSqu(arr, n, &a, &b)) {
+//    if (linReg(arr, n, &a, &b)) == 1) {
 //        printf("y = %.15f x + %.15f\n", a, b);
 ////        askPy(arr, a, b, n, 'r');
 //    } else {
-//        printf("an error occurred\n");
+//        DEBUG
 //    }
 
-//    n = 10;
-//    arr = mkCoordArr(n);
-//    arr[0] = (coord) {88, 5.89};
-//    arr[1] = (coord) {89, 6.77};
-//    arr[2] = (coord) {90, 7.87};
-//    arr[3] = (coord) {91, 9.11};
-//    arr[4] = (coord) {92, 10.56};
-//    arr[5] = (coord) {93, 12.27};
-//    arr[6] = (coord) {94, 13.92};
-//    arr[7] = (coord) {95, 15.72};
-//    arr[8] = (coord) {96, 17.91};
-//    arr[9] = (coord) {97, 22.13};
-//    showCoordArr(arr, n);
+//  3.4
+    n = 10;
+    arr = mkCoordArr(n);
+    arr[0] = (coord) {88, 5.89};
+    arr[1] = (coord) {89, 6.77};
+    arr[2] = (coord) {90, 7.87};
+    arr[3] = (coord) {91, 9.11};
+    arr[4] = (coord) {92, 10.56};
+    arr[5] = (coord) {93, 12.27};
+    arr[6] = (coord) {94, 13.92};
+    arr[7] = (coord) {95, 15.72};
+    arr[8] = (coord) {96, 17.91};
+    arr[9] = (coord) {97, 22.13};
+    showCoordArr(arr, n);
+    if (expReg(arr, n, &a, &b)) {
+        printf("y = %.15f x + %.15f\n", a, b);
+//        askPy(arr, a, b, n, 'r');
+    } else {
+        DEBUG
+    }
 //TODO exp_adj
 
+//    3.5
 //    n = 7;
 //    arr = mkCoordArr(n);
 //    arr[0] = (coord) {20, 352};

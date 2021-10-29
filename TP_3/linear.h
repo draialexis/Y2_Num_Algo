@@ -2,12 +2,12 @@
 // Created by draia on 28/10/2021.
 //
 
-#ifndef Y2_NUM_ALGO_REGRESSION_H
-#define Y2_NUM_ALGO_REGRESSION_H
+#ifndef Y2_NUM_ALGO_LINEAR_H
+#define Y2_NUM_ALGO_LINEAR_H
 
-int leastSqu(coord *coords, int n, double *a, double *b); //TODO add , double *err
+int linReg(coord *coords, int n, double *a, double *b); //TODO add , double *err
 
-int leastSqu(coord *coords, int n, double *a, double *b) {
+int linReg(coord *coords, int n, double *a, double *b) {
     if (coords == NULL && n < 2) {
         if (n < 2) {
             printf("we need at least two points to perform linear regression\n");
@@ -28,6 +28,11 @@ int leastSqu(coord *coords, int n, double *a, double *b) {
         denom += pow(coords[i].x - x_, 2);
     }
 
+    if (fabs(denom) < EPSILON) {
+        DEBUG
+        return -1;
+    }
+
     *a = 0;
     for (int i = 0; i < n; i++) {
         *a += (coords[i].x - x_) * (coords[i].y - y_) / denom;
@@ -38,4 +43,4 @@ int leastSqu(coord *coords, int n, double *a, double *b) {
     return 1; //means that it worked.
 }
 
-#endif //Y2_NUM_ALGO_REGRESSION_H
+#endif //Y2_NUM_ALGO_LINEAR_H
