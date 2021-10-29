@@ -100,12 +100,14 @@ void writePy(const coord *coords, double a, double b, int n, char mthd) {
     sprintf(eqStr, "%c", '\0');
 
     if (mthd == 'r') {
-        fname = "regression.py";
-        sprintf(eqStr, "'y = %.15f * x %+.15f'", a, b);
+        fname = "lin.py";
+        sprintf(eqStr, "%.15f * x %+.15f", a, b);
     } else if (mthd == 'e') {
-        fname = "exp_adjust.py";
+        fname = "exp.py";
+        sprintf(eqStr, "np.exp(%.15f * x %+.15f)", a, b);
     } else if (mthd == 'p') {
-        fname = "pow_adjust.py";
+        fname = "pow.py";
+        sprintf(eqStr, "pow(x, %.15f) * %.15f)", a, b);
     }
 
     char *xStr = (char *) malloc(sizeof(char) * n * bfr);
@@ -126,8 +128,8 @@ void writePy(const coord *coords, double a, double b, int n, char mthd) {
     sprintf(pyStr,
             "import numpy as np\n"
             "import matplotlib.pyplot as plt\n"
-            "def line_eq(x):\n"
-            "    return %.15f * x %+.15f\n"
+            "def curve_eq(x):\n"
+            "    return %s\n"
             "x = [%s]\n"
             "y = [%s]\n"
             "new_x = []\n"
@@ -136,17 +138,17 @@ void writePy(const coord *coords, double a, double b, int n, char mthd) {
             "hi = int(max(x) + 2.0) + 1\n"
             "for i in np.linspace(lo, hi, ((hi - lo) * 10)):\n"
             "    new_x.append(i)\n"
-            "    new_y.append(line_eq(i))\n"
+            "    new_y.append(curve_eq(i))\n"
             "plt.axhline(0, color='grey')\n"
             "plt.axvline(0, color='grey')\n"
             "plt.plot(new_x, new_y, color='g', label='regression')\n"
             "plt.scatter(x, y, 50, color='b', label='donnees')\n"
             "plt.xlabel('x')\n"
             "plt.ylabel('y')\n"
-            "plt.title(%s)\n"
+            "plt.title('y = %s')\n"
             "plt.legend()\n"
             "plt.show()\n",
-            a, b, xStr, yStr, eqStr);
+            eqStr, xStr, yStr, eqStr);
     writeToFile(pyStr, fname);
 }
 
@@ -157,11 +159,23 @@ void writeToFile(char *myStr, char *fname) {
     fclose(fp);
 }
 
-
 void checkFopen(FILE *fileName) {
     if (fileName == NULL) {
         EMPTY_OR_NULL
         perror("error while opening file");
+        FAIL_OUT
+    }
+}
+
+coord *copyCoords(coord *arr, int n) {
+    coord *res = mkCoordArr(n);
+    if (arr != NULL && res != NULL && n > 0) {
+        for (int i = 0; i < n; i++) {
+            res[i] = arr[i];
+        }
+        return res;
+    } else {
+        EMPTY_OR_NULL
         FAIL_OUT
     }
 }

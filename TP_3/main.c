@@ -186,12 +186,11 @@ int main() {
     arr[9] = (coord) {97, 22.13};
     showCoordArr(arr, n);
     if (expReg(arr, n, &a, &b)) {
-        printf("y = %.15f x + %.15f\n", a, b);
-//        askPy(arr, a, b, n, 'r');
+        printf("y = e^(%.15f * x %+.15f)\n", a, b);
+        askPy(arr, a, b, n, 'e');
     } else {
         DEBUG
     }
-//TODO exp_adj
 
 //    3.5
 //    n = 7;
@@ -204,6 +203,12 @@ int main() {
 //    arr[5] = (coord) {300, 0.4};
 //    arr[6] = (coord) {500, 0.1};
 //    showCoordArr(arr, n);
+//    if (expReg(arr, n, &a, &b)) {
+//        printf("y = pow(x, %.15f) * %.15f)\n", a, b);
+//        askPy(arr, a, b, n, 'p');
+//    } else {
+//        DEBUG
+//    }
 //TODO pow_adj
 
     return 0;
