@@ -94,7 +94,7 @@ void askPy(const coord *coords, double a, double b, int n, char mthd) {
 }
 
 void writePy(const coord *coords, double a, double b, int n, char mthd) {
-    int bfr = 32;
+    int bfr = 64;
     char *fname;
     char *eqStr = (char *) malloc(sizeof(char) * bfr);
     sprintf(eqStr, "%c", '\0');
@@ -107,9 +107,8 @@ void writePy(const coord *coords, double a, double b, int n, char mthd) {
         sprintf(eqStr, "np.exp(%.15f * x %+.15f)", a, b);
     } else if (mthd == 'p') {
         fname = "pow.py";
-        sprintf(eqStr, "pow(x, %.15f) * %.15f)", a, b);
+        sprintf(eqStr, "pow(%.15f, x) * %.15f", a, b);
     }
-
     char *xStr = (char *) malloc(sizeof(char) * n * bfr);
     char *yStr = (char *) malloc(sizeof(char) * n * bfr);
     char *xPart = (char *) malloc(sizeof(char) * bfr);

@@ -12,8 +12,8 @@ int expReg(coord *coords, int n, double *a, double *b) {
     for (int i = 0; i < n; i++) {
         coords_ln_y[i].y = log(coords[i].y);
     }
-    linReg(coords_ln_y, n, a, b);
-    return 1;
+
+    return linReg(coords_ln_y, n, a, b);
 }
 
 #endif //Y2_NUM_ALGO_EXPONENTIAL_H

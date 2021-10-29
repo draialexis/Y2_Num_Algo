@@ -20,9 +20,11 @@ int linReg(coord *coords, int n, double *a, double *b) {
     double denom = 0;
 
     for (int i = 0; i < n; i++) {
-        x_ += coords[i].x / n;
-        y_ += coords[i].y / n;
+        x_ += coords[i].x;
+        y_ += coords[i].y;
     }
+    x_ /= n;
+    y_ /= n;
 
     for (int i = 0; i < n; i++) {
         denom += pow(coords[i].x - x_, 2);
@@ -35,9 +37,9 @@ int linReg(coord *coords, int n, double *a, double *b) {
 
     *a = 0;
     for (int i = 0; i < n; i++) {
-        *a += (coords[i].x - x_) * (coords[i].y - y_) / denom;
+        *a += (coords[i].x - x_) * (coords[i].y - y_);
     }
-
+    *a /= denom;
     *b = y_ - (*a * x_);
 
     return 1; //means that it worked.
