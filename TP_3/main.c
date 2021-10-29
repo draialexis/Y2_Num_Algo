@@ -34,8 +34,6 @@ int main() {
 //    printf("\n");
 //    fill_X_Y(arr, n);
 //    showCoordArr(arr, n);
-//    printf("%d points, complexite: ____, nb d'ops attendu: %d\n",
-//           n, 0);//TODO update
 //    if (linReg(arr, n, &a, &b) == 1) {
 //        printf("y = %f x + %f\n", a, b);
 //    } else {
@@ -172,36 +170,36 @@ int main() {
 //    }
 
 //  3.4
-    n = 10;
-    arr = mkCoordArr(n);
-    arr[0] = (coord) {88, 5.89};
-    arr[1] = (coord) {89, 6.77};
-    arr[2] = (coord) {90, 7.87};
-    arr[3] = (coord) {91, 9.11};
-    arr[4] = (coord) {92, 10.56};
-    arr[5] = (coord) {93, 12.27};
-    arr[6] = (coord) {94, 13.92};
-    arr[7] = (coord) {95, 15.72};
-    arr[8] = (coord) {96, 17.91};
-    arr[9] = (coord) {97, 22.13};
-    n = 9;
-    arr = mkCoordArr(n);
-    arr[0] = (coord) {0, 100};
-    arr[1] = (coord) {2, 132};
-    arr[2] = (coord) {4, 174};
-    arr[3] = (coord) {6, 232};
-    arr[4] = (coord) {8, 305};
-    arr[5] = (coord) {9, 351};
-    arr[6] = (coord) {10, 405};
-    arr[7] = (coord) {12, 535};
-    arr[8] = (coord) {15, 813};
-    showCoordArr(arr, n);
-    if (expReg(arr, n, &a, &b) == 1) {
-        printf("y = e^(%.15f * x %+.15f)\n", a, b);
-        askPy(arr, a, b, n, 'e');
-    } else {
-        DEBUG
-    }
+//    n = 10;
+//    arr = mkCoordArr(n);
+//    arr[0] = (coord) {88, 5.89};
+//    arr[1] = (coord) {89, 6.77};
+//    arr[2] = (coord) {90, 7.87};
+//    arr[3] = (coord) {91, 9.11};
+//    arr[4] = (coord) {92, 10.56};
+//    arr[5] = (coord) {93, 12.27};
+//    arr[6] = (coord) {94, 13.92};
+//    arr[7] = (coord) {95, 15.72};
+//    arr[8] = (coord) {96, 17.91};
+//    arr[9] = (coord) {97, 22.13};
+//    n = 9;
+//    arr = mkCoordArr(n);
+//    arr[0] = (coord) {0, 100};
+//    arr[1] = (coord) {2, 132};
+//    arr[2] = (coord) {4, 174};
+//    arr[3] = (coord) {6, 232};
+//    arr[4] = (coord) {8, 305};
+//    arr[5] = (coord) {9, 351};
+//    arr[6] = (coord) {10, 405};
+//    arr[7] = (coord) {12, 535};
+//    arr[8] = (coord) {15, 813};
+//    showCoordArr(arr, n);
+//    if (expReg(arr, n, &a, &b) == 1) {
+//        printf("y = e^(%.15f * x %+.15f)\n", a, b);
+//        askPy(arr, a, b, n, 'e');
+//    } else {
+//        DEBUG
+//    }
 
 //    3.5
 //    n = 7;
@@ -220,7 +218,6 @@ int main() {
 //    } else {
 //        DEBUG
 //    }
-//TODO pow_adj
 
     return 0;
 }

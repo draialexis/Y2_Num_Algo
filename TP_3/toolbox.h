@@ -107,7 +107,7 @@ void writePy(const coord *coords, double a, double b, int n, char mthd) {
         sprintf(eqStr, "np.exp(%.15f * x %+.15f)", a, b);
     } else if (mthd == 'p') {
         fname = "pow.py";
-        sprintf(eqStr, "pow(%.15f, x) * %.15f", a, b);
+        sprintf(eqStr, "pow(x, %.15f) * %.15f", a, b);
     }
     char *xStr = (char *) malloc(sizeof(char) * n * bfr);
     char *yStr = (char *) malloc(sizeof(char) * n * bfr);
