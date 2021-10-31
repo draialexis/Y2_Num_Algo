@@ -15,33 +15,49 @@ int linReg(coord *coords, int n, double *a, double *b) {
         EMPTY_OR_NULL
         return -1; //-1 can then be interpreted by the main as a failure
     }
+    int ops = 0;
     double y_ = 0;
     double x_ = 0;
     double denom = 0;
 
+    //calculate the average of Xs and of Ys
     for (int i = 0; i < n; i++) {
         x_ += coords[i].x;
         y_ += coords[i].y;
+        ops += 2;////<< 2n
     }
     x_ /= n;
     y_ /= n;
+    ops += 2;////<< 2
 
+    //use least squares method: calculate the sum of the squares of the differences between each X and our X_
     for (int i = 0; i < n; i++) {
-        denom += pow(coords[i].x - x_, 2);
+        denom += pow(coords[i].x - x_, 2);////<< 3n
+        ops += 3;
     }
 
+    //make sure that the denominator is not 0 (or close enough to 0 to cause issues)
     if (fabs(denom) < EPSILON) {
         DEBUG
         return -1;
     }
 
+    //calculate the slope by summing the products of the differences
+    //between each X and our X_, and between each Y and our Y_
+    //then dividing by our denominator
     *a = 0;
     for (int i = 0; i < n; i++) {
-        *a += (coords[i].x - x_) * (coords[i].y - y_);
+        *a += (coords[i].x - x_) * (coords[i].y - y_);////<< 4n
+        ops += 4;
     }
-    *a /= denom;
-    *b = y_ - (*a * x_);
+    *a /= denom;////<< 1
+    ops++;
 
+    //calculate the intersect from our knowledge of the slope, the average of Xs, and the average of Ys
+    *b = y_ - (*a * x_);////<< 2
+    ops += 2;
+    printf("%d points, complexite: 9n+5, nb d'ops attendu: %d\n", n, ((9 * n) + 5));
+    printf("nb d'ops: %d\n", ops);
     return 1; //means that it worked.
 }
 
