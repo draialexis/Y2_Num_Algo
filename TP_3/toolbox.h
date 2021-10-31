@@ -26,6 +26,12 @@ void writeToFile(char *myStr, char *fname);
 
 void checkFopen(FILE *fileName);
 
+coord *copyCoords(coord *coords, int n);
+
+coord *coordsApprox(coord *coords, double a, double b, int n, char mthd);
+
+double deviation(coord *coords, coord *coords_approx, double a, double b, int n);
+
 coord *mkCoordArr(int n) {
     if (n > 0) {
         coord *arr = NULL;
@@ -166,17 +172,59 @@ void checkFopen(FILE *fileName) {
     }
 }
 
-coord *copyCoords(coord *arr, int n) {
+coord *copyCoords(coord *coords, int n) {
     coord *res = mkCoordArr(n);
-    if (arr != NULL && res != NULL && n > 0) {
+    if (coords != NULL && res != NULL && n > 0) {
         for (int i = 0; i < n; i++) {
-            res[i] = arr[i];
+            res[i] = coords[i];
         }
         return res;
     } else {
         EMPTY_OR_NULL
         FAIL_OUT
     }
+}
+
+coord *coordsApprox(coord *coords, double a, double b, int n, char mthd) {
+    coord *coords_approx = mkCoordArr(n);
+    if (coords == NULL || coords_approx == NULL || n <= 0) {
+        EMPTY_OR_NULL
+        FAIL_OUT
+    }
+    for (int i = 0; i < n; i++) {
+        coords_approx[i].x = coords[i].x;
+    }
+    if (mthd == 'l') {
+        for (int i = 0; i < n; i++) {
+            coords_approx[i].y = a * coords[i].x + b;
+        }
+    } else if (mthd == 'e') {
+        for (int i = 0; i < n; i++) {
+            coords_approx[i].y = exp(a * coords[i].x + b);
+        }
+    } else if (mthd == 'p') {
+        for (int i = 0; i < n; i++) {
+            coords_approx[i].y = pow(coords[i].x, a) * b;
+        }
+    } else {
+        printf("exiting program\n");
+        return 0;
+    }
+
+    return coords_approx;
+}
+
+//TODO add validation everywhere
+double deviation(coord *coords, coord *coords_approx, double a, double b, int n) {
+    if (coords == NULL || coords_approx == NULL || n <= 0) {
+        EMPTY_OR_NULL
+        FAIL_OUT
+    }
+    double e2_sum = 0;
+    for (int i = 0; i < n; i++) {
+        e2_sum += pow(coords_approx[i].y - coords[i].y, 2);
+    }
+    return sqrt(e2_sum / (n - 2));
 }
 
 #endif //Y2_NUM_ALGO_TOOLBOX_H

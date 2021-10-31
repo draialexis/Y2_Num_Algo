@@ -10,6 +10,10 @@ int expReg(coord *coords, int n, double *a, double *b, int *o);
 int expReg(coord *coords, int n, double *a, double *b, int *o) {
     coord *coords_ln_y = copyCoords(coords, n);
     for (int i = 0; i < n; i++) {
+        if (fabs(coords[i].y) < EPSILON) {
+            printf("tried to take ln(x) where x <= 0... exiting program\n");
+            return 0;
+        }
         coords_ln_y[i].y = log(coords[i].y);
         *o += 1; ////<< n
     }

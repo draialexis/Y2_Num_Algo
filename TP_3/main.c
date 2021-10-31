@@ -66,9 +66,10 @@ int main() {
 //    }
 //    askPy(arr, a, b, n, mthd);
 //    printf("nb d'ops: %d\n", o);
+//    coord *app = coordsApprox(arr, a, b, n, mthd);
+//    double dev = deviation(arr, app, a, b, n);
+//    printf("standard standard deviation: %.5f", dev);
 //    o = 0;
-
-    //TODO implement error calculations
 
 //    3.1
 //    n = 11;
@@ -90,13 +91,15 @@ int main() {
 //        askPy(arr, a, b, n, 'l');
 //        printf("nb d'ops: %d\n", o);
 //        o = 0;
+//        coord *app = coordsApprox(arr, a, b, n, 'l');
+//        double dev = deviation(arr, app, a, b, n);
+//        printf("standard deviation: %.5f", dev);
 //    } else {
 //        DEBUG
 //    }
-//
 
 //    3.2 S1
-//            n = 11;
+//    n = 11;
 //    arr = mkCoordArr(n);
 //    arr[0] = (coord) {10, 9.14};
 //    arr[1] = (coord) {8, 8.14};
@@ -115,13 +118,15 @@ int main() {
 //        askPy(arr, a, b, n, 'l');
 //        printf("nb d'ops: %d\n", o);
 //        o = 0;
+//        coord *app = coordsApprox(arr, a, b, n, 'l');
+//        double dev = deviation(arr, app, a, b, n);
+//        printf("standard deviation: %.5f", dev);
 //    } else {
 //        DEBUG
 //    }
-//
-//    3.2
-//    S2
-//            n = 11;
+
+//    3.2 S2
+//    n = 11;
 //    arr = mkCoordArr(n);
 //    arr[0] = (coord) {10, 7.46};
 //    arr[1] = (coord) {8, 6.77};
@@ -140,13 +145,15 @@ int main() {
 //        askPy(arr, a, b, n, 'l');
 //        printf("nb d'ops: %d\n", o);
 //        o = 0;
+//        coord *app = coordsApprox(arr, a, b, n, 'l');
+//        double dev = deviation(arr, app, a, b, n);
+//        printf("standard deviation: %.5f", dev);
 //    } else {
 //        DEBUG
 //    }
-//
-//    3.2
-//    S3
-//            n = 11;
+
+//    3.2 S3
+//    n = 11;
 //    arr = mkCoordArr(n);
 //    arr[0] = (coord) {8, 6.58};
 //    arr[1] = (coord) {8, 5.76};
@@ -165,11 +172,17 @@ int main() {
 //        askPy(arr, a, b, n, 'l');
 //        printf("nb d'ops: %d\n", o);
 //        o = 0;
+//        coord *app = coordsApprox(arr, a, b, n, 'l');
+//        double dev = deviation(arr, app, a, b, n);
+//        printf("standard deviation: %.5f", dev);
 //    } else {
 //        DEBUG
 //    }
+    //TODO suggest identifying and dealing with aberrations
+    //TODO take notes of standard deviations for report
+
 //
-//    3.3.1 - 2
+//    3.3.1
 //    n = 11;
 //    arr = mkCoordArr(n);
 //    arr[0] = (coord) {752, 85};
@@ -186,12 +199,17 @@ int main() {
 //    showCoordArr(arr, n);
 //    if (linReg(arr, n, &a, &b, &o) == 1) {
 //        printf("y = %f x + %f\n", a, b);
-////        askPy(arr, a, b, n, 'l');
+//        askPy(arr, a, b, n, 'l');
 //        printf("nb d'ops: %d\n", o);
 //        o = 0;
+//        coord *app = coordsApprox(arr, a, b, n, 'l');
+//        double dev = deviation(arr, app, a, b, n);
+//        printf("standard deviation: %.5f", dev);
 //    } else {
 //        DEBUG
 //    }
+
+//    3.3.2
 //    n = 10;
 //    arr = mkCoordArr(n);
 //    arr[0] = (coord) {643, 84};
@@ -207,13 +225,16 @@ int main() {
 //    showCoordArr(arr, n);
 //    if (linReg(arr, n, &a, &b, &o) == 1) {
 //        printf("y = %.15f x + %.15f\n", a, b);
-////        askPy(arr, a, b, n, 'l');
+//        askPy(arr, a, b, n, 'l');
 //        printf("nb d'ops: %d\n", o);
 //        o = 0;
+//        coord *app = coordsApprox(arr, a, b, n, 'l');
+//        double dev = deviation(arr, app, a, b, n);
+//        printf("standard deviation: %.5f", dev);
 //    } else {
 //        DEBUG
 //    }
-//
+
 //    3.4
 //    n = 10;
 //    arr = mkCoordArr(n);
@@ -233,10 +254,13 @@ int main() {
 //        askPy(arr, a, b, n, 'e');
 //        printf("nb d'ops: %d\n", o);
 //        o = 0;
+//        coord *app = coordsApprox(arr, a, b, n, 'e');
+//        double dev = deviation(arr, app, a, b, n);
+//        printf("standard deviation: %.5f", dev);
 //    } else {
 //        DEBUG
 //    }
-//
+
 //    3.5
 //    n = 7;
 //    arr = mkCoordArr(n);
@@ -253,6 +277,9 @@ int main() {
 //        askPy(arr, a, b, n, 'p');
 //        printf("nb d'ops: %d\n", o);
 //        o = 0;
+//        coord *app = coordsApprox(arr, a, b, n, 'p');
+//        double dev = deviation(arr, app, a, b, n);
+//        printf("standard deviation: %.5f", dev);
 //    } else {
 //        DEBUG
 //    }

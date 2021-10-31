@@ -5,7 +5,7 @@
 #ifndef Y2_NUM_ALGO_LINEAR_H
 #define Y2_NUM_ALGO_LINEAR_H
 
-int linReg(coord *coords, int n, double *a, double *b, int *o); //TODO add , double *err
+int linReg(coord *coords, int n, double *a, double *b, int *o);
 
 int linReg(coord *coords, int n, double *a, double *b, int *o) {
     if (coords == NULL && n < 2) {
