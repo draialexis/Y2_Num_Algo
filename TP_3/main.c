@@ -20,7 +20,7 @@
 
 int main() {
     double a, b;
-    int n;
+    int n, o;
     coord *arr;
 
 //    char str[20];
@@ -43,23 +43,20 @@ int main() {
 //    mthd = (char) getchar();
 //    cleanCheck(mthd);
 //    if (mthd == 'l') {
-//        if (linReg(arr, n, &a, &b) == 1) {
+//        if (linReg(arr, n, &a, &b, &o) == 1) {
 //            printf("y = %f x + %f\n", a, b);
-//            askPy(arr, a, b, n, mthd);
 //        } else {
 //            DEBUG
 //        }
 //    } else if (mthd == 'e') {
-//        if (expReg(arr, n, &a, &b) == 1) {
+//        if (expReg(arr, n, &a, &b, &o) == 1) {
 //            printf("y = e^(%.15f * x %+.15f)\n", a, b);
-//            askPy(arr, a, b, n, mthd);
 //        } else {
 //            DEBUG
 //        }
 //    } else if (mthd == 'p') {
-//        if (powReg(arr, n, &a, &b) == 1) {
+//        if (powReg(arr, n, &a, &b, &o) == 1) {
 //            printf("y = pow(x, %.15f) * %.15f\n", a, b);
-//            askPy(arr, a, b, n, mthd);
 //        } else {
 //            DEBUG
 //        }
@@ -67,9 +64,11 @@ int main() {
 //        printf("exiting program\n");
 //        return 0;
 //    }
+//    askPy(arr, a, b, n, mthd);
+//    printf("nb d'ops: %d\n", o);
+//    o = 0;
 
     //TODO implement error calculations
-    //TODO calculate complexities
 
 //    3.1
 //    n = 11;
@@ -86,15 +85,18 @@ int main() {
 //    arr[9] = (coord) {7, 4.82};
 //    arr[10] = (coord) {5, 5.68};
 //    showCoordArr(arr, n);
-//    if (linReg(arr, n, &a, &b) == 1) {
+//    if (linReg(arr, n, &a, &b, &o) == 1) {
 //        printf("y = %f x + %f\n", a, b);
 //        askPy(arr, a, b, n, 'l');
+//        printf("nb d'ops: %d\n", o);
+//        o = 0;
 //    } else {
 //        DEBUG
 //    }
+//
 
 //    3.2 S1
-//    n = 11;
+//            n = 11;
 //    arr = mkCoordArr(n);
 //    arr[0] = (coord) {10, 9.14};
 //    arr[1] = (coord) {8, 8.14};
@@ -108,15 +110,18 @@ int main() {
 //    arr[9] = (coord) {7, 7.26};
 //    arr[10] = (coord) {5, 4.74};
 //    showCoordArr(arr, n);
-//    if (linReg(arr, n, &a, &b) == 1) {
+//    if (linReg(arr, n, &a, &b, &o) == 1) {
 //        printf("y = %f x + %f\n", a, b);
 //        askPy(arr, a, b, n, 'l');
+//        printf("nb d'ops: %d\n", o);
+//        o = 0;
 //    } else {
 //        DEBUG
 //    }
-
-//    3.2 S2
-//    n = 11;
+//
+//    3.2
+//    S2
+//            n = 11;
 //    arr = mkCoordArr(n);
 //    arr[0] = (coord) {10, 7.46};
 //    arr[1] = (coord) {8, 6.77};
@@ -130,15 +135,18 @@ int main() {
 //    arr[9] = (coord) {7, 6.42};
 //    arr[10] = (coord) {5, 5.73};
 //    showCoordArr(arr, n);
-//    if (linReg(arr, n, &a, &b) == 1) {
+//    if (linReg(arr, n, &a, &b, &o) == 1) {
 //        printf("y = %f x + %f\n", a, b);
 //        askPy(arr, a, b, n, 'l');
+//        printf("nb d'ops: %d\n", o);
+//        o = 0;
 //    } else {
 //        DEBUG
 //    }
-
-//    3.2 S3
-//    n = 11;
+//
+//    3.2
+//    S3
+//            n = 11;
 //    arr = mkCoordArr(n);
 //    arr[0] = (coord) {8, 6.58};
 //    arr[1] = (coord) {8, 5.76};
@@ -152,14 +160,16 @@ int main() {
 //    arr[9] = (coord) {8, 7.91};
 //    arr[10] = (coord) {8, 6.89};
 //    showCoordArr(arr, n);
-//    if (linReg(arr, n, &a, &b) == 1) {
+//    if (linReg(arr, n, &a, &b, &o) == 1) {
 //        printf("y = %f x + %f\n", a, b);
 //        askPy(arr, a, b, n, 'l');
+//        printf("nb d'ops: %d\n", o);
+//        o = 0;
 //    } else {
 //        DEBUG
 //    }
-
-//    3.3.1-2
+//
+//    3.3.1 - 2
 //    n = 11;
 //    arr = mkCoordArr(n);
 //    arr[0] = (coord) {752, 85};
@@ -174,9 +184,11 @@ int main() {
 //    arr[9] = (coord) {462, 80};
 //    arr[10] = (coord) {907, 243};
 //    showCoordArr(arr, n);
-//    if (linReg(arr, n, &a, &b) == 1) {
+//    if (linReg(arr, n, &a, &b, &o) == 1) {
 //        printf("y = %f x + %f\n", a, b);
 ////        askPy(arr, a, b, n, 'l');
+//        printf("nb d'ops: %d\n", o);
+//        o = 0;
 //    } else {
 //        DEBUG
 //    }
@@ -193,14 +205,16 @@ int main() {
 //    arr[8] = (coord) {809, 77};
 //    arr[9] = (coord) {894, 223};
 //    showCoordArr(arr, n);
-//    if (linReg(arr, n, &a, &b) == 1) {
+//    if (linReg(arr, n, &a, &b, &o) == 1) {
 //        printf("y = %.15f x + %.15f\n", a, b);
 ////        askPy(arr, a, b, n, 'l');
+//        printf("nb d'ops: %d\n", o);
+//        o = 0;
 //    } else {
 //        DEBUG
 //    }
-
-//  3.4
+//
+//    3.4
 //    n = 10;
 //    arr = mkCoordArr(n);
 //    arr[0] = (coord) {88, 5.89};
@@ -214,13 +228,15 @@ int main() {
 //    arr[8] = (coord) {96, 17.91};
 //    arr[9] = (coord) {97, 22.13};
 //    showCoordArr(arr, n);
-//    if (expReg(arr, n, &a, &b) == 1) {
+//    if (expReg(arr, n, &a, &b, &o) == 1) {
 //        printf("y = e^(%.15f * x %+.15f)\n", a, b);
 //        askPy(arr, a, b, n, 'e');
+//        printf("nb d'ops: %d\n", o);
+//        o = 0;
 //    } else {
 //        DEBUG
 //    }
-
+//
 //    3.5
 //    n = 7;
 //    arr = mkCoordArr(n);
@@ -232,9 +248,11 @@ int main() {
 //    arr[5] = (coord) {300, 0.4};
 //    arr[6] = (coord) {500, 0.1};
 //    showCoordArr(arr, n);
-//    if (powReg(arr, n, &a, &b) == 1) {
+//    if (powReg(arr, n, &a, &b, &o) == 1) {
 //        printf("y = pow(x, %.15f) * %.15f\n", a, b);
 //        askPy(arr, a, b, n, 'p');
+//        printf("nb d'ops: %d\n", o);
+//        o = 0;
 //    } else {
 //        DEBUG
 //    }

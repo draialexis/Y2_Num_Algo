@@ -5,15 +5,16 @@
 #ifndef Y2_NUM_ALGO_EXPONENTIAL_H
 #define Y2_NUM_ALGO_EXPONENTIAL_H
 
-int expReg(coord *coords, int n, double *a, double *b);
+int expReg(coord *coords, int n, double *a, double *b, int *o);
 
-int expReg(coord *coords, int n, double *a, double *b) {
+int expReg(coord *coords, int n, double *a, double *b, int *o) {
     coord *coords_ln_y = copyCoords(coords, n);
     for (int i = 0; i < n; i++) {
         coords_ln_y[i].y = log(coords[i].y);
+        *o += 1; ////<< n
     }
 
-    return linReg(coords_ln_y, n, a, b);
+    return linReg(coords_ln_y, n, a, b, o); //1 if it worked, -1 else
 }
 
 #endif //Y2_NUM_ALGO_EXPONENTIAL_H
