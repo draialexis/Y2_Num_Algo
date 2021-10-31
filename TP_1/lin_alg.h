@@ -164,7 +164,7 @@ void jacobiMethod(double **A, int rowsA, int colsA, double *B, int maxIteration,
         } else {
             double *X = mkColVec(size);//our approximations, iteratively improved
             double *Xprev = mkColVec(size);
-            for (int i = 0; i < size; ++i) {
+            for (int i = 0; i < size; i++) {
                 // the initial guess ("X0") is that all our unknowns are 0
                 X[i] = 0.0;
                 Xprev[i] = 0.0;
@@ -175,7 +175,7 @@ void jacobiMethod(double **A, int rowsA, int colsA, double *B, int maxIteration,
             int isStable;
             while (counter <= maxIteration) {
                 isStable = 1;
-                for (int i = 0; i < size; ++i) {
+                for (int i = 0; i < size; i++) {
                     sum = 0.0;
                     for (int j = 0; j < size; ++j) {
                         if (i != j) {
