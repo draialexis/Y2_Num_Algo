@@ -62,13 +62,13 @@ int main() {
         }
     } else {
         printf("exiting program\n");
-        return 0;
+        FAIL_OUT
     }
     askPy(arr, a, b, n, mthd);
     printf("nb d'ops: %d\n", o);
     coord *app = coordsApprox(arr, a, b, n, mthd);
     double dev = deviation(arr, app, a, b, n);
-    printf("standard deviation: %.5f", dev);
+    printf("ecart type sur l'echantillon: %.5f", dev);
     o = 0;
 
 //    3.1
