@@ -178,8 +178,6 @@ int main() {
 //    } else {
 //        DEBUG
 //    }
-    //TODO suggest identifying and dealing with aberrations
-    //TODO take notes of standard deviations for report
 
 //
 //    3.3.1
