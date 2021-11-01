@@ -99,6 +99,15 @@ void askPy(const coord *coords, double a, double b, int n, char mthd) {
     genPy = (char) getchar();
     cleanCheck(genPy);
     if (genPy == 'o') {
+        if (mthd == 'l') {
+            printf("making lin.py");
+        } else if (mthd == 'e') {
+            printf("making exp.py");
+        } else if (mthd == 'p') {
+            printf("making pow.py");
+        } else {
+            FAIL_OUT
+        }
         writePy(coords, a, b, n, mthd);
     }
 }

@@ -23,53 +23,53 @@ int main() {
     int n, o;
     coord *arr;
 
-//    char str[20];
-//    char *endPtr;
-//    printf("pour quitter ce programme, entrez 'q' en reponse a une requete\n");
-//    printf("combien de coordonnees voulez-vous entrer?\n>");
-//    scanf("%s", str);
-//    n = strtol(str, &endPtr, 10);
-//    cleanCheck(*endPtr);
-//    arr = mkCoordArr(n);
-//    printf("\n");
-//    fill_X_Y(arr, n);
-//    showCoordArr(arr, n);
-//    char mthd;
-//    printf("\nquelle methode utiliser ?"
-//           "\n* 'l' : regression lineaire"
-//           "\n* 'e' : ajustement exponentiel"
-//           "\n* 'p' : ajustement puissance"
-//           "\n>");
-//    mthd = (char) getchar();
-//    cleanCheck(mthd);
-//    if (mthd == 'l') {
-//        if (linReg(arr, n, &a, &b, &o) == 1) {
-//            printf("y = %f x + %f\n", a, b);
-//        } else {
-//            DEBUG
-//        }
-//    } else if (mthd == 'e') {
-//        if (expReg(arr, n, &a, &b, &o) == 1) {
-//            printf("y = e^(%.15f * x %+.15f)\n", a, b);
-//        } else {
-//            DEBUG
-//        }
-//    } else if (mthd == 'p') {
-//        if (powReg(arr, n, &a, &b, &o) == 1) {
-//            printf("y = pow(x, %.15f) * %.15f\n", a, b);
-//        } else {
-//            DEBUG
-//        }
-//    } else {
-//        printf("exiting program\n");
-//        return 0;
-//    }
-//    askPy(arr, a, b, n, mthd);
-//    printf("nb d'ops: %d\n", o);
-//    coord *app = coordsApprox(arr, a, b, n, mthd);
-//    double dev = deviation(arr, app, a, b, n);
-//    printf("standard standard deviation: %.5f", dev);
-//    o = 0;
+    char str[20];
+    char *endPtr;
+    printf("pour quitter ce programme, entrez 'q' en reponse a une requete\n");
+    printf("combien de coordonnees voulez-vous entrer?\n>");
+    scanf("%s", str);
+    n = strtol(str, &endPtr, 10);
+    cleanCheck(*endPtr);
+    arr = mkCoordArr(n);
+    printf("\n");
+    fill_X_Y(arr, n);
+    showCoordArr(arr, n);
+    char mthd;
+    printf("\nquelle methode utiliser ?"
+           "\n* 'l' : regression lineaire"
+           "\n* 'e' : ajustement exponentiel"
+           "\n* 'p' : ajustement puissance"
+           "\n>");
+    mthd = (char) getchar();
+    cleanCheck(mthd);
+    if (mthd == 'l') {
+        if (linReg(arr, n, &a, &b, &o) == 1) {
+            printf("y = %f x + %f\n", a, b);
+        } else {
+            DEBUG
+        }
+    } else if (mthd == 'e') {
+        if (expReg(arr, n, &a, &b, &o) == 1) {
+            printf("y = e^(%.15f * x %+.15f)\n", a, b);
+        } else {
+            DEBUG
+        }
+    } else if (mthd == 'p') {
+        if (powReg(arr, n, &a, &b, &o) == 1) {
+            printf("y = pow(x, %.15f) * %.15f\n", a, b);
+        } else {
+            DEBUG
+        }
+    } else {
+        printf("exiting program\n");
+        return 0;
+    }
+    askPy(arr, a, b, n, mthd);
+    printf("nb d'ops: %d\n", o);
+    coord *app = coordsApprox(arr, a, b, n, mthd);
+    double dev = deviation(arr, app, a, b, n);
+    printf("standard deviation: %.5f", dev);
+    o = 0;
 
 //    3.1
 //    n = 11;
@@ -260,27 +260,27 @@ int main() {
 //    }
 
 //    3.5
-    n = 7;
-    arr = mkCoordArr(n);
-    arr[0] = (coord) {20, 352};
-    arr[1] = (coord) {30, 128};
-    arr[2] = (coord) {40, 62.3};
-    arr[3] = (coord) {50, 35.7};
-    arr[4] = (coord) {100, 6.3};
-    arr[5] = (coord) {300, 0.4};
-    arr[6] = (coord) {500, 0.1};
-    showCoordArr(arr, n);
-    if (powReg(arr, n, &a, &b, &o) == 1) {
-        printf("y = pow(x, %.15f) * %.15f\n", a, b);
-        askPy(arr, a, b, n, 'p');
-        printf("nb d'ops: %d\n", o);
-        o = 0;
-        coord *app = coordsApprox(arr, a, b, n, 'p');
-        double dev = deviation(arr, app, a, b, n);
-        printf("standard deviation: %.5f", dev);
-    } else {
-        DEBUG
-    }
+//    n = 7;
+//    arr = mkCoordArr(n);
+//    arr[0] = (coord) {20, 352};
+//    arr[1] = (coord) {30, 128};
+//    arr[2] = (coord) {40, 62.3};
+//    arr[3] = (coord) {50, 35.7};
+//    arr[4] = (coord) {100, 6.3};
+//    arr[5] = (coord) {300, 0.4};
+//    arr[6] = (coord) {500, 0.1};
+//    showCoordArr(arr, n);
+//    if (powReg(arr, n, &a, &b, &o) == 1) {
+//        printf("y = pow(x, %.15f) * %.15f\n", a, b);
+//        askPy(arr, a, b, n, 'p');
+//        printf("nb d'ops: %d\n", o);
+//        o = 0;
+//        coord *app = coordsApprox(arr, a, b, n, 'p');
+//        double dev = deviation(arr, app, a, b, n);
+//        printf("standard deviation: %.5f", dev);
+//    } else {
+//        DEBUG
+//    }
 
     return 0;
 }
