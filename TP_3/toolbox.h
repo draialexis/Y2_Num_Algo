@@ -24,7 +24,7 @@ void writePy(const coord *coords, double a, double b, int n, char mthd);
 
 void writeToFile(char *myStr, char *fname);
 
-void checkFopen(FILE *fileName);
+void checkFopen(FILE *filePointer);
 
 coord *copyCoords(coord *coords, int n);
 
@@ -33,7 +33,7 @@ coord *coordsApprox(coord *coords, double a, double b, int n, char mthd);
 double deviation(coord *coords, coord *coords_approx, double a, double b, int n);
 
 coord *mkCoordArr(int n) {
-    if (n > 0) {
+    if (n > 1) {
         coord *arr = NULL;
         arr = (coord *) malloc(sizeof(coord) * n);
         if (arr == NULL) {
@@ -47,7 +47,7 @@ coord *mkCoordArr(int n) {
 }
 
 void fill_X_Y(coord *arr, int n) {
-    if (arr != NULL && n > 0) {
+    if (arr != NULL && n > 1) {
         char str[20];
         char *endPtr;
         coord input;
@@ -75,8 +75,8 @@ void cleanCheck(char input) {
 }
 
 void showCoordArr(coord *arr, int n) {
-    printf("coordonnees (x, y):\n");
-    if (n > 0 && arr != NULL) {
+    if (n > 1 && arr != NULL) {
+        printf("coordonnees (x, y):\n");
         for (int i = 0; i < n; i++) {
             printf("|%+010.5f, %+010.5f|\n", arr[i].x, arr[i].y);
         }
@@ -87,6 +87,10 @@ void showCoordArr(coord *arr, int n) {
 }
 
 void askPy(const coord *coords, double a, double b, int n, char mthd) {
+    if (coords == NULL || n < 2) {
+        EMPTY_OR_NULL
+        FAIL_OUT
+    }
     char genPy;
     printf("\ngenerer un script .py?"
            "\n* 'o' : oui"
@@ -100,6 +104,10 @@ void askPy(const coord *coords, double a, double b, int n, char mthd) {
 }
 
 void writePy(const coord *coords, double a, double b, int n, char mthd) {
+    if (coords == NULL || n < 2) {
+        EMPTY_OR_NULL
+        FAIL_OUT
+    }
     int bfr = 64;
     char *fname;
     char *eqStr = (char *) malloc(sizeof(char) * bfr);
@@ -158,14 +166,18 @@ void writePy(const coord *coords, double a, double b, int n, char mthd) {
 }
 
 void writeToFile(char *myStr, char *fname) {
+    if (myStr == NULL || strcmp(myStr, "") == 0) {
+        EMPTY_OR_NULL
+        FAIL_OUT
+    }
     FILE *fp = fopen(fname, "w");
     checkFopen(fp);
     fputs(myStr, fp);
     fclose(fp);
 }
 
-void checkFopen(FILE *fileName) {
-    if (fileName == NULL) {
+void checkFopen(FILE *filePointer) {
+    if (filePointer == NULL) {
         EMPTY_OR_NULL
         perror("error while opening file");
         FAIL_OUT
@@ -173,8 +185,8 @@ void checkFopen(FILE *fileName) {
 }
 
 coord *copyCoords(coord *coords, int n) {
-    coord *res = mkCoordArr(n);
-    if (coords != NULL && res != NULL && n > 0) {
+    if (coords != NULL && n > 1) {
+        coord *res = mkCoordArr(n);
         for (int i = 0; i < n; i++) {
             res[i] = coords[i];
         }
@@ -187,7 +199,7 @@ coord *copyCoords(coord *coords, int n) {
 
 coord *coordsApprox(coord *coords, double a, double b, int n, char mthd) {
     coord *coords_approx = mkCoordArr(n);
-    if (coords == NULL || coords_approx == NULL || n <= 0) {
+    if (coords == NULL || coords_approx == NULL || n < 2) {
         EMPTY_OR_NULL
         FAIL_OUT
     }
@@ -214,9 +226,8 @@ coord *coordsApprox(coord *coords, double a, double b, int n, char mthd) {
     return coords_approx;
 }
 
-//TODO add validation everywhere
 double deviation(coord *coords, coord *coords_approx, double a, double b, int n) {
-    if (coords == NULL || coords_approx == NULL || n <= 0) {
+    if (coords == NULL || coords_approx == NULL || n < 2) {
         EMPTY_OR_NULL
         FAIL_OUT
     }
@@ -224,7 +235,7 @@ double deviation(coord *coords, coord *coords_approx, double a, double b, int n)
     for (int i = 0; i < n; i++) {
         e2_sum += pow(coords_approx[i].y - coords[i].y, 2);
     }
-    return sqrt(e2_sum / (n - 2));
+    return sqrt(e2_sum / (n - 1));
 }
 
 #endif //Y2_NUM_ALGO_TOOLBOX_H

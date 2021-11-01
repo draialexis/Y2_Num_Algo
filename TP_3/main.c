@@ -260,27 +260,27 @@ int main() {
 //    }
 
 //    3.5
-//    n = 7;
-//    arr = mkCoordArr(n);
-//    arr[0] = (coord) {20, 352};
-//    arr[1] = (coord) {30, 128};
-//    arr[2] = (coord) {40, 62.3};
-//    arr[3] = (coord) {50, 35.7};
-//    arr[4] = (coord) {100, 6.3};
-//    arr[5] = (coord) {300, 0.4};
-//    arr[6] = (coord) {500, 0.1};
-//    showCoordArr(arr, n);
-//    if (powReg(arr, n, &a, &b, &o) == 1) {
-//        printf("y = pow(x, %.15f) * %.15f\n", a, b);
-//        askPy(arr, a, b, n, 'p');
-//        printf("nb d'ops: %d\n", o);
-//        o = 0;
-//        coord *app = coordsApprox(arr, a, b, n, 'p');
-//        double dev = deviation(arr, app, a, b, n);
-//        printf("standard deviation: %.5f", dev);
-//    } else {
-//        DEBUG
-//    }
+    n = 7;
+    arr = mkCoordArr(n);
+    arr[0] = (coord) {20, 352};
+    arr[1] = (coord) {30, 128};
+    arr[2] = (coord) {40, 62.3};
+    arr[3] = (coord) {50, 35.7};
+    arr[4] = (coord) {100, 6.3};
+    arr[5] = (coord) {300, 0.4};
+    arr[6] = (coord) {500, 0.1};
+    showCoordArr(arr, n);
+    if (powReg(arr, n, &a, &b, &o) == 1) {
+        printf("y = pow(x, %.15f) * %.15f\n", a, b);
+        askPy(arr, a, b, n, 'p');
+        printf("nb d'ops: %d\n", o);
+        o = 0;
+        coord *app = coordsApprox(arr, a, b, n, 'p');
+        double dev = deviation(arr, app, a, b, n);
+        printf("standard deviation: %.5f", dev);
+    } else {
+        DEBUG
+    }
 
     return 0;
 }

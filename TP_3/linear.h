@@ -8,10 +8,7 @@
 int linReg(coord *coords, int n, double *a, double *b, int *o);
 
 int linReg(coord *coords, int n, double *a, double *b, int *o) {
-    if (coords == NULL && n < 2) {
-        if (n < 2) {
-            printf("we need at least two points to perform linear regression\n");
-        }
+    if (coords == NULL || n < 2) {
         EMPTY_OR_NULL
         return -1; //-1 can then be interpreted by the main as a failure
     }
@@ -55,7 +52,6 @@ int linReg(coord *coords, int n, double *a, double *b, int *o) {
     //calculate the intersect from our knowledge of the slope, the average of Xs, and the average of Ys
     *b = y_ - (*a * x_);////<< 2
     *o += 2;
-//    printf("%d points, complexite: 9n+5, nb d'ops attendu: %d\n", n, ((9 * n) + 5));
     return 1; //means that it worked.
 }
 
