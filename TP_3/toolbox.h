@@ -100,11 +100,11 @@ void askPy(const coord *coords, double a, double b, int n, char mthd) {
     cleanCheck(genPy);
     if (genPy == 'o') {
         if (mthd == 'l') {
-            printf("making lin.py");
+            printf("making lin.py\n");
         } else if (mthd == 'e') {
-            printf("making exp.py");
+            printf("making exp.py\n");
         } else if (mthd == 'p') {
-            printf("making pow.py");
+            printf("making pow.py\n");
         } else {
             FAIL_OUT
         }
