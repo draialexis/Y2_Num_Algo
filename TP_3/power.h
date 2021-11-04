@@ -23,7 +23,7 @@ int powReg(coord *coords, int n, double *a, double *b, int *o) {
         *o += 2;
     }
 
-    int res = linReg(coords_ln, n, a, b, o); ////<< 9n+5
+    int res = linReg(coords_ln, n, a, b, o); ////<< 8n+5
     *b = exp(*b);////<< 1
     *o += 1;
     return res; //1 if it worked, -1 else

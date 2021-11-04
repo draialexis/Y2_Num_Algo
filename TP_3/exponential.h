@@ -23,7 +23,7 @@ int expReg(coord *coords, int n, double *a, double *b, int *o) {
     }
 
     return linReg(coords_ln_y, n, a, b, o); //1 if it worked, -1 else
-    ////<< 9n + 5
+    ////<< 8n + 5
 }
 
 #endif //Y2_NUM_ALGO_EXPONENTIAL_H
