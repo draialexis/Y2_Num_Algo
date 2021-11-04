@@ -26,25 +26,22 @@ int linReg(coord *coords, int n, double *a, double *b, int *o) {
     y_ /= n;
     *o += 2;////<< 2
 
-    //use least squares method: calculate the sum of the squares of the differences between each X and our X_
-    for (int i = 0; i < n; i++) {
-        denom += pow(coords[i].x - x_, 2);////<< 3n
-        *o += 3;
-    }
 
+    //calculate the sum of the squares of the differences between each X and our X_
+    //and calculate the slope by summing the products of the differences
+    //between each X and our X_, and between each Y and our Y_
+    *a = 0;
+    for (int i = 0; i < n; i++) {
+        double x_dif = (coords[i].x - x_);////<< n
+        denom += pow(x_dif, 2);////<< 2n
+        *a += x_dif * (coords[i].y - y_);////<< 3n
+        *o += 6;
+    }
+    //then dividing by our denominator
     //make sure that the denominator is not 0 (or close enough to 0 to cause issues)
     if (fabs(denom) < EPSILON) {
         DEBUG
         return -1;
-    }
-
-    //calculate the slope by summing the products of the differences
-    //between each X and our X_, and between each Y and our Y_
-    //then dividing by our denominator
-    *a = 0;
-    for (int i = 0; i < n; i++) {
-        *a += (coords[i].x - x_) * (coords[i].y - y_);////<< 4n
-        *o += 4;
     }
     *a /= denom;////<< 1
     *o += 1;
